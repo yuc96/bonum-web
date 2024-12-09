@@ -1475,16 +1475,16 @@ const EditarEmpleadoModal = (
                                             onClick={() => {
                                                 console.log("nuevo: ", nuevoEmpleado)
 
-                                                // update_empleados(nuevoEmpleado)
-                                                //     .then((res) => {
-                                                //         accionDatos()
-                                                //         setHideButton(!hideButton)
-                                                //         setOpenMessage(!openMessage)
-                                                //         setOpenModalEdit(!openModalEdit)
-                                                //     })
-                                                //     .catch((err) => {
-                                                //         console.log("Error de la API: ", err)
-                                                //     })
+                                                update_empleados(nuevoEmpleado)
+                                                    .then((res) => {
+                                                        accionDatos()
+                                                        setHideButton(!hideButton)
+                                                        setOpenMessage(!openMessage)
+                                                        setOpenModalEdit(!openModalEdit)
+                                                    })
+                                                    .catch((err) => {
+                                                        console.log("Error de la API: ", err)
+                                                    })
 
                                             }}
                                             type="button"
