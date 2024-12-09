@@ -1,7 +1,11 @@
 import { Login } from '@mui/icons-material';
 import { patch } from '@mui/material';
 import { lazy } from 'react';
-const Logins=lazy(() => import('../pages/login/login'));
+
+import ProtectedRoute from './ProtectedRoute';  // Importar el componente de protección
+
+// Rutas Lazy Loaded
+const Logins = lazy(() => import('../pages/login/login'));
 const Index = lazy(() => import('../pages/Index'));
 const Empleados = lazy(() => import('../pages/empleados/Empleados'));
 const Productos = lazy(() => import('../pages/productos/Productos'));
@@ -9,64 +13,97 @@ const Anticipos = lazy(() => import('../pages/anticipos/Anticipos'));
 const Cobros = lazy(() => import('../pages/cobros/Cobros'));
 const Pagos = lazy(() => import('../pages/pagos/Pagos'));
 const PagosPendientes = lazy(() => import('../pages/pagos/screens/PagosPendientes'));
-const HistorialEmpleado =  lazy(() => import('../pages/empleados/screens/HistorialEmpleado'));
+const HistorialEmpleado = lazy(() => import('../pages/empleados/screens/HistorialEmpleado'));
 
 const routes = [
-    // dashboard
-
+    // Ruta de login, accesible sin autenticación
     {
-        path:'/',
+        path: '/login',
         element: <Logins />,
         layout: 'default',
     },
+
+    // Ruta principal, protegida
     {
-        path: '/index',
-        element: <Index />,
+        path: '/',
+        element: (
+          <ProtectedRoute>
+            <Index />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Employees
+
+    // Rutas protegidas
     {
         path: '/empleados',
-        element: <Empleados />,
+        element: (
+          <ProtectedRoute>
+            <Empleados />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Products
+
     {
         path: '/productos',
-        element: <Productos />,
+        element: (
+          <ProtectedRoute>
+            <Productos />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Anticipos
+
     {
         path: '/anticipos',
-        element: <Anticipos />,
+        element: (
+          <ProtectedRoute>
+            <Anticipos />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Cobros
+
     {
         path: '/cobros',
-        element: <Cobros/>,
+        element: (
+          <ProtectedRoute>
+            <Cobros />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Pagos
+
     {
         path: '/pagos',
-        element: <Pagos/>,
+        element: (
+          <ProtectedRoute>
+            <Pagos />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Pagos Pendientes
+
     {
         path: '/pagos/:id',
-        element: <PagosPendientes/>,
+        element: (
+          <ProtectedRoute>
+            <PagosPendientes />
+          </ProtectedRoute>
+        ),
         layout: 'default',
     },
-    //Historiales
+
     {
         path: '/empleados/historial',
-        element: <HistorialEmpleado/>,
+        element: (
+          <ProtectedRoute>
+            <HistorialEmpleado />
+          </ProtectedRoute>
+        ),
         layout: 'default',
-    }
-
+    },
 ];
 
 export { routes };

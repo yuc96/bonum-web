@@ -8,7 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 import { AccionContext } from '../../../contexts/AccionesContext';
 
-const NuevoEmpleadoModal = ( 
+const NuevoEmpleadoModal = (
     {
         openModal,
         setOpenModal,
@@ -55,7 +55,7 @@ const NuevoEmpleadoModal = (
             .then((res) => {
                 accionDatos();
                 setOpenModal(false);
-                
+
             })
             .catch((err) => {
                 console.log("Error API: ", err)
@@ -332,7 +332,7 @@ const NuevoEmpleadoModal = (
                                                 fontFamily: 'Maven Pro',
                                             }}
                                         >
-                                            <label> Nivel educativo </label>
+                                            {/* <label> Nivel educativo </label>
                                             <input
                                                 onChange={(e) => setNivelEducativo(e.target.value)}
                                                 placeholder="Ingresar nivel educativo"
@@ -341,7 +341,30 @@ const NuevoEmpleadoModal = (
                                                     width: window.screen.width * 0.17,
                                                     height: '5vh'
                                                 }}
-                                            />
+                                            /> */}
+                                            <label>Nivel educativo</label>
+                                            <select
+                                            onChange={(e) => setNivelEducativo(e.target.value)}
+                                            className="form-input"
+                                            style={{
+                                                width: window.screen.width * 0.17,
+                                                height: '5vh',
+                                            }}
+                                            >
+                                            {/* Opciones del desplegable */}
+                                            <option value="" disabled selected>
+                                                Seleccionar nivel educativo
+                                            </option>
+                                            <option value="Ninguno">Ninguno</option>
+                                            <option value="Primaria">Primaria</option>
+                                            <option value="Secundaria">Secundaria</option>
+                                            <option value="Técnico">Técnico</option>
+                                            <option value="Tecnológico">Tecnológico</option>
+                                            <option value="Universitario">Universitario</option>
+                                            <option value="Posgrado">Posgrado</option>
+                                            <option value="Doctorado">Doctorado</option>
+                                            </select>
+
                                         </div>
 
                                     </div>
@@ -846,7 +869,7 @@ const NuevoEmpleadoModal = (
                                                 "observations": observaciones,
                                                 "status": 'active'
                                             }
-                                            
+
                                             /*
                                             const data = {
                                                 "identification_number": "1003836721",
@@ -870,7 +893,7 @@ const NuevoEmpleadoModal = (
                                                 "observations": "Empleado destacado en proyectos de desarrollo.",
                                                 "status": "active"
                                             }*/
-                                           
+
                                             handleCreateEmpleado(data)
 
                                         }}
@@ -896,7 +919,7 @@ const NuevoEmpleadoModal = (
                 </div>
             </Dialog>
 
-        </Transition> 
+        </Transition>
 
     )
 

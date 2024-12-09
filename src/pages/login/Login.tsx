@@ -1,49 +1,50 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Importamos Axios
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify'; // Importa Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Importa estilos de Toastify
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import '../../styles/login.css';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Para manejar errores
-  const [loading, setLoading] = useState(false); // Para mostrar cargando
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Usa el hook useNavigate
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
 
     try {
-      // Realizar la solicitud POST al backend con los datos del formulario
+      // Realizar la solicitud POST al backend
       const response = await axios.post('http://localhost:3000/api/admin/login', {
         email,
         password,
       });
 
-      // Si el login es exitoso, se obtiene el token
+      // Si el login es exitoso, muestra un mensaje de éxito
       const token = response.data.token;
       console.log('JWT Token:', token);
+      localStorage.setItem('token', token);
+      toast.success('Login successful! 🎉'); // Mensaje de éxito
 
-      // Aquí puedes almacenar el token en el localStorage o context de React, dependiendo de tu preferencia
-      localStorage.setItem('token', token);  // Ejemplo de almacenamiento del token
-
-      // Aquí podrías redirigir al usuario a una página protegida
-      // Por ejemplo, usando react-router
-      // navigate('/dashboard'); // Ejemplo de navegación si estás usando react-router
+      // Redirigir a la ruta protegida principal ("/") después de un login exitoso
+      navigate('/'); // Redirección programática a la ruta principal
 
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Error en el servidor');
+      const errorMessage = err.response?.data?.message || 'Server error';
+      toast.error(`Login failed: ${errorMessage}`); // Mensaje de error flotante
       console.error('Login error:', err);
     } finally {
-      setLoading(false); // Termina el estado de cargando
+      setLoading(false);
     }
   };
 
   return (
     <div className="login-container">
+      <ToastContainer position="top-right" autoClose={10000} /> {/* Contenedor de Toast */}
       <div className="login-box">
         <h2>Login</h2>
-        {error && <div className="error-message">{error}</div>} {/* Mensaje de error */}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
