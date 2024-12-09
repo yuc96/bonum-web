@@ -370,7 +370,6 @@ const NuevoEmpleadoModal = (
                                             </LocalizationProvider>
                                         </div>
 
-<<<<<<< HEAD
                                         <div
                                             style={{
                                                 fontSize: 14,
@@ -381,48 +380,15 @@ const NuevoEmpleadoModal = (
                                                 fontFamily: 'Maven Pro',
                                             }}
                                         >
-                                            {/* <label> Nivel educativo </label>
-                                            <input
-                                                onChange={(e) => setNivelEducativo(e.target.value)}
-                                                placeholder="Ingresar nivel educativo"
-                                                className="form-input"
-=======
-                                        <div>
                                             <label
->>>>>>> origin/ctoapanta
                                                 style={{
                                                     fontSize: 14,
                                                     color: '#0E1726',
-                                                    fontStyle: 'revert',
+                                                    fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                 }}
-<<<<<<< HEAD
-                                            /> */}
-                                            <label>Nivel educativo</label>
-                                            <select
-                                            onChange={(e) => setNivelEducativo(e.target.value)}
-                                            className="form-input"
-                                            style={{
-                                                width: window.screen.width * 0.17,
-                                                height: '5vh',
-                                            }}
-                                            >
-                                            {/* Opciones del desplegable */}
-                                            <option value="" disabled selected>
-                                                Seleccionar nivel educativo
-                                            </option>
-                                            <option value="Ninguno">Ninguno</option>
-                                            <option value="Primaria">Primaria</option>
-                                            <option value="Secundaria">Secundaria</option>
-                                            <option value="Técnico">Técnico</option>
-                                            <option value="Tecnológico">Tecnológico</option>
-                                            <option value="Universitario">Universitario</option>
-                                            <option value="Posgrado">Posgrado</option>
-                                            <option value="Doctorado">Doctorado</option>
-                                            </select>
-=======
                                             >
                                                 Nivel educativo
                                             </label>
@@ -455,10 +421,8 @@ const NuevoEmpleadoModal = (
                                                     '& .MuiSelect-select': {
                                                         padding: '8px',
                                                     }
-                                                }
-                                                }
+                                                }}
                                             >
-
                                                 <Select
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
@@ -477,7 +441,6 @@ const NuevoEmpleadoModal = (
                                                             },
                                                         },
                                                     }}
-
                                                 >
                                                     <MenuItem value="" sx={{
                                                         fontFamily: 'Maven Pro',
@@ -496,9 +459,8 @@ const NuevoEmpleadoModal = (
                                                     <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
                                                 </Select>
                                             </FormControl>
->>>>>>> origin/ctoapanta
-
                                         </div>
+
 
                                     </div>
 
@@ -719,8 +681,8 @@ const NuevoEmpleadoModal = (
                                                     </MenuItem>
                                                         {
                                                             provincias.map((provincia, index) => (
-                                                                <MenuItem 
-                                                                    key={index} 
+                                                                <MenuItem
+                                                                    key={index}
                                                                     value={provincia}
                                                                 >
                                                                     &nbsp;{provincia}
@@ -1225,7 +1187,7 @@ const NuevoEmpleadoModal = (
                                                 "status": 'active'
                                             }
 
-<<<<<<< HEAD
+
                                             /*
                                             const data = {
                                                 "identification_number": "1003836721",
@@ -1249,7 +1211,7 @@ const NuevoEmpleadoModal = (
                                                 "observations": "Empleado destacado en proyectos de desarrollo.",
                                                 "status": "active"
                                             }*/
-=======
+
                                             console.log("Data para crear: ", data)
 
 
@@ -1275,8 +1237,6 @@ const NuevoEmpleadoModal = (
                                             //     "observations": "Empleado destacado en proyectos de desarrollo.",
                                             //     "status": "active"
                                             // }
->>>>>>> origin/ctoapanta
-
                                             handleCreateEmpleado(data)
 
                                         }}
@@ -1305,14 +1265,8 @@ const NuevoEmpleadoModal = (
                 </div>
             </Dialog >
 
-<<<<<<< HEAD
+
         </Transition>
-=======
-        </Transition >
->>>>>>> origin/ctoapanta
-
-    )
-
-}
+)}
 
 export default NuevoEmpleadoModal;

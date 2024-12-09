@@ -28,7 +28,7 @@ export function create_empleados(data) {
 export function create_empleados_from_excel(data) {
 
     return axios.post(`${CREATE_EMPLEADO_EXCEL_URL}`, data, {timeout:5000})
-        .then(r=> r) 
+        .then(r=> r)
         .catch(err => err)
 
 }
@@ -43,26 +43,27 @@ export function all_empleados() {
 
 export function an_empleados(data) {
 
-    const EDIT_DATA_URL = AN_EMPLEADOS_URL+data.id_empleado 
+    const EDIT_DATA_URL = AN_EMPLEADOS_URL+data.id_empleado
     console.log(EDIT_DATA_URL);
 
     return axios.get(`${EDIT_DATA_URL}`, {timeout:5000})
-        .then(r=> r) 
+        .then(r=> r)
         .catch(err => err)
-  
+
 }
 
 export function update_empleados(data) {
 
     const EDIT_DATA_URL = EDIT_EMPLEADOS_URL+data.id_empleado
 
-<<<<<<< HEAD
+
     return axios.put(`${EDIT_DATA_URL}`, {timeout:5000})
         .then(r=> r)
-=======
+
     return axios.put(`${EDIT_DATA_URL}`, data, {timeout:5000})
-        .then(r=> r) 
->>>>>>> origin/ctoapanta
+        .then(r=> r)
+
+        origin/ctoapanta
         .catch(err => err)
 
 }
