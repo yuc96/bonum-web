@@ -124,7 +124,7 @@ const CobrosTable = (
         <div
             className="datatables"
             style={{
-                margin: '1.5vh'
+                marginTop: 23
             }}
         >
             <TableContainer
@@ -132,19 +132,18 @@ const CobrosTable = (
             >
 
                 <Table
-                    size="small"
+                    size="medium"
                 >
                     <TableHead >
                         <TableRow sx={{  backgroundColor: '#e9efff' }}>
                             <TableCell
-                                align='center'
-                                //size='small'
+                                align='left'
                                 sx={{
                                     width: '8%',
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -152,13 +151,13 @@ const CobrosTable = (
                                 <p> ID Cobro </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='left'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -166,13 +165,13 @@ const CobrosTable = (
                                 <p> Nombre </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='left'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -180,13 +179,13 @@ const CobrosTable = (
                                 <p> Identificación </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='left'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -194,13 +193,13 @@ const CobrosTable = (
                                 <p> Fecha Anticipo </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -208,13 +207,13 @@ const CobrosTable = (
                                 <p> Anticipo Activo </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -222,13 +221,13 @@ const CobrosTable = (
                                 <p> Cuota </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -236,13 +235,13 @@ const CobrosTable = (
                                 <p> Saldo </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -250,13 +249,13 @@ const CobrosTable = (
                                 <p> Valor Cuota  </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -264,13 +263,13 @@ const CobrosTable = (
                                 <p> Costo por Servicio </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 //size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -284,7 +283,7 @@ const CobrosTable = (
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -368,7 +367,7 @@ const CobrosTable = (
                                     <p> {row.anticipoActivo} </p>
                                 </TableCell>
                                 <TableCell
-                                    align='left'
+                                    align='right'
                                     size='medium'
                                     sx={{
                                         color: '#0E1726',
@@ -473,9 +472,10 @@ const CobrosTable = (
                         sx={{
                             position: 'sticky',
                             bottom: 0,
-                            backgroundColor: 'white',
+                            //backgroundColor: 'white',
                             zIndex: 2,
-                            width: '100%'
+                            width: '100%',
+                            backgroundColor: '#e9efff'
                         }}
                     >
                         <TableRow>
@@ -487,7 +487,7 @@ const CobrosTable = (
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     paddingLeft: 30,
                                     fontFamily: 'Maven Pro',

@@ -285,7 +285,7 @@ const PagosPendientes = () => {
                         color: '#0E1726',
                         fontSize: 13,
                         fontStyle: 'normal',
-                        fontWeight: 600,
+                        fontWeight: 400,
                         lineHeight: 'normal'
                     }}
                 >
@@ -318,7 +318,7 @@ const PagosPendientes = () => {
                             style={{
                                 fontSize: 13,
                                 fontStyle: 'normal',
-                                fontWeight: 600,
+                                fontWeight: 400,
                                 lineHeight: 'normal',
                                 fontFamily: 'Maven Pro',
                             }}
@@ -382,7 +382,7 @@ const PagosPendientes = () => {
 
                                     // color: '#888EA8',
                                     // fontSize: 13,
-                                    // fontWeight: 600,
+                                    // fontWeight: 400,
                                     // lineHeight: 'normal'
                                 }}
                             >
@@ -432,7 +432,7 @@ const PagosPendientes = () => {
                                         //fontFamily: Nunito;
                                         fontSize: 14,
                                         fontStyle: 'normal',
-                                        fontWeight: 600,
+                                        fontWeight: 400,
                                         lineHeight: 'normal',
                                         fontFamily: 'Maven Pro',
                                     }}
@@ -441,11 +441,8 @@ const PagosPendientes = () => {
                                     <label
                                         htmlFor="hrDefaultinput"
                                         style={{
-                                            //fontSize: 14,
-                                            //paddingTop: 20,
-
-
-                                            //marginBottom: 20,
+                                            fontSize: 14,
+                                            fontWeight: 400,
                                             marginTop: 50,
                                             fontFamily: 'Maven Pro',
                                             width: window.screen.width * 0.09,
@@ -458,10 +455,10 @@ const PagosPendientes = () => {
                                         htmlFor="hrDefaultinput"
                                         style={{
                                             paddingTop: 25,
-                                            //fontSize: 14,
-                                            //marginTop: window.screen.height * 0.01,
+                                            fontSize: 14,
+                                            fontWeight: 400,
                                             fontFamily: 'Maven Pro',
-                                            //width: window.screen.width * 0.083,
+                                            
                                         }}
                                     >
                                         Fecha de corte
@@ -470,11 +467,10 @@ const PagosPendientes = () => {
                                     <label
                                         htmlFor="hrDefaultinput"
                                         style={{
-                                            //fontSize: 14,
                                             paddingTop: 25,
-                                            //marginTop: window.screen.height * 0.01,
+                                            fontSize: 14,
+                                            fontWeight: 400,
                                             fontFamily: 'Maven Pro'
-                                            //width: window.screen.width * 0.083,
                                         }}
                                     >
                                         Fecha de pago
@@ -583,8 +579,7 @@ const PagosPendientes = () => {
                             //backgroundColor: 'red',
                             flexDirection: 'column',
                             display: 'flex',
-                            gap: window.screen.width * 0.005,
-
+                            gap: window.screen.width * 0.005
                         }}
                     >
                         <label
@@ -593,6 +588,7 @@ const PagosPendientes = () => {
                                 fontSize: 13,
                                 marginTop: window.screen.height * 0.005,
                                 fontFamily: 'Maven Pro',
+                                fontWeight: 400,
                                 //visibility: 'hidden'
                                 //display: 'none',
                                 //width: window.screen.width * 0.083,
@@ -607,6 +603,7 @@ const PagosPendientes = () => {
                                 fontSize: 13,
                                 marginTop: window.screen.height * 0.005,
                                 fontFamily: 'Maven Pro',
+                                fontWeight: 400,
                                 //width: window.screen.width * 0.083,
                             }}
                         >
@@ -619,6 +616,7 @@ const PagosPendientes = () => {
                                 fontSize: 13,
                                 marginTop: window.screen.height * 0.005,
                                 fontFamily: 'Maven Pro',
+                                fontWeight: 400,
                                 //width: window.screen.width * 0.083,
                             }}
                         >
@@ -644,7 +642,8 @@ const PagosPendientes = () => {
                                 fontSize: 13,
                                 marginTop: window.screen.height * 0.005,
                                 textAlign: 'right',
-                                fontFamily: 'Maven Pro'
+                                fontFamily: 'Maven Pro',
+                                fontWeight: 400,
                                 //visibility: 'hidden'
                                 //display: 'none',
                                 //width: window.screen.width * 0.083,
@@ -659,7 +658,8 @@ const PagosPendientes = () => {
                                 fontSize: 13,
                                 marginTop: window.screen.height * 0.005,
                                 textAlign: 'right',
-                                fontFamily: 'Maven Pro'
+                                fontFamily: 'Maven Pro',
+                                fontWeight: 400,
                                 //width: window.screen.width * 0.083,
                             }}
                         >
@@ -672,8 +672,8 @@ const PagosPendientes = () => {
                                 fontSize: 13,
                                 marginTop: window.screen.height * 0.005,
                                 textAlign: 'right',
-                                fontFamily: 'Maven Pro'
-                                //width: window.screen.width * 0.083,
+                                fontFamily: 'Maven Pro',
+                                fontWeight: 400
                             }}
                         >
                             $ 1357.98
@@ -682,6 +682,9 @@ const PagosPendientes = () => {
                     </div>
 
                 </div>
+
+
+
 
                 <div
                     style={{
@@ -692,112 +695,117 @@ const PagosPendientes = () => {
                     }}
                 >
 
-                    <form className="space-y-2">
-                        <div>
-                            <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro' }}>Monto</label>
-                            <input type="email" placeholder="" className="form-input" style={{ width: '45%', height: '5vh' }} />
+                    {estadoPagoNav === true &&
 
-                        </div>
-                        <div>
-                            <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro' }}>Método de Pago</label>
-                            <Select defaultValue={transacciones[0]} options={transacciones} isSearchable={false} />
-                        </div>
-                        <div>
-                            <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro' }}>Detalle de método de pago</label>
-                            <Select defaultValue={bancos[0]} options={bancos} isSearchable={false} />
-                        </div>
-                        <div>
-                            <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro' }}>Concepto</label>
-                            <input type="email" placeholder="Breve descripción" className="form-input" style={{ height: '5vh' }} />
-                        </div>
-                        <div>
-                            <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro' }}>Referencia</label>
-                            <input type="email" placeholder="Ingresar numero de referencia" className="form-input" style={{ height: '5vh' }} />
-                        </div>
+                        <form className="space-y-2">
+                            <div>
+                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Monto</label>
+                                <input type="email" placeholder="" className="form-input" style={{ width: '45%', height: '5vh' }} />
 
-                        <div>
-                            <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro' }}>Subir Comprobante</label>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    borderRadius: '8px',
-                                    //width: window.screen.width * 0.25,
-                                    border: '1px solid #E0E6ED',
-                                    overflow: 'hidden',
-                                    backgroundColor: '#FFFFFF',
-                                }}
-                            >
-                                {fileName ? (
-                                    <span
-                                        style={{
-                                            flex: 1,
-                                            paddingLeft: '8px',
-                                            fontSize: '12px',
-                                            color: '#555',
-                                            height: '100%',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        {fileName}
-                                    </span>
-                                ) : (
-                                    <span
-                                        style={{
+                            </div>
+                            <div>
+                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Método de Pago</label>
+                                <Select defaultValue={transacciones[0]} options={transacciones} isSearchable={false} />
+                            </div>
+                            <div>
+                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Detalle de método de pago</label>
+                                <Select defaultValue={bancos[0]} options={bancos} isSearchable={false} />
+                            </div>
+                            <div>
+                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Concepto</label>
+                                <input type="email" placeholder="Breve descripción" className="form-input" style={{ height: '5vh' }} />
+                            </div>
+                            <div>
+                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Referencia</label>
+                                <input type="email" placeholder="Ingresar numero de referencia" className="form-input" style={{ height: '5vh' }} />
+                            </div>
 
-                                            flex: 1,
-                                            fontSize: '14px',
-                                            color: '#6B7280',
-                                            padding: 10,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            fontFamily: 'Maven Pro'
-                                        }}
-                                    >
-                                        Adjuntar comprobante
-                                    </span>
-                                )}
-
-                                <label
+                            <div>
+                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Subir Comprobante</label>
+                                <div
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
-                                        justifyContent: 'center',
+                                        borderRadius: '8px',
+                                        //width: window.screen.width * 0.25,
+                                        border: '1px solid #E0E6ED',
+                                        overflow: 'hidden',
                                         backgroundColor: '#FFFFFF',
-                                        color: '#6B7280',
-                                        cursor: 'pointer',
-                                        //padding: '0 12px',
-                                        height: '100%',
-                                        fontFamily: 'Maven Pro'
-                                        //borderLeft: '1px solid #E0E6ED',
                                     }}
                                 >
-                                    <div
+                                    {fileName ? (
+                                        <span
+                                            style={{
+                                                flex: 1,
+                                                paddingLeft: '8px',
+                                                fontSize: '12px',
+                                                color: '#555',
+                                                height: '100%',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            {fileName}
+                                        </span>
+                                    ) : (
+                                        <span
+                                            style={{
+
+                                                flex: 1,
+                                                fontSize: '14px',
+                                                color: '#6B7280',
+                                                padding: 10,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                fontFamily: 'Maven Pro'
+                                            }}
+                                        >
+                                            Adjuntar comprobante
+                                        </span>
+                                    )}
+
+                                    <label
                                         style={{
-                                            //backgroundColor: 'blue',
-                                            marginTop: 7,
-                                            marginRight: 7
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            backgroundColor: '#FFFFFF',
+                                            color: '#6B7280',
+                                            cursor: 'pointer',
+                                            //padding: '0 12px',
+                                            height: '100%',
+                                            fontFamily: 'Maven Pro'
+                                            //borderLeft: '1px solid #E0E6ED',
                                         }}
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
-                                            <path d="M2 10C2 11.8856 2 12.8284 2.58579 13.4142C3.17157 14 4.11438 14 6 14H10C11.8856 14 12.8284 14 13.4142 13.4142C14 12.8284 14 11.8856 14 10" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M7.99967 10.6667V2M7.99967 2L10.6663 4.91667M7.99967 2L5.33301 4.91667" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </div>
+                                        <div
+                                            style={{
+                                                //backgroundColor: 'blue',
+                                                marginTop: 7,
+                                                marginRight: 7
+                                            }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
+                                                <path d="M2 10C2 11.8856 2 12.8284 2.58579 13.4142C3.17157 14 4.11438 14 6 14H10C11.8856 14 12.8284 14 13.4142 13.4142C14 12.8284 14 11.8856 14 10" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M7.99967 10.6667V2M7.99967 2L10.6663 4.91667M7.99967 2L5.33301 4.91667" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
 
-                                    <input
-                                        type="file"
-                                        accept=".xlsx,.csv"
-                                        style={{ display: 'none' }}
-                                        onChange={handleFileChange}
-                                    />
-                                </label>
+                                        <input
+                                            type="file"
+                                            accept=".xlsx,.csv"
+                                            style={{ display: 'none' }}
+                                            onChange={handleFileChange}
+                                        />
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
 
-                    </form>
+                        </form>
+                    }
+
+
 
                 </div>
 
@@ -813,112 +821,78 @@ const PagosPendientes = () => {
                     }}
                 >
 
-                    {estadoPagoNav ?
 
-                        <>
-                            <button
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: '#805DCA',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    gap: '1vw',
-                                    borderRadius: 4,
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    color: 'white',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Descargar PDF
+                    <button
+                        style={{
+                            padding: 10,
+                            backgroundColor: 'green',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1vw',
+                            borderRadius: 4,
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            color: 'white',
+                            fontFamily: 'Maven Pro'
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H13.3333L17.5 6.66667V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M14.1673 17.5002V10.8335H5.83398V17.5002" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M5.83398 2.5V6.66667H12.5007" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Verificar Pago
 
-                            </button>
+                    </button>
 
-                            <button
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: '#805DCA',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    gap: '1vw',
-                                    borderRadius: 4,
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    color: 'white',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Descargar XLSX
+                    <button
+                        style={{
+                            padding: 10,
+                            backgroundColor: '#bf5cf3',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1vw',
+                            borderRadius: 4,
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            color: 'white',
+                            fontFamily: 'Maven Pro'
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Descargar PDF
 
-                            </button>
-                        </>
+                    </button>
 
+                    <button
+                        style={{
+                            padding: 10,
+                            backgroundColor: '#bf5cf3',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '1vw',
+                            borderRadius: 4,
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                            color: 'white',
+                            fontFamily: 'Maven Pro'
+                        }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Descargar XLSX
 
-
-
-                        :
-                        <>
-                            <button
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: 'green',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    gap: '1vw',
-                                    borderRadius: 4,
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    color: 'white',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H13.3333L17.5 6.66667V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14.1673 17.5002V10.8335H5.83398V17.5002" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5.83398 2.5V6.66667H12.5007" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Verificar Pago
-
-                            </button>
-                            <button
-                                style={{
-                                    padding: 10,
-                                    backgroundColor: '#805DCA',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    gap: '1vw',
-                                    borderRadius: 4,
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',
-                                    color: 'white'
-                                }}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                Descargar PDF
-
-                            </button>
-
-                        </>
-
-                    }
+                    </button>
 
                 </div>
 

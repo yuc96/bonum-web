@@ -1,9 +1,12 @@
 
 import { Dialog, Transition } from '@headlessui/react';
-import { useState, Fragment, useEffect } from 'react';
+import { useState, Fragment, useEffect, useContext } from 'react';
+import * as XLSX from 'xlsx';
 //import 'file-upload-with-preview/dist/file-upload-with-preview.min.css';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
 import IconXCircle from '../../../components/Icon/IconXCircle';
+import { create_empleados_from_excel } from '../../../server/empleados/EmpleadosApi';
+import { AccionContext } from '../../../contexts/AccionesContext';
 
 
 const CargarEmpleadosModal = (
@@ -11,24 +14,57 @@ const CargarEmpleadosModal = (
         openModalNew,
         setOpenModalNew,
     }
-    :
-    {
-        openModalNew: boolean;
-        setOpenModalNew: (isOpen: boolean) => void;
-    }
+        :
+        {
+            openModalNew: boolean;
+            setOpenModalNew: (isOpen: boolean) => void;
+        }
 ) => {
 
-    const [fileName, setFileName] = useState<string | null>(null); // Estado para el nombre del archivo
+    const [fileName, setFileName] = useState<string | null>(null); 
+    const [datosEmpleados, setDatosEmpleados] = useState<any[]>([]);
 
-    // Función para manejar el cambio de archivo
+    const { accionDatos } = useContext(AccionContext);
+
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
         const file = event.target.files?.[0];
+        
         if (file) {
+
             setFileName(file.name);
-            console.log(fileName)
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+
+                const data = new Uint8Array(e.target?.result as ArrayBuffer);
+                const workbook = XLSX.read(data, { type: 'array' });
+
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+
+                const jsonData = XLSX.utils.sheet_to_json(sheet);
+                setDatosEmpleados(jsonData);
+             
+            };
+
+            reader.readAsArrayBuffer(file);
         }
     };
-   
+
+    const handleUploadData = (data: any) => {
+
+        create_empleados_from_excel(data)
+            .then((res) => {
+                accionDatos();
+                setOpenModalNew(false);
+            })
+            .catch((err) => {
+                console.log("Error en API: ", err)
+            })
+
+    }
+
     const [images, setImages] = useState<any>([]);
     const maxNumber = 69;
 
@@ -89,10 +125,11 @@ const CargarEmpleadosModal = (
                                     style={{
                                         paddingTop: 10,
                                         paddingLeft: 15,
+                                        marginBottom: 10,
                                         //fontFamily: 'Nunito',
                                         fontSize: 16,
                                         fontStyle: 'normal',
-                                        fontWeight: 600,
+                                        fontWeight: 400,
                                         lineHeight: 'normal',
                                         fontFamily: 'Maven Pro',
                                         color: '#BF5CF3'
@@ -108,7 +145,8 @@ const CargarEmpleadosModal = (
                                         //backgroundColor: 'blue',
                                         alignItems: 'center',
                                         borderRadius: '8px',
-                                        width: window.screen.width * 0.378,
+                                        width: '511.333px',
+                                        height: '25.333px',
                                         marginLeft: window.screen.width * 0.007,
 
                                     }}
@@ -116,7 +154,7 @@ const CargarEmpleadosModal = (
 
 
                                     {fileName ? (
-                                       
+
                                         <span
                                             style={{
                                                 flex: 1,
@@ -133,7 +171,7 @@ const CargarEmpleadosModal = (
                                         >
                                             {fileName}
                                         </span>
-                                    
+
                                     ) : (
                                         <span
                                             style={{
@@ -164,12 +202,16 @@ const CargarEmpleadosModal = (
                                             borderTopRightRadius: '5px',
                                             borderBottomRightRadius: '5px',
                                             marginTop: window.screen.height * 0.0058,
-                                            height: window.screen.height * 0.035,
-                                            width: window.screen.width * 0.1,
+                                            width: '115px',
+                                            height: '24px',
+                                            flexShrink: 0,
+                                            //height: window.screen.height * 0.035,
+                                            //width: window.screen.width * 0.1,
                                             fontStyle: 'normal',
-                                            fontWeight: '600',
+                                            fontWeight: '400',
                                             lineHeight: 'normal',
                                             fontFamily: 'Maven Pro',
+                                            marginRight: 10
                                         }}
                                     >
                                         Subir Archivo
@@ -230,7 +272,9 @@ const CargarEmpleadosModal = (
                             >
 
                                 <button
-                                    onClick={() => setOpenModalNew(false)}
+                                    onClick={() => {
+                                        handleUploadData(datosEmpleados);
+                                    }}
                                     type="button"
                                     style={{
                                         width: window.screen.width * 0.067,
@@ -252,7 +296,7 @@ const CargarEmpleadosModal = (
                 </div>
             </Dialog>
 
-                                    
+
 
         </Transition>
 

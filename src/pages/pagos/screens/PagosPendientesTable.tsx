@@ -69,7 +69,12 @@ const PagosPendientesTable = ({
         >
             <TableContainer component={Paper}>
                 <Table size="small">
-                    <TableHead>
+                    <TableHead
+                        sx={{
+                            backgroundColor: '#e9efff',
+                            flexShrink: 0,
+                        }}
+                    >
                         <TableRow>
                             <TableCell
                                 align='center'
@@ -79,7 +84,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal',
                                     //backgroundColor: 'red'
@@ -94,7 +99,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -108,7 +113,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -124,7 +129,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -138,7 +143,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -152,7 +157,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -166,12 +171,12 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
                             >
-                                <p> Tasa Única </p>
+                                <p> Costo por Servicio </p>
                             </TableCell>
                             <TableCell
                                 align='center'
@@ -180,7 +185,7 @@ const PagosPendientesTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -207,7 +212,7 @@ const PagosPendientesTable = ({
                                         color: '#BF5CF3',
                                         fontSize: 13,
                                         fontStyle: 'normal',
-                                        fontWeight: '600',
+                                        fontWeight: '400',
                                         fontFamily: 'Maven Pro',
                                         lineHeight: 'normal'
                                     }}
@@ -251,6 +256,7 @@ const PagosPendientesTable = ({
                                         color: '#0E1726',
                                         fontSize: 13,
                                         fontStyle: 'normal',
+                                        fontFamily: 'Maven Pro',
                                         fontWeight: 400,
                                         lineHeight: 'normal'
                                     }}

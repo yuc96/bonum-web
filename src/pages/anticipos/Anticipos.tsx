@@ -1,4 +1,4 @@
-// import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useEffect, useState } from "react";
 import IconSearch from "../../components/Icon/IconSearch";
 import IconXCircle from "../../components/Icon/IconXCircle";
@@ -97,7 +97,7 @@ const Anticipos = () => {
     const [recordsData, setRecordsData] = useState(initialRecords);
     const [search, setSearch] = useState('');
     const [searchData, setSearchData] = useState(false);
-    // const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'idSolicitud', direction: 'asc' });
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'idSolicitud', direction: 'asc' });
 
     const dispatch = useDispatch();
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
@@ -129,11 +129,11 @@ const Anticipos = () => {
         });
     }, [search]);
 
-    // useEffect(() => {
-    //     const data = sortBy(initialRecords, sortStatus.columnAccessor);
-    //     setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
-    //     setPage(1);
-    // }, [sortStatus]);
+    useEffect(() => {
+        const data = sortBy(initialRecords, sortStatus.columnAccessor);
+        setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
+        setPage(1);
+    }, [sortStatus]);
 
     const [hideCols, setHideCols] = useState<any>(['age', 'dob', 'isActive']);
 
@@ -169,12 +169,13 @@ const Anticipos = () => {
                     flexDirection: 'row',
                     width: '100%',
                     //padding: 10,
-                    paddingTop: 15,
-                    paddingLeft: 15,
+                    paddingTop: 38,
+                    paddingLeft: 39,
+                    paddingBottom: 24,
                     color: '#0E1726',
                     fontSize: 13,
                     fontStyle: 'normal',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     lineHeight: 'normal'
                 }}
             >
@@ -197,8 +198,9 @@ const Anticipos = () => {
             <div
                 style={{
                     backgroundColor: 'white',
-                    margin: window.screen.width * 0.007,
-                    borderRadius: 5
+                    borderRadius: 5,
+                    marginLeft: 24,
+                    marginRight: 24
                 }}
             >
 
@@ -207,9 +209,8 @@ const Anticipos = () => {
                         //backgroundColor: 'green',
                         display: 'flex',
                         flexDirection: 'row',
-                        paddingTop: 15,
-                        paddingLeft: 15,
-                        paddingRight: 15
+                        paddingTop: '26px',
+                        paddingLeft: '46px'
                     }}
                 >
 
@@ -218,14 +219,15 @@ const Anticipos = () => {
                             //backgroundColor: 'pink',
                             display: 'flex',
                             flexDirection: 'row',
-                            gap: '0.5vw',
+                            gap: '13px',
+
                         }}
                     >
 
                         <button
                             style={{
-                                width: '101px',
-                                height: window.screen.height * 0.05,
+                                width: '70px',
+                                height: '38px',
                                 backgroundColor: '#bf5cf3',
                                 borderRadius: 5,
                                 border: 'none',
@@ -240,7 +242,7 @@ const Anticipos = () => {
                                 gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
-                                fontWeight: 600,
+                                fontWeight: 400,
                                 lineHeight: 'normal',
                                 fontFamily: 'Maven Pro'
                             }}
@@ -250,8 +252,8 @@ const Anticipos = () => {
 
                         <button
                             style={{
-                                width: '101px',
-                                height: window.screen.height * 0.05,
+                                width: '70px',
+                                height: '38px',
                                 backgroundColor: 'white',
                                 borderRadius: 5,
                                 border: 'none',
@@ -266,7 +268,7 @@ const Anticipos = () => {
                                 gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
-                                fontWeight: 600,
+                                fontWeight: 400,
                                 lineHeight: 'normal',
                                 fontFamily: 'Maven Pro'
                             }}
@@ -278,8 +280,8 @@ const Anticipos = () => {
 
                         <button
                             style={{
-                                width: '101px',
-                                height: window.screen.height * 0.05,
+                                width: '70px',
+                                height: '38px',
                                 backgroundColor: 'white',
                                 borderRadius: 5,
                                 border: 'none',
@@ -294,7 +296,7 @@ const Anticipos = () => {
                                 gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
-                                fontWeight: 600,
+                                fontWeight: 400,
                                 lineHeight: 'normal',
                                 fontFamily: 'Maven Pro'
                             }}
@@ -310,8 +312,8 @@ const Anticipos = () => {
 
                         <button
                             style={{
-                                width: '101px',
-                                height: window.screen.height * 0.05,
+                                width: '100px',
+                                height: '38px',
                                 backgroundColor: 'white',
                                 borderRadius: 5,
                                 border: 'none',
@@ -326,7 +328,7 @@ const Anticipos = () => {
                                 gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
-                                fontWeight: 600,
+                                fontWeight: 400,
                                 lineHeight: 'normal',
                                 fontFamily: 'Maven Pro'
                             }}
@@ -347,8 +349,7 @@ const Anticipos = () => {
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
-                            gap: '5px',
-                            //backgroundColor: 'blue',
+                            gap: 5,
                             width: '100%',
                             justifyContent: 'flex-end',
                             justifyItems: 'flex-end',
@@ -356,13 +357,9 @@ const Anticipos = () => {
                             alignItems: 'flex-end'
                         }}
                     >
-                        
+
                         <div
                             className="dropdown"
-                            style={{
-                                //backgroundColor: 'pink',
-                                //paddingBottom: 1
-                            }}
                         >
 
                             <LocalizationProvider
@@ -380,10 +377,12 @@ const Anticipos = () => {
                                                 readOnly: true,
                                             },
                                             sx: {
-                                                width: window.screen.width * 0.1,
+                                                width: '154px',
                                                 '& .MuiInputBase-root': {
-                                                    height: window.screen.height * 0.05,
-                                                    marginTop: window.screen.height * 0.0005,
+                                                    width: '154px',
+                                                    height: '42px',
+                                                    flexShrink: 0,
+                                                    // marginTop: window.screen.height * 0.0005,
                                                     fontSize: 14,
                                                     fontStyle: 'normal',
                                                     fontWeight: 300,
@@ -411,11 +410,11 @@ const Anticipos = () => {
                                                         //color: '#888EA8',
                                                         fontSize: 14,
                                                         fontStyle: 'normal',
-                                                        fontWeight: 600,
+                                                        fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         // fontSize: 13,
                                                         // fontFamily: 'serif',
-                                                        // fontWeight: 600,
+                                                        // fontWeight: 400,
                                                         color: '#0E1726',
                                                         opacity: 1
                                                     },
@@ -436,28 +435,26 @@ const Anticipos = () => {
                             <div
                                 className="relative flex items-center"
                                 style={{
-                                    width: 219,
-                                    height: 38,
+                                    width: '218px',
+                                    height: '42px',
+                                    marginRight: 15
                                 }}
                             >
 
                                 <input
                                     type="text"
-                                    className="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-1.5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
+                                    className="!flex items-center border border-white-light dark:border-[#253b5c] rounded-md px-4 py-1.5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
                                     placeholder="Buscar..."
                                     style={{
-                                        //backgroundColor: 'red',
-                                        //marginTop: window.screen.height * 0.007,
-                                        width: 219,
-                                        height: 38,
-                                        color: '#888EA8',
-                                        //fontFamily: Nunito;
-                                        fontSize: 14,
-                                        fontStyle: 'normal',
-                                        fontWeight: 600,
-                                        lineHeight: 'normal',
-                                        outline: 'none',
-                                        fontFamily: 'Maven Pro'
+                                        fontFamily: 'Maven Pro',
+                                        fontWeight: 400,
+                                        borderRadius: 6,
+                                        border: '1px solid #E0E6ED',
+                                        background: '#FFF',
+                                        width: '218px',
+                                        height: '42px',
+                                        flexShrink: 0,
+                                        outline: 'none'
                                     }}
                                 />
 
@@ -469,6 +466,7 @@ const Anticipos = () => {
                                 </div>
 
                             </div>
+
                         </form>
 
                     </div>
@@ -483,7 +481,7 @@ const Anticipos = () => {
                     solicitudesData={solicitudesData}
                     search={search}
                     searchData={searchData}
-                    // sortStatus={sortStatus}
+                    sortStatus={sortStatus}
                     hideCols={hideCols}
                     setIsChecked={setIsChecked}
                     setOpenModal={setOpenModal}
@@ -491,7 +489,7 @@ const Anticipos = () => {
                     setPageSize={setPageSize}
                     setSearch={setSearch}
                     setSearchData={setSearchData}
-                    // setSortStatus={setSortStatus}
+                    setSortStatus={setSortStatus}
                     setHideCols={setHideCols}
                     PAGE_SIZES={PAGE_SIZES}
                     setStateModal={setStateModal}

@@ -52,6 +52,7 @@ import IconPencilPaper from '../Icon/IconPencilPaper';
 import IconPencil from '../Icon/IconPencil';
 import IconClipboardText from '../Icon/IconClipboardText';
 import IconDollarSignCircle from '../Icon/IconDollarSignCircle';
+import { blob } from 'stream/consumers';
 
 const Sidebar = () => {
     const [currentMenu, setCurrentMenu] = useState<string>('');
@@ -100,17 +101,10 @@ const Sidebar = () => {
 
                     <div
                         style={{
-                            //backgroundColor: 'green',
-                            marginBottom: 20,
-                            alignContent: 'center',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            justifyItems: 'center',
                             display: 'flex',
                             flexDirection: 'row',
-                            padding: 4,
-                            //height: window.screen.height * 0.1,
-                            gap: window.screen.width * 0.01
+                            paddingTop: 6,
+                            paddingLeft: 17
                         }}
                     >
 
@@ -120,27 +114,35 @@ const Sidebar = () => {
                             style={{
                                 width: '145px',
                                 height: '41px',
+                                flexShrink: 0,
                                 objectFit: 'cover'
                             }}
                         />
 
                         <button
                             style={{
-                                color: 'black',
-                                marginTop: window.screen.height * 0.01,
+                                width: '24px',
+                                height: '22.761px',
+                                flexShrink: 0,
+                                paddingLeft: 57,
+                                paddingTop: 7.07,
+                                paddingRight: 20
                             }}
                             type="button"
                             onClick={() => dispatch(toggleSidebar())}
                         >
-                            <IconCaretsDown className="m-auto rotate-90" />
-
+                            {/* <IconCaretsDown className="m-auto rotate-90" /> */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="23" viewBox="0 0 24 23" fill="none">
+                                <path d="M11 16.1936L6 11.4517L11 6.70972" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M18 16.1936L13 11.4517L18 6.70972" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </button>
 
                     </div>
 
                     <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
 
-                        <ul className="relative font-semibold space-y-0.5 p-4 py-0">
+                        <ul className="relative font-semibold space-y-0.5 p-4 py-0" style={{paddingTop: 24}}>
 
                             <li className="nav-item">
                                 <ul>

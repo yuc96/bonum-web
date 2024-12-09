@@ -96,20 +96,19 @@ const Productos = () => {
 
     return (
 
-        <div>
+        <>
             <div
                 style={{
-                    //backgroundColor: 'cyan',
+                    // backgroundColor: 'cyan',
                     //fontFamily: Nunito;
                     display: 'flex',
                     flexDirection: 'row',
                     width: '100%',
-                    paddingTop: 15,
                     //paddingBottom: 15,
                     color: '#0E1726',
-                    fontSize: 13,
+                    fontSize: 14,
                     fontStyle: 'normal',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     lineHeight: 'normal',
                     fontFamily: 'Maven Pro'
                 }}
@@ -122,7 +121,10 @@ const Productos = () => {
                         justifyItems: 'center',
                         alignContent: 'center',
                         textAlign: 'center',
-                        fontFamily: 'Maven Pro'
+                        fontFamily: 'Maven Pro',
+                        paddingTop: 38,
+                        paddingBottom: 31,
+                        paddingLeft: 39
                         //fontFamily: Nunito,
 
                     }}
@@ -135,8 +137,9 @@ const Productos = () => {
             <div
                 style={{
                     backgroundColor: 'white',
-                    margin: window.screen.width * 0.007,
                     borderRadius: 5,
+                    marginLeft: 24,
+                    marginRight: 24
                     // borderTopLeftRadius: 10,
                     // borderTopRightRadius: 10
                 }}
@@ -165,7 +168,6 @@ const Productos = () => {
 
                         <div
                             style={{
-                                //backgroundColor: 'yellow',
                                 width: '100%',
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -174,11 +176,9 @@ const Productos = () => {
                         >
                             <button
                                 style={{
-                                    marginLeft: '20px',
-                                    marginTop: 5,
-                                    marginBottom: 5,
-                                    width: '161px',
-                                    height: window.screen.height * 0.05,
+                                    width: '156px',
+                                    height: '40px',
+                                    flexShrink: 0,
                                     backgroundColor: '#bf5cf3',
                                     borderRadius: 5,
                                     border: 'none',
@@ -193,9 +193,11 @@ const Productos = () => {
                                     gap: '0.5vw',
                                     fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    fontFamily: 'Maven Pro',
+                                    paddingBottom: 3,
+                                    marginLeft: 15
                                 }}
                             >
                                 <p>
@@ -203,143 +205,49 @@ const Productos = () => {
                                 </p>
                             </button>
 
-                            {/*
-                            <button
-                                style={{
-                                    marginTop: 5,
-                                    marginBottom: 5,
-                                    width: '111px',
-                                    height: window.screen.height * 0.05,
-                                    backgroundColor: 'white',
-                                    borderRadius: 5,
-                                    border: 'none',
-                                    outline: 'none',
-                                    color: 'black',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    justifyItems: 'center',
-                                    alignContent: 'center',
-                                    alignItems: 'center',
-                                    gap: '0.5vw',
-                                    fontSize: 14,
-                                    fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <p>
-                                    Adelantos
-                                </p>
-                            </button>
-
-                            <button
-                                style={{
-                                    marginTop: 5,
-                                    marginBottom: 5,
-                                    width: '111px',
-                                    height: window.screen.height * 0.05,
-                                    backgroundColor: 'white',
-                                    borderRadius: 5,
-                                    border: 'none',
-                                    outline: 'none',
-                                    color: 'black',
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'center',
-                                    justifyItems: 'center',
-                                    alignContent: 'center',
-                                    alignItems: 'center',
-                                    gap: '0.5vw',
-                                    fontSize: 14,
-                                    fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <p
-                                    style={{
-                                        color: 'black'
-                                    }}
-                                >
-                                    Tarjetas
-                                </p>
-                            </button>
-                            */}
-
                         </div>
 
-                        <div
-                            style={{
-                                paddingRight: 15,
-                                //backgroundColor: 'cyan',
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'flex-end',
-                                gap: '5px',
-                                width: '100%'
-                            }}
+                        <form
+                            className={`${searchData && '!block'} sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden`}
+                            onSubmit={() => setSearchData(false)}
                         >
-
-                            <form
-                                className={`${searchData && '!block'} sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden`}
-                                onSubmit={() => setSearchData(false)}
+                            <div
+                                className="relative flex items-center"
+                                style={{
+                                    width: '218px',
+                                    height: '42px',
+                                    marginRight: 15
+                                }}
                             >
+
+                                <input
+                                    type="text"
+                                    className="!flex items-center border border-white-light dark:border-[#253b5c] rounded-md px-4 py-1.5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
+                                    placeholder="Buscar..."
+                                    style={{
+                                        fontFamily: 'Maven Pro',
+                                        fontWeight: 400,
+                                        borderRadius: 6,
+                                        border: '1px solid #E0E6ED',
+                                        background: '#FFF',
+                                        width: '218px',
+                                        height: '42px',
+                                        flexShrink: 0,
+                                        outline: 'none'
+                                    }}
+                                />
 
                                 <div
-                                    className="relative flex items-center"
-                                    style={{
-                                        width: 219,
-                                        height: 38,
-                                    }}
+                                    className="absolute right-2 flex items-center justify-center cursor-pointer"
+                                    onClick={() => { }}
                                 >
-
-                                    <input
-                                        type="text"
-                                        className="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-1.5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
-                                        placeholder="Buscar..."
-                                        style={{
-                                            //backgroundColor: 'red',
-                                            marginTop: window.screen.height * 0.013,
-                                            width: 219,
-                                            height: 38,
-                                            color: '#888EA8',
-                                            //fontFamily: Nunito;
-                                            fontSize: 14,
-                                            fontStyle: 'normal',
-                                            fontWeight: 600,
-                                            lineHeight: 'normal',
-                                            outline: 'none',
-                                            fontFamily: 'Maven Pro'
-                                        }}
-                                    />
-
-                                    <div
-                                        className="absolute right-2 flex items-center justify-center cursor-pointer"
-                                        onClick={() => { }}
-                                        style={{
-                                            marginTop: 8,
-                                        }}
-                                    >
-                                        <IconSearch className="w-5 h-5 text-gray-500" />
-                                    </div>
-
+                                    <IconSearch className="w-5 h-5 text-gray-500" />
                                 </div>
 
-                            </form>
+                            </div>
 
-                            <button
-                                type="button"
-                                onClick={() => setSearchData(!searchData)}
-                                className="search_btn sm:hidden p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:bg-white-light/90 dark:hover:bg-dark/60"
-                            >
-                                <IconSearch className="w-4.5 h-4.5 mx-auto dark:text-[#d0d2d6]" />
-                            </button>
+                        </form>
 
-
-                        </div>
 
                     </div>
 
@@ -363,7 +271,7 @@ const Productos = () => {
 
 
             </div>
-        </div>
+        </>
     )
 
 }
