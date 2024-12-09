@@ -28,7 +28,7 @@ const AnticiposTable = ({
     solicitudesData,
     search,
     searchData,
-    // sortStatus,
+    sortStatus,
     hideCols,
     setIsChecked,
     setOpenModal,
@@ -36,7 +36,7 @@ const AnticiposTable = ({
     setPageSize,
     setSearch,
     setSearchData,
-    // setSortStatus,
+    setSortStatus,
     setHideCols,
     PAGE_SIZES,
     setStateModal
@@ -49,7 +49,7 @@ const AnticiposTable = ({
     solicitudesData: any[];
     search: string;
     searchData: boolean;
-    // sortStatus: DataTableSortStatus;
+    sortStatus: DataTableSortStatus;
     hideCols: any;
     setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,7 +57,7 @@ const AnticiposTable = ({
     setPageSize: React.Dispatch<React.SetStateAction<number>>;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     setSearchData: React.Dispatch<React.SetStateAction<boolean>>;
-    // setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
+    setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
     setHideCols: React.Dispatch<React.SetStateAction<any>>;
     PAGE_SIZES: any[],
     setStateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,22 +67,22 @@ const AnticiposTable = ({
         <div
             className="datatables"
             style={{
-                margin: '1.5vh'
+                marginTop: 12,
             }}
         >
-            <TableContainer >
-                <Table sx={{ minWidth: 500 }} size="small">
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 500 }} size="medium">
                     <TableHead sx={{  backgroundColor: '#e9efff' }}>
                         <TableRow>
                             <TableCell
-                                align='center'
+                                align='left'
                                 //size='small'
                                 sx={{
-                                    width: '12%',
+                                   
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -90,13 +90,13 @@ const AnticiposTable = ({
                                 <p> ID Adelanto </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='left'
                                 size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -104,13 +104,13 @@ const AnticiposTable = ({
                                 <p> Nombre </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -118,13 +118,41 @@ const AnticiposTable = ({
                                 <p> Sueldo </p>
                             </TableCell>
                             <TableCell
-                                align='center'
+                                align='right'
                                 size='small'
                                 sx={{
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
+                                }}
+                            >
+                                <p> Monto Solicitado </p>
+                            </TableCell>
+                            <TableCell
+                                align='left'
+                                size='small'
+                                sx={{
+                                    color: '#0E1726',
+                                    fontSize: 13,
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
+                                }}
+                            >
+                                <p> Plazo </p>
+                            </TableCell>
+                            <TableCell
+                                align='left'
+                                size='small'
+                                sx={{
+                                    color: '#0E1726',
+                                    fontSize: 13,
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -138,35 +166,7 @@ const AnticiposTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <p> Monto Solicitado </p>
-                            </TableCell>
-                            <TableCell
-                                align='center'
-                                size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <p> Plazo </p>
-                            </TableCell>
-                            <TableCell
-                                align='center'
-                                size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -180,7 +180,7 @@ const AnticiposTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -236,20 +236,6 @@ const AnticiposTable = ({
                                     <p> {row.sueldo} </p>
                                 </TableCell>
                                 <TableCell
-                                    align='left'
-                                    size='medium'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        fontFamily: 'Maven Pro'
-                                    }}
-                                >
-                                    <p> {row.antiguedad} </p>
-                                </TableCell>
-                                <TableCell
                                     align='right'
                                     size='medium'
                                     sx={{
@@ -278,6 +264,20 @@ const AnticiposTable = ({
                                     <p> {row.plazo} </p>
                                 </TableCell>
                                 <TableCell
+                                    align='left'
+                                    size='medium'
+                                    sx={{
+                                        color: '#0E1726',
+                                        fontSize: 13,
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        lineHeight: 'normal',
+                                        fontFamily: 'Maven Pro'
+                                    }}
+                                >
+                                    <p> {row.antiguedad} </p>
+                                </TableCell>
+                                <TableCell
                                     align='center'
                                     size='medium'
                                     sx={{
@@ -304,9 +304,8 @@ const AnticiposTable = ({
                                             fontStyle: 'normal',
                                             fontWeight: 400,
                                             lineHeight: 'normal',
-                                            textAlign: 'left',
-                                            paddingLeft: 10,
-                                            fontFamily: 'Maven Pro'
+                                            textAlign: 'center',
+                                            fontFamily: 'Maven Pro',
                                         }}
                                     >
                                         {row.estado ? 'Aprobado' : 'Rechazado'}
@@ -344,51 +343,52 @@ const AnticiposTable = ({
             </TableContainer>
             <div
                 style={{
+                    backgroundColor: 'white',
                     display: 'flex',
-                    marginTop: '1rem',
                     alignItems: 'center',
-                    //backgroundColor: 'blue',
                     width: '100%',
-                    gap: '2px'
+                    gap: '2px',
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    paddingBottom: 20
                 }}
             >
 
                 <div
-                    style={{
-                        //width: '25px',
-                        width: '25%',
-                        //width: window.screen.width * 0.15,
-                        marginLeft: '1vw',
-                        //backgroundColor: 'yellow'
-                    }}
+                    style={{ width: '240px', marginRight: 9 }}
                 >
                     <Typography
                         style={{
-                            fontWeight: 'initial',
+                            color: '#3B3F5C',
+                            fontFamily: 'Nunito',
                             fontSize: 14,
-                            fontFamily: 'Maven Pro'
+                            fontStyle: 'normal',
+                            fontWeight: 400,
+                            lineHeight: 'normal'
                         }}
                     >
-                        Mostrando {solicitudesData!.length} de {initialRecords!.length} registros
+                        Mostrando {solicitudesData!.length} de {solicitudesData!.length} registros
                     </Typography>
                 </div>
 
                 <div
                     style={{
                         display: 'flex',
-                        //marginLeft: window.screen.width * 0.01,
-                        alignItems: 'center',
-                        //backgroundColor: 'green'
+                        alignItems: 'center'
                     }}
                 >
                     <select
                         value={pageSize!}
                         onChange={(e) => setPageSize(Number(e.target.value))}
                         style={{
-                            padding: '5px',
-                            borderRadius: '4px',
-                            borderWidth: '0.5px',
-                            borderColor: 'gray'
+                            width: '70px',
+                            height: '34px',
+                            flexShrink: 0,
+                            borderRadius: 6,
+                            border: '1px solid #E0E6ED',
+                            background: '#FFFFF',
+                            paddingLeft: 13,
+                            outline: 'none'
                         }}
                     >
                         {PAGE_SIZES!.map((size) => (
@@ -399,25 +399,23 @@ const AnticiposTable = ({
                     </select>
                 </div>
 
-
                 <div
                     style={{
                         width: '100%',
-                        //backgroundColor: 'cyan',
                         display: 'flex',
                         alignItems: 'right',
                         justifyContent: 'right',
-                        gap: '10px',
-                        fontFamily: 'Maven Pro'
-                        //marginLeft: window.screen.width * 0.37
+                        gap: '5px',
+                        paddingRight: 63
                     }}
                 >
                     <button
                         disabled={page === 1}
                         onClick={() => setPage(page - 1)}
                         style={{
-                            width: '40px',
-                            height: '40px',
+                            width: '36px',
+                            height: '36px',
+                            flexShrink: 0,
                             border: '1px solid #ccc',
                             borderRadius: '50%',
                             backgroundColor: page === 1 ? '#f5f5f5' : '#ffffff',
@@ -426,19 +424,21 @@ const AnticiposTable = ({
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontFamily: 'Maven Pro'
                         }}
                     >
-                        {'<'}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M10.9375 11.375L6.5625 7L10.9375 2.625M7.4375 11.375L3.0625 7L7.4375 2.625" stroke="#3B3F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </button>
 
-                    {[...Array(Math.ceil(initialRecords.length / pageSize)).keys()].map((_, index) => (
+                    {[...Array(Math.ceil(solicitudesData!.length / pageSize)).keys()].map((_, index) => (
                         <button
                             key={index}
                             onClick={() => setPage(index + 1)}
                             style={{
-                                width: '40px',
-                                height: '40px',
+                                width: '36px',
+                                height: '36px',
+                                flexShrink: 0,
                                 border: '1px solid #ccc',
                                 borderRadius: '50%',
                                 backgroundColor: page === index + 1 ? '#BF5CF3' : '#f5f5f5',
@@ -447,8 +447,11 @@ const AnticiposTable = ({
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontWeight: page === index + 1 ? 'bold' : 'normal',
-                                fontFamily: 'Maven Pro'
+                                fontWeight: page === index + 1 ? 600 : 300,
+                                fontFamily: 'Nunito',
+                                fontSize: 14,
+                                fontStyle: 'normal',
+                                lineHeight: 'normal',
                             }}
                         >
                             {index + 1}
@@ -456,23 +459,24 @@ const AnticiposTable = ({
                     ))}
 
                     <button
-                        disabled={page * pageSize >= initialRecords.length}
+                        disabled={page * pageSize >= initialRecords!.length}
                         onClick={() => setPage(page + 1)}
                         style={{
-                            width: '40px',
-                            height: '40px',
+                            width: '36px',
+                            height: '36px',
                             border: '1px solid #ccc',
                             borderRadius: '50%',
-                            backgroundColor: page * pageSize >= initialRecords.length ? '#f5f5f5' : '#ffffff',
-                            color: page * pageSize >= initialRecords.length ? '#ccc' : '#000',
-                            cursor: page * pageSize >= initialRecords.length ? 'not-allowed' : 'pointer',
+                            backgroundColor: page * pageSize >= initialRecords!.length ? '#f5f5f5' : '#ffffff',
+                            color: page * pageSize >= initialRecords!.length ? '#ccc' : '#000',
+                            cursor: page * pageSize >= initialRecords!.length ? 'not-allowed' : 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            fontFamily: 'Maven Pro'
                         }}
                     >
-                        {'>'}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3.0625 11.375L7.4375 7L3.0625 2.625M6.5625 11.375L10.9375 7L6.5625 2.625" stroke="#3B3F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </button>
                 </div>
             </div>

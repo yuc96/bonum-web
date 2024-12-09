@@ -126,7 +126,7 @@ const HistorialEmpleado = () => {
                     color: '#0E1726',
                     fontSize: 13,
                     fontStyle: 'normal',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     lineHeight: 'normal'
                 }}
             >
@@ -184,7 +184,7 @@ const HistorialEmpleado = () => {
                                     //fontFamily: Nunito,
                                     fontSize: 16,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -242,7 +242,7 @@ const HistorialEmpleado = () => {
                                             //fontFamily: Nunito;
                                             fontSize: 14,
                                             fontStyle: 'normal',
-                                            fontWeight: 600,
+                                            fontWeight: 400,
                                             lineHeight: 'normal',
                                             outline: 'none',
                                             fontFamily: 'Maven Pro'

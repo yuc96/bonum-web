@@ -1,7 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { useState, Fragment, useEffect } from 'react';
+import { useState, Fragment, useEffect, useContext } from 'react';
 import MensajeModal from './MensajeModal';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import IconSearch from "../../../components/Icon/IconSearch";
 import IconXCircle from "../../../components/Icon/IconXCircle";
 import Dropdown from "../../../components/Dropdown";
@@ -14,6 +15,11 @@ import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead
 import IconTrash from '../../../components/Icon/IconTrash';
 import IconEye from '../../../components/Icon/IconEye';
 import { NavLink } from 'react-router-dom';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import dayjs, { Dayjs } from 'dayjs';
+import { an_empleados, update_empleados } from '../../../server/empleados/EmpleadosApi';
+import { AccionContext } from '../../../contexts/AccionesContext';
+import { Box, FormControl, MenuItem, Select } from '@mui/material';
 
 const historialData = [
     {
@@ -55,27 +61,29 @@ const historialData = [
 ];
 
 
-const EditarEmpleadoModal = ({
-    openModalEdit,
-    setOpenModalEdit,
-    hideButton,
-    setHideButton,
-    openMessage,
-    setOpenMessage,
-}
-    :
+const EditarEmpleadoModal = (
     {
-        openModalEdit: boolean;
-        setOpenModalEdit: (isOpen: boolean) => void;
-        hideButton: boolean;
-        setHideButton: (isOpen: boolean) => void;
-        openMessage: boolean;
-        setOpenMessage: (isOpen: boolean) => void;
+        idEmpleado,
+        openModalEdit,
+        setOpenModalEdit,
+        hideButton,
+        setHideButton,
+        openMessage,
+        setOpenMessage,
     }
+        :
+        {
+            idEmpleado: any;
+            openModalEdit: boolean;
+            setOpenModalEdit: (isOpen: boolean) => void;
+            hideButton: boolean;
+            setHideButton: (isOpen: boolean) => void;
+            openMessage: boolean;
+            setOpenMessage: (isOpen: boolean) => void;
+        }
 ) => {
 
     const PAGE_SIZES = [8, 16, 23, 32, 40];
-
 
     const [isChecked, setIsChecked] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -144,6 +152,107 @@ const EditarEmpleadoModal = ({
         { accessor: 'isActive', title: 'Active' },
     ];
 
+    const { accionDatos, recargarDatos } = useContext(AccionContext);
+    const [empleado, setEmpleado] = useState<any>({})
+    const [nuevoEmpleado, setNuevoEmpleado] = useState<any>(
+        {
+            id_empleado: 0,
+            identification_number: '',
+            name: '',
+            lastname: '',
+            address: '',
+            date_of_birth: '',
+            level_education: '',
+            email: '',
+            phoneMovil: '',
+            phoneFijo: '',
+            provincia: '',
+            ciudad: '',
+            street_primary: '',
+            address_secondary: '',
+            company_code: '',
+            job_title: '',
+            gross_salary: 0,
+            net_salary: 0,
+            other_income: 0,
+            observations: empleado.observations || ''
+        }
+    )
+
+    useEffect(() => {
+
+        if (empleado) {
+
+            setNuevoEmpleado(
+                {
+                    id_empleado: idEmpleado,
+                    identification_number: empleado.identification_number || '',
+                    name: empleado.name || '',
+                    lastname: empleado.lastname || '',
+                    address: empleado.address || '',
+                    date_of_birth: empleado.date_of_birth || '1900/01/01',
+                    level_education: empleado.level_education || '',
+                    email: empleado.email || '',
+                    phoneMovil: empleado.phoneMovil || '',
+                    phoneFijo: empleado.phoneFijo || '',
+                    provincia: empleado.provincia || '',
+                    ciudad: empleado.ciudad || '',
+                    street_primary: empleado.street_primary || '',
+                    address_secondary: empleado.address_secondary || '',
+                    company_code: empleado.company_code || '',
+                    job_title: empleado.job_title || '',
+                    gross_salary: empleado.gross_salary || 0,
+                    net_salary: empleado.net_salary || 0,
+                    other_income: empleado.other_income || 0,
+                    observations: empleado.observations || ''
+                }
+            );
+        }
+
+    }, [empleado]);
+
+
+    useEffect(() => {
+
+        an_empleados({ id_empleado: idEmpleado })
+            .then((res) => {
+                console.log(res.data)
+                setEmpleado(res.data || {});
+            })
+            .catch((err) => {
+                console.log("Error desde API: ", err);
+            });
+
+    }, [recargarDatos, idEmpleado]);
+
+    const provincias = [
+        "Azuay", "Bolívar", "Cañar", "Carchi", "Chimborazo", "Cotopaxi", "El Oro",
+        "Esmeraldas", "Guayas", "Imbabura", "Loja", "Los Ríos", "Manabí", "Morona Santiago",
+        "Napo", "Orellana", "Pastaza", "Pichincha", "Santa Elena", "Santo Domingo de los Tsáchilas",
+        "Sucumbíos", "Tungurahua", "Zamora-Chinchipe"
+    ];
+
+    const handleEditarEmpleado = (e: any) => {
+
+        const { name, value } = e.target;
+
+        setNuevoEmpleado((prevEmpleado: any) => (
+            {
+                ...prevEmpleado,
+                [name]: value
+            }
+        ));
+
+    };
+
+    const editDate = (newValue: any) => {
+        if (newValue) {
+            const formattedDate = newValue.format("YYYY-MM-DD");
+            return formattedDate
+        }
+    };
+
+
     return (
 
         <Transition
@@ -170,7 +279,8 @@ const EditarEmpleadoModal = ({
                             style={{
                                 backgroundColor: 'white',
                                 margin: window.screen.height * 0.025,
-                                width: window.screen.width * 0.577
+                                borderRadius: 6
+                                //width: window.screen.width * 0.577
                             }}
                         >
 
@@ -187,7 +297,7 @@ const EditarEmpleadoModal = ({
                                     //fontFamily: Nunito,
                                     fontSize: 18,
                                     fontStyle: 'normal',
-                                    fontWeight: 700,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro',
                                 }}
@@ -214,8 +324,9 @@ const EditarEmpleadoModal = ({
                                         to="/empleados/historial"
                                         state={{ data: historialData }}
                                         style={{
-                                            width: window.screen.width * 0.1,
-                                            height: window.screen.height * 0.05,
+                                            width: '139px',
+                                            height: '38px',
+                                            flexShrink: 0,
                                             marginLeft: window.screen.width * 0.005,
                                             backgroundColor: '#bf5cf3',
                                             padding: 5,
@@ -255,6 +366,7 @@ const EditarEmpleadoModal = ({
                                 <form>
 
                                     <div
+
                                         style={{
                                             //backgroundColor: 'blue',
                                             marginTop: 10,
@@ -262,7 +374,7 @@ const EditarEmpleadoModal = ({
                                             fontSize: 15,
                                             color: '#0E1726',
                                             fontStyle: 'normal',
-                                            fontWeight: 700,
+                                            fontWeight: 400,
                                             lineHeight: 'normal',
                                             fontFamily: 'Maven Pro',
                                         }}
@@ -276,69 +388,106 @@ const EditarEmpleadoModal = ({
                                             display: 'flex',
                                             flexDirection: 'row',
                                             gap: window.screen.width * 0.02,
-                                            //backgroundColor: 'yellow'
+                                            // backgroundColor: 'yellow'
                                         }}
                                     >
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Cedula de identidad</label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Cedula de identidad</label>
                                             <input
+                                                //disabled={true}
+                                                name={'identification_number'}
+                                                onChange={handleEditarEmpleado}
+                                                value={nuevoEmpleado.identification_number}
                                                 placeholder="Ingresar número de cédula"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Nombres </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Nombres </label>
                                             <input
+                                                name='name'
+                                                onChange={handleEditarEmpleado}
+                                                value={nuevoEmpleado.name}
                                                 placeholder="Ingresar nombres completos"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Apellidos </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Apellidos </label>
                                             <input
+                                                name='lastname'
+                                                onChange={handleEditarEmpleado}
+                                                value={nuevoEmpleado.lastname}
                                                 placeholder="Ingresar dos apellidos"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
@@ -356,46 +505,190 @@ const EditarEmpleadoModal = ({
                                     >
 
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Fecha de nacimiento </label>
-                                            <input
-                                                placeholder="Ingresar número de cédula"
-                                                className="form-input"
+                                        <div>
+                                            <label
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
                                                 }}
-                                            />
+                                            > Fecha de nacimiento </label>
+                                            <LocalizationProvider
+                                                dateAdapter={AdapterDayjs}
+                                            >
+                                                <DatePicker
+                                                    name='date_of_birth'
+                                                    value={dayjs(nuevoEmpleado.date_of_birth) || null}
+                                                    onChange={handleEditarEmpleado}
+                                                    slotProps={{
+                                                        textField: {
+                                                            placeholder: 'Fecha',
+                                                            fullWidth: true,
+                                                            InputLabelProps: {
+                                                                shrink: true,
+                                                            },
+                                                            inputProps: {
+                                                                readOnly: true,
+                                                            },
+                                                            sx: {
+                                                                width: '222px',
+                                                                height: '38px',
+                                                                flexShrink: 0,
+                                                                '& .MuiInputBase-root': {
+                                                                    height: '38px',
+                                                                    width: '226px',
+                                                                    //height: window.screen.height * 0.05,
+                                                                    fontSize: 14,
+                                                                    fontStyle: 'normal',
+                                                                    fontWeight: 300,
+                                                                    lineHeight: 'normal',
+                                                                    fontFamily: 'Maven Pro',
+                                                                    backgroundColor: 'white',
+                                                                    border: '1px solid #E0E6ED',
+                                                                    borderRadius: '6px',
+                                                                    boxShadow: 'none',
+                                                                    transition: 'none',
+                                                                    '&:hover': {
+                                                                        backgroundColor: 'white',
+                                                                        borderColor: '#E0E6ED',
+                                                                    },
+                                                                    '&.Mui-focused': {
+                                                                        backgroundColor: 'white',
+                                                                        borderColor: '#E0E6ED',
+                                                                    },
+                                                                },
+                                                                '& .MuiOutlinedInput-notchedOutline': {
+                                                                    border: 'none',
+                                                                },
+                                                                '& .MuiInputBase-input': {
+                                                                    '::placeholder': {
+                                                                        //color: '#888EA8',
+                                                                        fontSize: 14,
+                                                                        fontStyle: 'normal',
+                                                                        fontWeight: 400,
+                                                                        lineHeight: 'normal',
+                                                                        fontFamily: 'Maven Pro',
+                                                                        // fontSize: 13,
+                                                                        // fontFamily: 'serif',
+                                                                        // fontWeight: 400,
+                                                                        color: '#0E1726',
+                                                                        opacity: 1
+                                                                    },
+                                                                },
+                                                            },
+                                                        },
+                                                    }}
+                                                />
+
+                                            </LocalizationProvider>
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Nivel educativo </label>
-                                            <input
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Nivel educativo </label>
+                                            <FormControl
+                                                sx={{
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    '& .MuiOutlinedInput-root': {
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        backgroundColor: '#FFFFFF',
+                                                        height: '38px',
+                                                        '& fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&:hover fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&.Mui-focused fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                            borderWidth: '1px',
+                                                        },
+                                                    },
+                                                    '& .MuiSelect-select': {
+                                                        padding: '8px',
+                                                    }
+                                                }
+                                                }
+                                            >
+
+                                                <Select
+                                                    name={'level_education'}
+                                                    // labelId="demo-simple-select-label"
+                                                    // id="demo-simple-select"
+                                                    value={nuevoEmpleado.level_education}
+                                                    onChange={handleEditarEmpleado}
+                                                    displayEmpty
+                                                    MenuProps={{
+                                                        PaperProps: {
+                                                            sx: {
+                                                                '& .MuiMenuItem-root': {
+                                                                    fontFamily: 'Maven Pro',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 400,
+                                                                    color: '#0E1726'
+                                                                },
+                                                            },
+                                                        },
+                                                    }}
+
+                                                >
+                                                    <MenuItem value="" sx={{
+                                                        fontFamily: 'Maven Pro',
+                                                        fontSize: '14px',
+                                                        fontWeight: 400,
+                                                        color: '#0E1726',
+                                                        paddingLeft: '12px'
+                                                    }}>
+                                                        &nbsp;Niv. Educativo
+                                                    </MenuItem>
+                                                    <MenuItem value="Primaria">&nbsp;Primaria</MenuItem>
+                                                    <MenuItem value="Secundaria">&nbsp;Secundaria</MenuItem>
+                                                    <MenuItem value="Técnico">&nbsp;Técnico</MenuItem>
+                                                    <MenuItem value="Tecnológico">&nbsp;Tecnológico</MenuItem>
+                                                    <MenuItem value="Universitario">&nbsp;Universitario</MenuItem>
+                                                    <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
+                                                </Select>
+                                            </FormControl>
+
+                                            {/* <input
+                                                name={'level_education'}
+                                                value={nuevoEmpleado.level_education}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Ingresar nivel educativo"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
-                                            />
+                                            /> */}
                                         </div>
 
                                     </div>
@@ -403,13 +696,12 @@ const EditarEmpleadoModal = ({
                                     <div
                                         style={{
                                             //backgroundColor: 'blue',
-                                            marginTop: 20,
-                                            marginBottom: 10,
-                                            //marginBottom: window.screen.height * 0.01,
+                                            marginTop: 36,
+                                            marginBottom: 15,
                                             fontSize: 15,
                                             color: '#0E1726',
                                             fontStyle: 'normal',
-                                            fontWeight: 700,
+                                            fontWeight: 400,
                                             lineHeight: 'normal',
                                             fontFamily: 'Maven Pro',
                                         }}
@@ -427,86 +719,125 @@ const EditarEmpleadoModal = ({
                                         }}
                                     >
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Correo Electrónico </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Correo Electrónico </label>
                                             <input
+                                                //onChange={}
+                                                name={'email'}
+                                                value={nuevoEmpleado.email}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Ingresar correo electronico"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Teléfono Móvil </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Teléfono Móvil </label>
                                             <input
+                                                //onChange={}
+                                                name={'phoneMovil'}
+                                                value={nuevoEmpleado.phoneMovil}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Ingresar numero de celular"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Teléfono Fijo </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Teléfono Fijo </label>
                                             <input
+                                                //onChange={()={}}
+                                                //disabled={true}
+                                                name={'phoneFijo'}
+                                                value={nuevoEmpleado.phoneFijo}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Ingresar numero de teléfono"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
                                     </div>
 
-                                    <div
-                                        style={{
-                                            //backgroundColor: 'orange',
-                                            fontSize: 14,
-                                            color: '#0E1726',
-                                            fontStyle: 'normal',
-                                            fontWeight: 700,
-                                            lineHeight: 'normal',
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
+                                    <div>
 
                                         <label
                                             style={{
-                                                marginTop: 5
+                                                fontSize: 14,
+                                                color: '#0E1726',
+                                                fontStyle: 'revert',
+                                                fontWeight: 400,
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro',
+                                                marginTop: 15
                                             }}
                                         >
                                             Dirección
@@ -516,34 +847,137 @@ const EditarEmpleadoModal = ({
                                             style={{
                                                 display: 'flex',
                                                 flexDirection: 'row',
-                                                gap: window.screen.width * 0.02,
+                                                gap: 5,
                                                 //backgroundColor: 'cyan',
                                                 fontSize: 14,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
-                                                fontWeight: 700,
+                                                fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
                                             }}
                                         >
+                                            <FormControl
+                                                sx={{
+                                                    width: '364px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    '& .MuiOutlinedInput-root': {
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        backgroundColor: '#FFFFFF',
+                                                        height: '38px',
+                                                        '& fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&:hover fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&.Mui-focused fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                            borderWidth: '1px',
+                                                        },
+                                                    },
+                                                    '& .MuiSelect-select': {
+                                                        padding: '8px',
+                                                    }
+                                                }
+                                                }
+                                            >
+                                                <Select
+
+                                                    // labelId="demo-simple-select-label"
+                                                    // id="demo-simple-select"
+                                                    name={'provincia'}
+                                                    value={nuevoEmpleado.provincia}
+                                                    onChange={handleEditarEmpleado}
+                                                    displayEmpty
+                                                    MenuProps={{
+                                                        PaperProps: {
+                                                            sx: {
+                                                                '& .MuiMenuItem-root': {
+                                                                    fontFamily: 'Maven Pro',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 400,
+                                                                    color: '#0E1726'
+                                                                },
+                                                            },
+                                                        },
+                                                    }}
+
+                                                >
+                                                    <MenuItem value="" sx={{
+                                                        fontFamily: 'Maven Pro',
+                                                        fontSize: '14px',
+                                                        fontWeight: 400,
+                                                        color: '#0E1726'
+                                                    }}>
+                                                        &nbsp;Provincia
+                                                    </MenuItem>
+                                                    {
+                                                        provincias.map((provincia, index) => (
+                                                            <MenuItem
+                                                                key={index}
+                                                                value={provincia}
+                                                            >
+                                                                &nbsp;{provincia}
+                                                            </MenuItem>
+                                                        ))
+                                                    }
+                                                </Select>
+                                            </FormControl>
 
 
-                                            <input
+                                            {/* <input
+                                                //onChange={(e) => setProvincia(e.target.value)}
+                                                //disabled={true}
+                                                value={nuevoEmpleado.provincia}
+                                                name={'provincia'}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Provincia"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.265,
-                                                    height: '5vh'
+                                                    width: '358px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
-                                            />
+                                            /> */}
 
                                             <input
+                                                //onChange={(e) => setCiudad(e.target.value)}
+                                                //disabled={true}
+                                                name={'ciudad'}
+                                                value={nuevoEmpleado.ciudad}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Ciudad"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.265,
-                                                    height: '5vh'
-                                                    //marginLeft: window.screen.width * 0.015
+                                                    width: '358px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
@@ -551,15 +985,14 @@ const EditarEmpleadoModal = ({
 
                                         <div
                                             style={{
-                                                //backgroundColor: 'red',
                                                 display: 'flex',
                                                 flexDirection: 'row',
                                                 marginTop: window.screen.height * 0.015,
-                                                gap: window.screen.width * 0.01,
+                                                gap: 27,
                                                 fontSize: 14,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
-                                                fontWeight: 700,
+                                                fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
                                             }}
@@ -567,29 +1000,70 @@ const EditarEmpleadoModal = ({
 
 
                                             <input
+                                                //onChange={(e) => setDireccionPrincipal(e.target.value)}
+                                                name={'address'}
+                                                value={nuevoEmpleado.address}
+                                                onChange={handleEditarEmpleado}
                                                 placeholder="Ingresar direccion principal"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.24,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
                                             <input
+                                                //onChange={(e) => setNumero(e.target.value)}
+                                                disabled={true}
+                                                //value={}
                                                 placeholder="Número"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.07,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
                                             <input
+                                                //onChange={(e) => setDireccionSecundaria(e.target.value)}
+                                                onChange={handleEditarEmpleado}
+                                                name={'address_secondary'}
                                                 placeholder="Ingresar dirección transversal"
                                                 className="form-input"
+                                                value={nuevoEmpleado.address_secondary}
                                                 style={{
-                                                    width: window.screen.width * 0.22,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
@@ -603,7 +1077,7 @@ const EditarEmpleadoModal = ({
                                                 fontSize: 15,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
-                                                fontWeight: 700,
+                                                fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
                                             }}
@@ -621,65 +1095,156 @@ const EditarEmpleadoModal = ({
                                             }}
                                         >
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Código de Empresa </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Código de Empresa </label>
                                                 <input
+                                                    //onChange={(e) => setCodigoEmpresa(e.target.value)}
+                                                    //disabled={true}
+                                                    name={'company_code'}
+                                                    onChange={handleEditarEmpleado}
+                                                    value={nuevoEmpleado.company_code}
                                                     placeholder="Código de Empresa"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Fecha de Ingreso </label>
-                                                <input
-                                                    placeholder="Fecha de Ingreso"
-                                                    className="form-input"
+                                            <div>
+                                                <label
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
                                                     }}
-                                                />
+                                                > Fecha de Ingreso </label>
+                                                <LocalizationProvider
+                                                    dateAdapter={AdapterDayjs}
+                                                >
+                                                    <DatePicker
+                                                        //onChange={(newValue) => setFechaIngreso(newValue)}
+                                                        value={dayjs(nuevoEmpleado.registration_date)}
+                                                        name={'registration_date'}
+                                                        slotProps={{
+                                                            textField: {
+                                                                placeholder: 'Fecha',
+                                                                fullWidth: true,
+                                                                InputLabelProps: {
+                                                                    shrink: true,
+                                                                },
+                                                                inputProps: {
+                                                                    readOnly: true,
+                                                                },
+                                                                sx: {
+                                                                    width: '222px',
+                                                                    height: '38px',
+                                                                    flexShrink: 0,
+                                                                    '& .MuiInputBase-root': {
+                                                                        width: '222px',
+                                                                        height: '38px',
+                                                                        fontSize: 14,
+                                                                        fontStyle: 'normal',
+                                                                        fontWeight: 300,
+                                                                        lineHeight: 'normal',
+                                                                        backgroundColor: 'white',
+                                                                        border: '1px solid #E0E6ED',
+                                                                        borderRadius: '4px',
+                                                                        boxShadow: 'none',
+                                                                        transition: 'none',
+                                                                        fontFamily: 'Maven Pro',
+                                                                        '&:hover': {
+                                                                            backgroundColor: 'white',
+                                                                            borderColor: '#E0E6ED',
+                                                                        },
+                                                                        '&.Mui-focused': {
+                                                                            backgroundColor: 'white',
+                                                                            borderColor: '#E0E6ED',
+                                                                        },
+                                                                    },
+                                                                    '& .MuiOutlinedInput-notchedOutline': {
+                                                                        border: 'none',
+                                                                    },
+                                                                    '& .MuiInputBase-input': {
+                                                                        '::placeholder': {
+                                                                            //color: '#888EA8',
+                                                                            fontSize: 14,
+                                                                            fontStyle: 'normal',
+                                                                            fontWeight: 400,
+                                                                            lineHeight: 'normal',
+                                                                            // fontSize: 13,
+                                                                            // fontFamily: 'serif',
+                                                                            // fontWeight: 400,
+                                                                            color: '#0E1726',
+                                                                            opacity: 1,
+                                                                            fontFamily: 'Maven Pro',
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                        }}
+                                                    />
+
+                                                </LocalizationProvider>
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Cargo </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Cargo </label>
                                                 <input
+                                                    //onChange={(e) => setCargo(e.target.value)}
+                                                    value={nuevoEmpleado.job_title}
+                                                    name={'job_title'}
+                                                    onChange={handleEditarEmpleado}
                                                     placeholder="Ingresar cargo"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
@@ -696,65 +1261,111 @@ const EditarEmpleadoModal = ({
                                             }}
                                         >
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Sueldo Bruto </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Sueldo Bruto </label>
                                                 <input
+                                                    //onChange={(e) => setSueldoBruto(e.target.value)}
+                                                    value={nuevoEmpleado.gross_salary}
+                                                    onChange={handleEditarEmpleado}
+                                                    name={'gross_salary'}
                                                     placeholder="Ingresar valor"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Sueldo Neto </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Sueldo Neto
+                                                </label>
                                                 <input
+                                                    //onChange={(e) => setSueldoNeto(e.target.value)}
+                                                    value={nuevoEmpleado.net_salary}
+                                                    onChange={handleEditarEmpleado}
                                                     placeholder="Ingresar valor"
+                                                    name={'net_salary'}
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Otros ingresos </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Otros ingresos </label>
                                                 <input
+                                                    //onChange={(e) => setOtrosIngresos(e.target.value)}
+                                                    value={nuevoEmpleado.other_income}
+                                                    name={'other_income'}
+                                                    onChange={handleEditarEmpleado}
                                                     placeholder="Ingresar valor"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
@@ -771,23 +1382,32 @@ const EditarEmpleadoModal = ({
                                             }}
                                         >
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Observaciones </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Observaciones </label>
                                                 <textarea
+                                                    //onChange={(e) => setObservaciones(e.target.value)}
+                                                    name={'observations'}
+                                                    value={nuevoEmpleado.observations}
+                                                    onChange={handleEditarEmpleado}
                                                     placeholder="Ingresar observaciones"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.55,
-                                                        height: window.screen.height * 0.11,
+                                                        width: '725px',
+                                                        height: '78px',
+                                                        flexShrink: 0,
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFFF'
                                                     }}
                                                 />
                                             </div>
@@ -795,6 +1415,7 @@ const EditarEmpleadoModal = ({
                                         </div>
 
                                     </div>
+
                                 </form>
 
                                 {hideButton ?
@@ -807,8 +1428,9 @@ const EditarEmpleadoModal = ({
                                             }}
                                             type="button"
                                             style={{
-                                                width: window.screen.width * 0.067,
-                                                height: window.screen.height * 0.05,
+                                                width: '103px',
+                                                height: '38px',
+                                                flexShrink: 0,
                                                 marginLeft: window.screen.width * 0.005,
                                                 backgroundColor: '#bf5cf3',
                                                 padding: 5,
@@ -825,28 +1447,51 @@ const EditarEmpleadoModal = ({
                                     :
 
                                     <div className="flex justify-center items-center mt-2 mb-10">
-
                                         <button
                                             onClick={() => {
                                                 setOpenModalEdit(!openModalEdit)
                                                 setHideButton(!hideButton)
-                                            }}
-                                            type="button"
-                                            className="btn btn-outline-danger"
-                                        >
-                                            Cancelar
-                                        </button>
-                                        <button
-                                            onClick={() => {
-
-                                                setHideButton(!hideButton)
-                                                setOpenMessage(!openMessage)
-                                                setOpenModalEdit(!openModalEdit)
                                             }}
                                             type="button"
                                             style={{
-                                                width: window.screen.width * 0.067,
-                                                height: window.screen.height * 0.05,
+                                                width: '85px',
+                                                height: '38px',
+                                                flexShrink: 0,
+                                                borderRadius: '6px',
+                                                border: '1px solid #E7515A',
+                                                background: '#FFFFFF',
+                                                color: '#E7515A',
+                                                fontFamily: 'Maven Pro',
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                fontWeight: 400,
+                                                lineHeight: 'normal'
+                                            }}
+                                        >
+                                            Cancelar
+                                        </button>
+
+                                        <button
+                                            onClick={() => {
+                                                console.log("nuevo: ", nuevoEmpleado)
+
+                                                // update_empleados(nuevoEmpleado)
+                                                //     .then((res) => {
+                                                //         accionDatos()
+                                                //         setHideButton(!hideButton)
+                                                //         setOpenMessage(!openMessage)
+                                                //         setOpenModalEdit(!openModalEdit)
+                                                //     })
+                                                //     .catch((err) => {
+                                                //         console.log("Error de la API: ", err)
+                                                //     })
+
+                                            }}
+                                            type="button"
+                                            style={{
+                                                width: '103px',
+                                                height: '38px',
+                                                flexShrink: 0,
                                                 marginLeft: window.screen.width * 0.005,
                                                 backgroundColor: '#bf5cf3',
                                                 padding: 5,
@@ -868,7 +1513,6 @@ const EditarEmpleadoModal = ({
                     </div>
                 </div>
             </Dialog>
-
 
         </Transition>
 

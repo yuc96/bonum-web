@@ -1,4 +1,3 @@
-
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment, useEffect, useContext } from 'react';
 import { create_empleados } from '../../../server/empleados/EmpleadosApi';
@@ -7,8 +6,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 import { AccionContext } from '../../../contexts/AccionesContext';
+import { Box, FormControl, MenuItem, Select } from '@mui/material';
 
-const NuevoEmpleadoModal = ( 
+const NuevoEmpleadoModal = (
     {
         openModal,
         setOpenModal,
@@ -20,7 +20,7 @@ const NuevoEmpleadoModal = (
         }
 ) => {
 
-    const { accionDatos } = useContext( AccionContext );
+    const { accionDatos } = useContext(AccionContext);
 
     const [cedula, setCedula] = useState('');
     const [nombre, setNombre] = useState('');
@@ -53,9 +53,10 @@ const NuevoEmpleadoModal = (
 
         create_empleados(data)
             .then((res) => {
+                console.log(res)
                 accionDatos();
                 setOpenModal(false);
-                
+
             })
             .catch((err) => {
                 console.log("Error API: ", err)
@@ -68,6 +69,24 @@ const NuevoEmpleadoModal = (
             const formattedDate = newValue.format("YYYY-MM-DD");
             return formattedDate
         }
+    };
+
+    const [nivelEducacion, setNivelEducacion] = useState("");
+    const [provinciaSeleccionada, setProvinciaSeleccionada] = useState("");
+
+    const handleComboEducativo = (event: any) => {
+        setNivelEducacion(event.target.value);
+    };
+
+    const provincias = [
+        "Azuay", "Bolívar", "Cañar", "Carchi", "Chimborazo", "Cotopaxi", "El Oro",
+        "Esmeraldas", "Guayas", "Imbabura", "Loja", "Los Ríos", "Manabí", "Morona Santiago",
+        "Napo", "Orellana", "Pastaza", "Pichincha", "Santa Elena", "Santo Domingo de los Tsáchilas",
+        "Sucumbíos", "Tungurahua", "Zamora-Chinchipe"
+    ];
+
+    const handleProvinciaChange = (event: any) => {
+        setProvinciaSeleccionada(event.target.value);
     };
 
     return (
@@ -96,21 +115,22 @@ const NuevoEmpleadoModal = (
                             style={{
                                 backgroundColor: 'white',
                                 margin: window.screen.height * 0.025,
-                                //borderRadius: 10,
-                                width: window.screen.width * 0.577,
+                                width: '778px',
+                                borderRadius: 6
 
                             }}
                         >
                             <div
                                 style={{
                                     //backgroundColor: 'red',
-                                    paddingTop: 10,
-                                    paddingLeft: 22,
+                                    paddingTop: 14,
+                                    paddingBottom: 13,
+                                    paddingLeft: 20,
                                     color: '#0E1726',
                                     //fontFamily: Nunito,
                                     fontSize: 18,
                                     fontStyle: 'normal',
-                                    fontWeight: 700,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro',
                                     display: 'flex',
@@ -139,9 +159,7 @@ const NuevoEmpleadoModal = (
                             >
 
                                 <form>
-
                                     <div
-
                                         style={{
                                             //backgroundColor: 'blue',
                                             marginTop: 10,
@@ -149,7 +167,7 @@ const NuevoEmpleadoModal = (
                                             fontSize: 15,
                                             color: '#0E1726',
                                             fontStyle: 'normal',
-                                            fontWeight: 700,
+                                            fontWeight: 400,
                                             lineHeight: 'normal',
                                             fontFamily: 'Maven Pro',
                                         }}
@@ -163,72 +181,99 @@ const NuevoEmpleadoModal = (
                                             display: 'flex',
                                             flexDirection: 'row',
                                             gap: window.screen.width * 0.02,
-                                            //backgroundColor: 'yellow'
+                                            // backgroundColor: 'yellow'
                                         }}
                                     >
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Cedula de identidad</label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Cedula de identidad</label>
                                             <input
                                                 onChange={(e) => setCedula(e.target.value)}
                                                 placeholder="Ingresar número de cédula"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Nombres </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Nombres </label>
                                             <input
                                                 onChange={(e) => setNombre(e.target.value)}
                                                 placeholder="Ingresar nombres completos"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Apellidos </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Apellidos </label>
                                             <input
                                                 onChange={(e) => setApellido(e.target.value)}
                                                 placeholder="Ingresar dos apellidos"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
@@ -246,17 +291,17 @@ const NuevoEmpleadoModal = (
                                     >
 
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Fecha de nacimiento </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Fecha de nacimiento </label>
                                             <LocalizationProvider
                                                 dateAdapter={AdapterDayjs}
                                             >
@@ -273,10 +318,13 @@ const NuevoEmpleadoModal = (
                                                                 readOnly: true,
                                                             },
                                                             sx: {
-                                                                width: window.screen.width * 0.17,
+                                                                width: '222px',
+                                                                height: '38px',
+                                                                flexShrink: 0,
                                                                 '& .MuiInputBase-root': {
-                                                                    height: window.screen.height * 0.05,
-                                                                    marginTop: window.screen.height * 0.0005,
+                                                                    height: '38px',
+                                                                    width: '226px',
+                                                                    //height: window.screen.height * 0.05,
                                                                     fontSize: 14,
                                                                     fontStyle: 'normal',
                                                                     fontWeight: 300,
@@ -284,7 +332,7 @@ const NuevoEmpleadoModal = (
                                                                     fontFamily: 'Maven Pro',
                                                                     backgroundColor: 'white',
                                                                     border: '1px solid #E0E6ED',
-                                                                    borderRadius: '4px',
+                                                                    borderRadius: '6px',
                                                                     boxShadow: 'none',
                                                                     transition: 'none',
                                                                     '&:hover': {
@@ -304,12 +352,12 @@ const NuevoEmpleadoModal = (
                                                                         //color: '#888EA8',
                                                                         fontSize: 14,
                                                                         fontStyle: 'normal',
-                                                                        fontWeight: 600,
+                                                                        fontWeight: 400,
                                                                         lineHeight: 'normal',
                                                                         fontFamily: 'Maven Pro',
                                                                         // fontSize: 13,
                                                                         // fontFamily: 'serif',
-                                                                        // fontWeight: 600,
+                                                                        // fontWeight: 400,
                                                                         color: '#0E1726',
                                                                         opacity: 1
                                                                     },
@@ -322,26 +370,90 @@ const NuevoEmpleadoModal = (
                                             </LocalizationProvider>
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Nivel educativo </label>
-                                            <input
-                                                onChange={(e) => setNivelEducativo(e.target.value)}
-                                                placeholder="Ingresar nivel educativo"
-                                                className="form-input"
+                                        <div>
+                                            <label
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
                                                 }}
-                                            />
+                                            >
+                                                Nivel educativo
+                                            </label>
+
+                                            <FormControl
+                                                sx={{
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    '& .MuiOutlinedInput-root': {
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        backgroundColor: '#FFFFFF',
+                                                        height: '38px',
+                                                        '& fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&:hover fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&.Mui-focused fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                            borderWidth: '1px',
+                                                        },
+                                                    },
+                                                    '& .MuiSelect-select': {
+                                                        padding: '8px',
+                                                    }
+                                                }
+                                                }
+                                            >
+
+                                                <Select
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={nivelEducacion}
+                                                    onChange={handleComboEducativo}
+                                                    displayEmpty
+                                                    MenuProps={{
+                                                        PaperProps: {
+                                                            sx: {
+                                                                '& .MuiMenuItem-root': {
+                                                                    fontFamily: 'Maven Pro',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 400,
+                                                                    color: '#0E1726'
+                                                                },
+                                                            },
+                                                        },
+                                                    }}
+
+                                                >
+                                                    <MenuItem value="" sx={{
+                                                        fontFamily: 'Maven Pro',
+                                                        fontSize: '14px',
+                                                        fontWeight: 400,
+                                                        color: '#0E1726',
+                                                        paddingLeft: '12px'
+                                                    }}>
+                                                        &nbsp;Niv. Educativo
+                                                    </MenuItem>
+                                                    <MenuItem value="Primaria">&nbsp;Primaria</MenuItem>
+                                                    <MenuItem value="Secundaria">&nbsp;Secundaria</MenuItem>
+                                                    <MenuItem value="Técnico">&nbsp;Técnico</MenuItem>
+                                                    <MenuItem value="Tecnológico">&nbsp;Tecnológico</MenuItem>
+                                                    <MenuItem value="Universitario">&nbsp;Universitario</MenuItem>
+                                                    <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
+                                                </Select>
+                                            </FormControl>
+
                                         </div>
 
                                     </div>
@@ -349,13 +461,12 @@ const NuevoEmpleadoModal = (
                                     <div
                                         style={{
                                             //backgroundColor: 'blue',
-                                            marginTop: 20,
-                                            marginBottom: 10,
-                                            //marginBottom: window.screen.height * 0.01,
+                                            marginTop: 36,
+                                            marginBottom: 15,
                                             fontSize: 15,
                                             color: '#0E1726',
                                             fontStyle: 'normal',
-                                            fontWeight: 700,
+                                            fontWeight: 400,
                                             lineHeight: 'normal',
                                             fontFamily: 'Maven Pro',
                                         }}
@@ -373,89 +484,115 @@ const NuevoEmpleadoModal = (
                                         }}
                                     >
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Correo Electrónico </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Correo Electrónico </label>
                                             <input
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="Ingresar correo electronico"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Teléfono Móvil </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Teléfono Móvil </label>
                                             <input
                                                 onChange={(e) => setPhone(e.target.value)}
                                                 placeholder="Ingresar numero de celular"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label> Teléfono Fijo </label>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Teléfono Fijo </label>
                                             <input
                                                 onChange={(e) => setNumber(e.target.value)}
                                                 placeholder="Ingresar numero de teléfono"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.17,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
                                         </div>
 
                                     </div>
 
-                                    <div
-                                        style={{
-                                            //backgroundColor: 'orange',
-                                            fontSize: 14,
-                                            color: '#0E1726',
-                                            fontStyle: 'normal',
-                                            fontWeight: 700,
-                                            lineHeight: 'normal',
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
+                                    <div>
 
                                         <label
                                             style={{
-                                                marginTop: 5
+                                                fontSize: 14,
+                                                color: '#0E1726',
+                                                fontStyle: 'revert',
+                                                fontWeight: 400,
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro',
+                                                marginTop: 15
                                             }}
                                         >
                                             Dirección
@@ -465,36 +602,127 @@ const NuevoEmpleadoModal = (
                                             style={{
                                                 display: 'flex',
                                                 flexDirection: 'row',
-                                                gap: window.screen.width * 0.02,
+                                                gap: 5,
                                                 //backgroundColor: 'cyan',
                                                 fontSize: 14,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
-                                                fontWeight: 700,
+                                                fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
                                             }}
                                         >
 
+                                            <FormControl
+                                                sx={{
+                                                    width: '364px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    '& .MuiOutlinedInput-root': {
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        backgroundColor: '#FFFFFF',
+                                                        height: '38px',
+                                                        '& fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&:hover fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                        },
+                                                        '&.Mui-focused fieldset': {
+                                                            borderColor: '#E0E6ED',
+                                                            borderWidth: '1px',
+                                                        },
+                                                    },
+                                                    '& .MuiSelect-select': {
+                                                        padding: '8px',
+                                                    }
+                                                }
+                                                }
+                                            >
+                                                <Select
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={provinciaSeleccionada}
+                                                    onChange={handleProvinciaChange}
+                                                    displayEmpty
+                                                    MenuProps={{
+                                                        PaperProps: {
+                                                            sx: {
+                                                                '& .MuiMenuItem-root': {
+                                                                    fontFamily: 'Maven Pro',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 400,
+                                                                    color: '#0E1726'
+                                                                },
+                                                            },
+                                                        },
+                                                    }}
 
-                                            <input
+                                                >
+                                                    <MenuItem value="" sx={{
+                                                        fontFamily: 'Maven Pro',
+                                                        fontSize: '14px',
+                                                        fontWeight: 400,
+                                                        color: '#0E1726'
+                                                    }}>
+                                                        &nbsp;Provincia
+                                                    </MenuItem>
+                                                        {
+                                                            provincias.map((provincia, index) => (
+                                                                <MenuItem 
+                                                                    key={index} 
+                                                                    value={provincia}
+                                                                >
+                                                                    &nbsp;{provincia}
+                                                                </MenuItem>
+                                                            ))
+                                                        }
+                                                </Select>
+                                            </FormControl>
+
+                                            {/* <input
                                                 onChange={(e) => setProvincia(e.target.value)}
                                                 placeholder="Provincia"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.265,
-                                                    height: '5vh'
+                                                    width: '358px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
-                                            />
+                                            /> */}
 
                                             <input
                                                 onChange={(e) => setCiudad(e.target.value)}
                                                 placeholder="Ciudad"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.265,
-                                                    height: '5vh'
-                                                    //marginLeft: window.screen.width * 0.015
+                                                    width: '358px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
@@ -502,15 +730,14 @@ const NuevoEmpleadoModal = (
 
                                         <div
                                             style={{
-                                                //backgroundColor: 'red',
                                                 display: 'flex',
                                                 flexDirection: 'row',
                                                 marginTop: window.screen.height * 0.015,
-                                                gap: window.screen.width * 0.01,
+                                                gap: 27,
                                                 fontSize: 14,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
-                                                fontWeight: 700,
+                                                fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
                                             }}
@@ -522,8 +749,18 @@ const NuevoEmpleadoModal = (
                                                 placeholder="Ingresar direccion principal"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.24,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
@@ -532,8 +769,18 @@ const NuevoEmpleadoModal = (
                                                 placeholder="Número"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.07,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
@@ -542,8 +789,18 @@ const NuevoEmpleadoModal = (
                                                 placeholder="Ingresar dirección transversal"
                                                 className="form-input"
                                                 style={{
-                                                    width: window.screen.width * 0.22,
-                                                    height: '5vh'
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
                                                 }}
                                             />
 
@@ -557,7 +814,7 @@ const NuevoEmpleadoModal = (
                                                 fontSize: 15,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
-                                                fontWeight: 700,
+                                                fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
                                             }}
@@ -575,39 +832,51 @@ const NuevoEmpleadoModal = (
                                             }}
                                         >
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Código de Empresa </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Código de Empresa </label>
                                                 <input
                                                     onChange={(e) => setCodigoEmpresa(e.target.value)}
                                                     placeholder="Código de Empresa"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Fecha de Ingreso </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Fecha de Ingreso </label>
                                                 <LocalizationProvider
                                                     dateAdapter={AdapterDayjs}
                                                 >
@@ -624,10 +893,12 @@ const NuevoEmpleadoModal = (
                                                                     readOnly: true,
                                                                 },
                                                                 sx: {
-                                                                    width: window.screen.width * 0.17,
+                                                                    width: '222px',
+                                                                    height: '38px',
+                                                                    flexShrink: 0,
                                                                     '& .MuiInputBase-root': {
-                                                                        height: window.screen.height * 0.05,
-                                                                        marginTop: window.screen.height * 0.0005,
+                                                                        width: '222px',
+                                                                        height: '38px',
                                                                         fontSize: 14,
                                                                         fontStyle: 'normal',
                                                                         fontWeight: 300,
@@ -655,11 +926,11 @@ const NuevoEmpleadoModal = (
                                                                             //color: '#888EA8',
                                                                             fontSize: 14,
                                                                             fontStyle: 'normal',
-                                                                            fontWeight: 600,
+                                                                            fontWeight: 400,
                                                                             lineHeight: 'normal',
                                                                             // fontSize: 13,
                                                                             // fontFamily: 'serif',
-                                                                            // fontWeight: 600,
+                                                                            // fontWeight: 400,
                                                                             color: '#0E1726',
                                                                             opacity: 1,
                                                                             fontFamily: 'Maven Pro',
@@ -673,24 +944,35 @@ const NuevoEmpleadoModal = (
                                                 </LocalizationProvider>
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Cargo </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Cargo </label>
                                                 <input
                                                     onChange={(e) => setCargo(e.target.value)}
                                                     placeholder="Ingresar cargo"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
@@ -707,68 +989,102 @@ const NuevoEmpleadoModal = (
                                             }}
                                         >
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Sueldo Bruto </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Sueldo Bruto </label>
                                                 <input
                                                     onChange={(e) => setSueldoBruto(e.target.value)}
                                                     placeholder="Ingresar valor"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Sueldo Neto </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Sueldo Neto
+                                                </label>
                                                 <input
                                                     onChange={(e) => setSueldoNeto(e.target.value)}
                                                     placeholder="Ingresar valor"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Otros ingresos </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Otros ingresos </label>
                                                 <input
                                                     onChange={(e) => setOtrosIngresos(e.target.value)}
                                                     placeholder="Ingresar valor"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.17,
-                                                        height: '5vh'
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
                                                     }}
                                                 />
                                             </div>
@@ -785,24 +1101,29 @@ const NuevoEmpleadoModal = (
                                             }}
                                         >
 
-                                            <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <label> Observaciones </label>
+                                            <div>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        marginTop: 15
+                                                    }}
+                                                > Observaciones </label>
                                                 <textarea
                                                     onChange={(e) => setObservaciones(e.target.value)}
                                                     placeholder="Ingresar observaciones"
                                                     className="form-input"
                                                     style={{
-                                                        width: window.screen.width * 0.55,
-                                                        height: window.screen.height * 0.11,
+                                                        width: '725px',
+                                                        height: '78px',
+                                                        flexShrink: 0,
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFFF'
                                                     }}
                                                 />
                                             </div>
@@ -817,7 +1138,20 @@ const NuevoEmpleadoModal = (
                                     <button
                                         onClick={() => setOpenModal(false)}
                                         type="button"
-                                        className="btn btn-outline-danger"
+                                        style={{
+                                            width: '85px',
+                                            height: '38px',
+                                            flexShrink: 0,
+                                            borderRadius: '6px',
+                                            border: '1px solid #E7515A',
+                                            background: '#FFFFFF',
+                                            color: '#E7515A',
+                                            fontFamily: 'Maven Pro',
+                                            fontSize: 14,
+                                            fontStyle: 'normal',
+                                            fontWeight: 400,
+                                            lineHeight: 'normal'
+                                        }}
                                     >
                                         Cancelar
                                     </button>
@@ -830,11 +1164,11 @@ const NuevoEmpleadoModal = (
                                                 "lastname": apellido,
                                                 "address": direccionPrincipal,
                                                 "date_of_birth": editDate(fechaNac),
-                                                "level_education": nivelEducativo,
+                                                "level_education": nivelEducacion,
                                                 "email": email,
                                                 "phoneMovil": phone,
                                                 "phoneFijo": number,
-                                                "provincia": provincia,
+                                                "provincia": provinciaSeleccionada,
                                                 "ciudad": ciudad,
                                                 "street_primary": direccionSecundaria,
                                                 "address_secondary": direccionSecundaria,
@@ -846,57 +1180,62 @@ const NuevoEmpleadoModal = (
                                                 "observations": observaciones,
                                                 "status": 'active'
                                             }
-                                            
-                                            /*
-                                            const data = {
-                                                "identification_number": "1003836721",
-                                                "name": "Juan",
-                                                "lastname": "Pérez",
-                                                "address": "Calle 123, Edificio A, Quito",
-                                                "date_of_birth": "1985-06-15",
-                                                "level_education": "Universitario",
-                                                "email": "juan.perez77@example.com",
-                                                "phoneMovil": "0987654321",
-                                                "phoneFijo": "022345678",
-                                                "provincia": "Pichincha",
-                                                "ciudad": "Quito",
-                                                "street_primary": "Calle Principal",
-                                                "address_secondary": "Calle Secundaria",
-                                                "company_code": "EMP1277",
-                                                "job_title": "Ingeniero de Software",
-                                                "gross_salary": 3000,
-                                                "net_salary": 2400,
-                                                "other_income": 200,
-                                                "observations": "Empleado destacado en proyectos de desarrollo.",
-                                                "status": "active"
-                                            }*/
-                                           
+
+                                            console.log("Data para crear: ", data)
+
+
+                                            // const data = {
+                                            //     "identification_number": "1003836721",
+                                            //     "name": "Juan",
+                                            //     "lastname": "Pérez",
+                                            //     "address": "Calle 123, Edificio A, Quito",
+                                            //     "date_of_birth": "1985-06-15",
+                                            //     "level_education": "Universitario",
+                                            //     "email": "juan.perez99999@example.com",
+                                            //     "phoneMovil": "0987654321",
+                                            //     "phoneFijo": "022345678",
+                                            //     "provincia": "Pichincha",
+                                            //     "ciudad": "Quito",
+                                            //     "street_primary": "Calle Principal",
+                                            //     "address_secondary": "Calle Secundaria",
+                                            //     "company_code": "EMP1211111222",
+                                            //     "job_title": "Ingeniero de Software",
+                                            //     "gross_salary": 3000,
+                                            //     "net_salary": 2400,
+                                            //     "other_income": 200,
+                                            //     "observations": "Empleado destacado en proyectos de desarrollo.",
+                                            //     "status": "active"
+                                            // }
+
                                             handleCreateEmpleado(data)
 
                                         }}
                                         type="button"
                                         style={{
-                                            width: window.screen.width * 0.067,
-                                            height: window.screen.height * 0.05,
+                                            width: '103px',
+                                            height: '38px',
+                                            flexShrink: 0,
                                             marginLeft: window.screen.width * 0.005,
                                             backgroundColor: '#bf5cf3',
                                             padding: 5,
-                                            borderRadius: 5,
+                                            borderRadius: 10,
                                             color: 'white',
                                             fontSize: 14,
                                             fontFamily: 'Maven Pro',
-                                            fontWeight: 600,
+                                            fontWeight: 400,
                                         }}>
                                         Añadir
                                     </button>
+
                                 </div>
+
                             </div>
                         </Dialog.Panel>
                     </div>
                 </div>
-            </Dialog>
+            </Dialog >
 
-        </Transition> 
+        </Transition >
 
     )
 

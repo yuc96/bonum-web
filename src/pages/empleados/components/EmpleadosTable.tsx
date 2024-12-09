@@ -13,6 +13,7 @@ import IconTrash from '../../../components/Icon/IconTrash';
 import IconEye from '../../../components/Icon/IconEye';
 import { delete_empleados } from '../../../server/empleados/EmpleadosApi';
 import { AccionContext } from '../../../contexts/AccionesContext';
+import EditarEmpleadoModal from '../modal/EditarEmpleadoModal';
 
 const EmpleadosTable = ({
     rowData,
@@ -38,7 +39,11 @@ const EmpleadosTable = ({
     setHideCols,
     PAGE_SIZES,
     openModalEdit,
-    setOpenModalEdit
+    setOpenModalEdit,
+    hideButton,
+    setHideButton,
+    openMessage,
+    setOpenMessage
 }: {
     rowData: any[];
     isChecked: boolean;
@@ -61,16 +66,21 @@ const EmpleadosTable = ({
     setSearchData: React.Dispatch<React.SetStateAction<boolean>>;
     setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
     setHideCols: React.Dispatch<React.SetStateAction<any>>;
-    PAGE_SIZES: any[],
+    PAGE_SIZES: any[];
     openModalEdit: boolean;
     setOpenModalEdit: React.Dispatch<React.SetStateAction<boolean>>;
+    hideButton: boolean;
+    setHideButton: React.Dispatch<React.SetStateAction<boolean>>;
+    openMessage: boolean;
+    setOpenMessage: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
 
     useEffect(() => {
-      console.log(rowData)
+        console.log(rowData)
     }, [])
 
-    const { accionDatos } = useContext( AccionContext );
+    const { accionDatos } = useContext(AccionContext);
+    const [idEmpleado, setIdEmpleado] = useState(0)
 
     const handleDelete = (id: any) => {
         delete_empleados(id)
@@ -84,7 +94,7 @@ const EmpleadosTable = ({
     }
 
     function configDate(fecha: string): string {
-      
+
         const months = [
             "Ene", "Feb", "Mar", "Abr", "May", "Jun",
             "Jul", "Ago", "Sept", "Oct", "Nov", "Dic"
@@ -95,7 +105,7 @@ const EmpleadosTable = ({
         const day = date.getDate();
         const month = months[date.getMonth()];
         const year = date.getFullYear();
-    
+
         return `${day}/${month}/${year}`;
 
     };
@@ -105,130 +115,111 @@ const EmpleadosTable = ({
         <div
             className="datatables"
             style={{
-                margin: '1.5vh'
+                marginTop: 24
             }}
         >
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 500 }} size="small">
-                    <TableHead sx={{  backgroundColor: '#e9efff' }}>
+                <Table
+                    sx={{
+                        minWidth: 500
+                    }}
+                    size="medium"
+                >
+                    <TableHead
+                        sx={{
+                            backgroundColor: '#e9efff',
+                            flexShrink: 0,
+                        }}
+                    >
                         <TableRow>
+
                             <TableCell
-                                align='center'
-                                //size='small'
+                                align='left'
                                 sx={{
-                                    width: '1%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    lineHeight: 'normal'
                                 }}
                             >
-                                <p>#</p>
+                                <p> Identificación </p>
                             </TableCell>
                             <TableCell
-                                align='center'
-                                //size='small'
+                                align='left'
                                 sx={{
-                                    width: '2%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
-                                }}
-                            >
-                                <p> Código </p>
-                            </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    //width: '1%',
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    lineHeight: 'normal'
                                 }}
                             >
                                 <p> Nombre </p>
                             </TableCell>
                             <TableCell
-                                align='center'
-                                //size='small'
+                                align='left'
                                 sx={{
-                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    lineHeight: 'normal'
                                 }}
                             >
                                 <p> Email </p>
                             </TableCell>
                             <TableCell
-                                align='center'
-                                //size='small'
+                                align='left'
                                 sx={{
-                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    lineHeight: 'normal'
                                 }}
                             >
                                 <p> Fecha </p>
                             </TableCell>
                             <TableCell
-                                align='center'
-                                //size='small'
+                                align='right'
                                 sx={{
-                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    lineHeight: 'normal'
                                 }}
                             >
                                 <p> Salario </p>
                             </TableCell>
                             <TableCell
                                 align='center'
-                                //size='small'
                                 sx={{
-                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
-                                    //backgroundColor: 'red'
+                                    lineHeight: 'normal'
                                 }}
                             >
                                 <p> Estado  </p>
                             </TableCell>
                             <TableCell
                                 align='center'
-                                //size='small'
                                 sx={{
-                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    fontWeight: 400,
+                                    fontSize: 14,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro'
+                                    lineHeight: 'normal'
                                 }}
                             >
                                 <p> Acciones </p>
@@ -236,113 +227,88 @@ const EmpleadosTable = ({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        
+
                         {rowData!.length > 0 ?
                             <>
                                 {rowData.map((row, index) => (
                                     <TableRow key={row.identification_number} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                        <TableCell
-                                            align='center'
-                                            //size='small'
-                                            sx={{
-                                                width: '1%',
-                                                color: '#0E1726',
-                                                fontSize: 13,
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro'
-                                            }}
-                                        >
-                                            <Checkbox
-                                                onChange={() => setIsChecked(!isChecked)}
-                                            />
-                                        </TableCell>
+
                                         <TableCell
                                             align='left'
-                                            //size='small'
                                             sx={{
-                                                width: '2%',
-                                                color: '#BF5CF3',
-                                                fontSize: 13,
-                                                fontStyle: 'normal',
+                                                color: '#0E1726',
+                                                fontFamily: 'Maven Pro',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro'
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                lineHeight: 'normal'
                                             }}
                                         >
                                             <p> {row.identification_number} </p>
                                         </TableCell>
                                         <TableCell
                                             align='left'
-                                            //size='small'
                                             sx={{
-                                                //backgroundColor: 'red',
-                                                //width: '12%',
                                                 color: '#0E1726',
-                                                fontSize: 13,
-                                                fontStyle: 'normal',
+                                                fontFamily: 'Maven Pro',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro'
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                lineHeight: 'normal'
                                             }}
                                         >
-                                            <p> {row.name+' '+row.lastname} </p>
+                                            <p> {row.name + ' ' + row.lastname} </p>
                                         </TableCell>
                                         <TableCell
                                             align='left'
-                                            //size='small'
                                             sx={{
-                                                //backgroundColor: 'red',
-                                                //width: '10%',
                                                 color: '#0E1726',
-                                                fontSize: 13,
-                                                fontStyle: 'normal',
+                                                fontFamily: 'Maven Pro',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro'
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                lineHeight: 'normal'
                                             }}
                                         >
                                             <p> {row.email} </p>
                                         </TableCell>
                                         <TableCell
                                             align='left'
-                                            //size='small'
                                             sx={{
-                                                //width: '1%',
                                                 color: '#0E1726',
-                                                fontSize: 13,
-                                                fontStyle: 'normal',
+                                                fontFamily: 'Maven Pro',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro'
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                lineHeight: 'normal'
                                             }}
                                         >
-                                            <p> 
+                                            <p>
                                                 {configDate(row.registration_date)}
                                             </p>
                                         </TableCell>
                                         <TableCell
                                             align='right'
-                                            //size='small'
                                             sx={{
-                                                //width: '1%',
                                                 color: '#0E1726',
-                                                fontSize: 13,
-                                                fontStyle: 'normal',
+                                                fontFamily: 'Maven Pro',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro'
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                lineHeight: 'normal'
                                             }}
                                         >
                                             <p> {row.net_salary} </p>
                                         </TableCell>
                                         <TableCell
                                             align='center'
-                                            //size='small'
                                             sx={{
-                                                //width: '1%',
                                                 color: '#0E1726',
+                                                fontFamily: 'Maven Pro',
+                                                fontWeight: 400,
+                                                fontSize: 14,
+                                                fontStyle: 'normal',
+                                                lineHeight: 'normal',
                                                 justifyContent: 'center',
                                                 alignContent: 'center',
                                                 justifyItems: 'center',
@@ -352,31 +318,28 @@ const EmpleadosTable = ({
 
                                             <div
                                                 style={{
-                                                    //width: window.screen.width * 0.06,
                                                     width: '88.201px',
-                                                    height: '22px',
+                                                    height: '24px',
                                                     flexShrink: 0,
-                                                    //height: window.screen.height * 0.04,
+                                                    borderRadius: 4,
+                                                    boxShadow: '4px 10px 15px 0px rgba(0, 0, 0, 0.12)',
                                                     backgroundColor: row.status === 'active' ? '#00AB55' : '#E7515A',
                                                     color: 'white',
+                                                    fontFamily: 'Maven Pro',
+                                                    fontWeight: 400,
+                                                    fontSize: 14,
+                                                    fontStyle: 'normal',
+                                                    lineHeight: 'normal',
                                                     justifyContent: 'center',
                                                     alignContent: 'center',
                                                     justifyItems: 'center',
                                                     alignItems: 'center',
-                                                    borderRadius: 4,
-                                                    boxShadow: '4px 10px 15px 0px rgba(0, 0, 0, 0.12)',
-                                                    fontSize: 13,
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    textAlign: 'center',
-                                                    fontFamily: 'Maven Pro'
-                                                    //paddingLeft: 10
-
                                                 }}
                                             >
-                                                {row.status === 'active' ? 'Activo' : 'Inactivo'}
-                                              
+                                                <p style={{ paddingBottom: 2 }}>
+                                                    {row.status === 'active' ? 'Activo' : 'Inactivo'}
+                                                </p>
+
                                             </div>
                                         </TableCell>
                                         <TableCell
@@ -396,10 +359,14 @@ const EmpleadosTable = ({
                                                     marginTop: window.screen.height * 0.009
                                                 }}
                                                 onClick={() => {
+                                                    setIdEmpleado(row._id)
                                                     setOpenModalEdit(!openModalEdit)
                                                 }}
                                             >
-                                                <IconEye />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M0.833496 10C0.833496 10 4.16683 3.33337 10.0002 3.33337C15.8335 3.33337 19.1668 10 19.1668 10C19.1668 10 15.8335 16.6667 10.0002 16.6667C4.16683 16.6667 0.833496 10 0.833496 10Z" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M10 12.5C11.3807 12.5 12.5 11.3807 12.5 10C12.5 8.61929 11.3807 7.5 10 7.5C8.61929 7.5 7.5 8.61929 7.5 10C7.5 11.3807 8.61929 12.5 10 12.5Z" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
                                             </button>
                                             <button
                                                 style={{
@@ -409,11 +376,15 @@ const EmpleadosTable = ({
                                                     marginLeft: window.screen.width * 0.02
                                                 }}
                                                 onClick={() => {
-                                                    console.log(`Delete: ${row._id}`)
                                                     handleDelete(row._id)
                                                 }}
                                             >
-                                                <IconTrash />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                    <path d="M2.5 5H4.16667H17.5" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M15.8332 4.99996V16.6666C15.8332 17.1087 15.6576 17.5326 15.345 17.8451C15.0325 18.1577 14.6085 18.3333 14.1665 18.3333H5.83317C5.39114 18.3333 4.96722 18.1577 4.65466 17.8451C4.3421 17.5326 4.1665 17.1087 4.1665 16.6666V4.99996M6.6665 4.99996V3.33329C6.6665 2.89127 6.8421 2.46734 7.15466 2.15478C7.46722 1.84222 7.89114 1.66663 8.33317 1.66663H11.6665C12.1085 1.66663 12.5325 1.84222 12.845 2.15478C13.1576 2.46734 13.3332 2.89127 13.3332 3.33329V4.99996" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M8.3335 9.16663V14.1666" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M11.6665 9.16663V14.1666" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
                                             </button>
                                         </TableCell>
                                     </TableRow>
@@ -438,7 +409,7 @@ const EmpleadosTable = ({
                                             fontFamily: 'Maven Pro'
                                         }}
                                     >
-                                        
+
                                         Sin Registros
 
                                     </TableCell>
@@ -450,29 +421,28 @@ const EmpleadosTable = ({
             </TableContainer>
             <div
                 style={{
+                    backgroundColor: 'white',
                     display: 'flex',
-                    marginTop: '1rem',
                     alignItems: 'center',
-                    //backgroundColor: 'blue',
                     width: '100%',
-                    gap: '2px'
+                    gap: '2px',
+                    paddingTop: 20,
+                    paddingLeft: 20,
+                    paddingBottom: 20
                 }}
             >
 
                 <div
-                    style={{
-                        //width: '25px',
-                        width: '25%',
-                        //width: window.screen.width * 0.15,
-                        marginLeft: '1vw',
-                        //backgroundColor: 'yellow'
-                    }}
+                    style={{ width: '240px', marginRight: 9 }}
                 >
                     <Typography
                         style={{
-                            fontWeight: 'initial',
+                            color: '#3B3F5C',
+                            fontFamily: 'Nunito',
                             fontSize: 14,
-                            fontFamily: 'Maven Pro'
+                            fontStyle: 'normal',
+                            fontWeight: 400,
+                            lineHeight: 'normal'
                         }}
                     >
                         Mostrando {rowData!.length} de {rowData!.length} registros
@@ -482,19 +452,21 @@ const EmpleadosTable = ({
                 <div
                     style={{
                         display: 'flex',
-                        //marginLeft: window.screen.width * 0.01,
-                        alignItems: 'center',
-                        //backgroundColor: 'green'
+                        alignItems: 'center'
                     }}
-                > 
+                >
                     <select
                         value={pageSize!}
                         onChange={(e) => setPageSize(Number(e.target.value))}
                         style={{
-                            padding: '5px',
-                            borderRadius: '4px',
-                            borderWidth: '0.5px',
-                            borderColor: 'gray'
+                            width: '70px',
+                            height: '34px',
+                            flexShrink: 0,
+                            borderRadius: 6,
+                            border: '1px solid #E0E6ED',
+                            background: '#FFFFF',
+                            paddingLeft: 13,
+                            outline: 'none'
                         }}
                     >
                         {PAGE_SIZES!.map((size) => (
@@ -505,24 +477,23 @@ const EmpleadosTable = ({
                     </select>
                 </div>
 
-
                 <div
                     style={{
                         width: '100%',
-                        //backgroundColor: 'cyan',
                         display: 'flex',
                         alignItems: 'right',
                         justifyContent: 'right',
-                        gap: '10px',
-                        //marginLeft: window.screen.width * 0.37
+                        gap: '5px',
+                        paddingRight: 63
                     }}
                 >
                     <button
                         disabled={page === 1}
                         onClick={() => setPage(page - 1)}
                         style={{
-                            width: '40px',
-                            height: '40px',
+                            width: '36px',
+                            height: '36px',
+                            flexShrink: 0,
                             border: '1px solid #ccc',
                             borderRadius: '50%',
                             backgroundColor: page === 1 ? '#f5f5f5' : '#ffffff',
@@ -533,7 +504,9 @@ const EmpleadosTable = ({
                             justifyContent: 'center',
                         }}
                     >
-                        {'<'}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M10.9375 11.375L6.5625 7L10.9375 2.625M7.4375 11.375L3.0625 7L7.4375 2.625" stroke="#3B3F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </button>
 
                     {[...Array(Math.ceil(rowData!.length / pageSize)).keys()].map((_, index) => (
@@ -541,8 +514,9 @@ const EmpleadosTable = ({
                             key={index}
                             onClick={() => setPage(index + 1)}
                             style={{
-                                width: '40px',
-                                height: '40px',
+                                width: '36px',
+                                height: '36px',
+                                flexShrink: 0,
                                 border: '1px solid #ccc',
                                 borderRadius: '50%',
                                 backgroundColor: page === index + 1 ? '#BF5CF3' : '#f5f5f5',
@@ -551,7 +525,11 @@ const EmpleadosTable = ({
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontWeight: page === index + 1 ? 'bold' : 'normal',
+                                fontWeight: page === index + 1 ? 600 : 300,
+                                fontFamily: 'Nunito',
+                                fontSize: 14,
+                                fontStyle: 'normal',
+                                lineHeight: 'normal',
                             }}
                         >
                             {index + 1}
@@ -562,8 +540,8 @@ const EmpleadosTable = ({
                         disabled={page * pageSize >= initialRecords!.length}
                         onClick={() => setPage(page + 1)}
                         style={{
-                            width: '40px',
-                            height: '40px',
+                            width: '36px',
+                            height: '36px',
                             border: '1px solid #ccc',
                             borderRadius: '50%',
                             backgroundColor: page * pageSize >= initialRecords!.length ? '#f5f5f5' : '#ffffff',
@@ -574,11 +552,24 @@ const EmpleadosTable = ({
                             justifyContent: 'center',
                         }}
                     >
-                        {'>'}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3.0625 11.375L7.4375 7L3.0625 2.625M6.5625 11.375L10.9375 7L6.5625 2.625" stroke="#3B3F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </button>
                 </div>
             </div>
-        </div>
+
+            <EditarEmpleadoModal
+                idEmpleado={idEmpleado}
+                openModalEdit={openModalEdit}
+                setOpenModalEdit={setOpenModalEdit}
+                hideButton={hideButton}
+                setHideButton={setHideButton}
+                openMessage={openMessage}
+                setOpenMessage={setOpenMessage}
+            />
+
+        </div >
 
     )
 

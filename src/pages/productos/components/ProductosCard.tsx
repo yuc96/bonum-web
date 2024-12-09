@@ -72,7 +72,7 @@ const ProductosCard = ({
                                     alignContent: 'center',
                                     textAlign: 'center',
                                     fontSize: 48,
-                                    fontWeight: 700,
+                                    fontWeight: 400,
                                     marginTop: '2vh',
                                     fontFamily: 'Maven Pro',
                                 }}

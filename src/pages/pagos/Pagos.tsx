@@ -64,7 +64,7 @@ import TablePagosMain from './components/TablePagosMain';
 const pagosData = [
     {
         idAnticipo: "#PG0001",
-        nombre: "Santiago Efraín Vásquez Carreño",
+        nombre: "Pago mes 1",
         identificacion: "0917319337",
         fechaAnticipo: "15/Nov/2024",
         anticipoActivo: 300.00,
@@ -78,7 +78,7 @@ const pagosData = [
     },
     {
         idAnticipo: "#PG0002",
-        nombre: "Alexander Gray",
+        nombre: "Pago Mes 2",
         identificacion: "0924842339",
         fechaAnticipo: "20/Nov/2024",
         anticipoActivo: 500.00,
@@ -614,7 +614,7 @@ const Pagos = () => {
                     color: '#0E1726',
                     fontSize: 13,
                     fontStyle: 'normal',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     fontFamily: 'Maven Pro',
                     lineHeight: 'normal'
                 }}
@@ -676,7 +676,7 @@ const Pagos = () => {
                                 gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
-                                fontWeight: 600,
+                                fontWeight: 400,
                                 lineHeight: 'normal',
                                 fontFamily: 'Maven Pro',
                             }}
@@ -755,11 +755,11 @@ const Pagos = () => {
                                                         fontSize: 14,
                                                         fontStyle: 'normal',
                                                         fontFamily: 'Maven Pro',
-                                                        fontWeight: 600,
+                                                        fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         // fontSize: 13,
                                                         // fontFamily: 'serif',
-                                                        // fontWeight: 600,
+                                                        // fontWeight: 400,
                                                         color: '#0E1726',
                                                         opacity: 1
                                                     },
@@ -798,7 +798,7 @@ const Pagos = () => {
                                         //fontFamily: Nunito;
                                         fontSize: 14,
                                         fontStyle: 'normal',
-                                        fontWeight: 600,
+                                        fontWeight: 400,
                                         lineHeight: 'normal',
                                         outline: 'none',
                                         fontFamily: 'Maven Pro',

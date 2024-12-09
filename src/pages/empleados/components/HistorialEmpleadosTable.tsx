@@ -65,7 +65,12 @@ const HistorialEmpleadoTable = ({
         >
             <TableContainer component={Paper}>
                 <Table size="small">
-                    <TableHead>
+                    <TableHead
+                        sx={{
+                            backgroundColor: '#e9efff',
+                            flexShrink: 0,
+                        }}
+                    >
                         <TableRow>
                             <TableCell
                                 align='center'
@@ -75,7 +80,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                     //backgroundColor: 'red'
@@ -90,7 +95,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -104,7 +109,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro'
                                 }}
@@ -120,7 +125,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -134,7 +139,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -148,7 +153,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
@@ -162,7 +167,7 @@ const HistorialEmpleadoTable = ({
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
-                                    fontWeight: 600,
+                                    fontWeight: 400,
                                     fontFamily: 'Maven Pro',
                                     lineHeight: 'normal'
                                 }}
