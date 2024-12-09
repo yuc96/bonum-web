@@ -67,10 +67,10 @@ const EmpleadosTable = ({
 }) => {
 
     useEffect(() => {
-        console.log(rowData)
+      console.log(rowData)
     }, [])
 
-    const { accionDatos } = useContext(AccionContext);
+    const { accionDatos } = useContext( AccionContext );
 
     const handleDelete = (id: any) => {
         delete_empleados(id)
@@ -84,7 +84,7 @@ const EmpleadosTable = ({
     }
 
     function configDate(fecha: string): string {
-
+      
         const months = [
             "Ene", "Feb", "Mar", "Abr", "May", "Jun",
             "Jul", "Ago", "Sept", "Oct", "Nov", "Dic"
@@ -95,7 +95,7 @@ const EmpleadosTable = ({
         const day = date.getDate();
         const month = months[date.getMonth()];
         const year = date.getFullYear();
-
+    
         return `${day}/${month}/${year}`;
 
     };
@@ -105,133 +105,130 @@ const EmpleadosTable = ({
         <div
             className="datatables"
             style={{
-                marginTop: 24
+                margin: '1.5vh'
             }}
         >
             <TableContainer component={Paper}>
-                <Table
-                    sx={{
-                        minWidth: 500
-                    }}
-                    size="medium"
-                >
-                    <TableHead
-                        sx={{
-                            flexShrink: 0,
-                            '&::before': {
-                                content: '""',
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                background: '#E0E6ED', 
-                                opacity: 0.3,
-                                zIndex: 0,
-                            },
-                        }}
-                    >
+                <Table sx={{ minWidth: 500 }} size="small">
+                    <TableHead sx={{  backgroundColor: '#e9efff' }}>
                         <TableRow>
                             <TableCell
                                 align='center'
+                                //size='small'
                                 sx={{
+                                    width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p>#</p>
                             </TableCell>
                             <TableCell
-                                align='left'
+                                align='center'
+                                //size='small'
                                 sx={{
+                                    width: '2%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p> Código </p>
                             </TableCell>
                             <TableCell
-                                align='left'
+                                align='center'
+                                //size='small'
                                 sx={{
+                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p> Nombre </p>
                             </TableCell>
                             <TableCell
-                                align='left'
+                                align='center'
+                                //size='small'
                                 sx={{
+                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p> Email </p>
                             </TableCell>
                             <TableCell
-                                align='left'
+                                align='center'
+                                //size='small'
                                 sx={{
+                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p> Fecha </p>
                             </TableCell>
                             <TableCell
-                                align='right'
+                                align='center'
+                                //size='small'
                                 sx={{
+                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p> Salario </p>
                             </TableCell>
                             <TableCell
                                 align='center'
+                                //size='small'
                                 sx={{
+                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
+                                    //backgroundColor: 'red'
                                 }}
                             >
                                 <p> Estado  </p>
                             </TableCell>
                             <TableCell
                                 align='center'
+                                //size='small'
                                 sx={{
+                                    //width: '1%',
                                     color: '#0E1726',
-                                    fontFamily: 'Nunito',
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontStyle: 'normal',
                                     fontWeight: 600,
-                                    lineHeight: 'normal'
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro'
                                 }}
                             >
                                 <p> Acciones </p>
@@ -239,20 +236,22 @@ const EmpleadosTable = ({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
+                        
                         {rowData!.length > 0 ?
                             <>
                                 {rowData.map((row, index) => (
                                     <TableRow key={row.identification_number} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell
                                             align='center'
+                                            //size='small'
                                             sx={{
+                                                width: '1%',
                                                 color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
+                                                fontSize: 13,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro'
                                             }}
                                         >
                                             <Checkbox
@@ -261,105 +260,123 @@ const EmpleadosTable = ({
                                         </TableCell>
                                         <TableCell
                                             align='left'
+                                            //size='small'
                                             sx={{
-                                                color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
+                                                width: '2%',
+                                                color: '#BF5CF3',
+                                                fontSize: 13,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro'
                                             }}
                                         >
                                             <p> {row.identification_number} </p>
                                         </TableCell>
                                         <TableCell
                                             align='left'
+                                            //size='small'
                                             sx={{
+                                                //backgroundColor: 'red',
+                                                //width: '12%',
                                                 color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
+                                                fontSize: 13,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro'
                                             }}
                                         >
-                                            <p> {row.name + ' ' + row.lastname} </p>
+                                            <p> {row.name+' '+row.lastname} </p>
                                         </TableCell>
                                         <TableCell
                                             align='left'
+                                            //size='small'
                                             sx={{
+                                                //backgroundColor: 'red',
+                                                //width: '10%',
                                                 color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
+                                                fontSize: 13,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro'
                                             }}
                                         >
                                             <p> {row.email} </p>
                                         </TableCell>
                                         <TableCell
                                             align='left'
+                                            //size='small'
                                             sx={{
+                                                //width: '1%',
                                                 color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
+                                                fontSize: 13,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro'
                                             }}
                                         >
-                                            <p>
+                                            <p> 
                                                 {configDate(row.registration_date)}
                                             </p>
                                         </TableCell>
                                         <TableCell
                                             align='right'
+                                            //size='small'
                                             sx={{
+                                                //width: '1%',
                                                 color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
+                                                fontSize: 13,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro'
                                             }}
                                         >
                                             <p> {row.net_salary} </p>
                                         </TableCell>
                                         <TableCell
                                             align='center'
+                                            //size='small'
                                             sx={{
+                                                //width: '1%',
                                                 color: '#0E1726',
-                                                fontFamily: 'Nunito',
-                                                fontSize: 14,
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal'
+                                                justifyContent: 'center',
+                                                alignContent: 'center',
+                                                justifyItems: 'center',
+                                                alignItems: 'center'
                                             }}
                                         >
 
                                             <div
                                                 style={{
+                                                    //width: window.screen.width * 0.06,
                                                     width: '88.201px',
                                                     height: '22px',
                                                     flexShrink: 0,
-                                                    borderRadius: 4,
-                                                    boxShadow: '4px 10px 15px 0px rgba(0, 0, 0, 0.12)',
+                                                    //height: window.screen.height * 0.04,
                                                     backgroundColor: row.status === 'active' ? '#00AB55' : '#E7515A',
                                                     color: 'white',
-                                                    fontFamily: "Nunito",
-                                                    fontSize: 12,
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 600,
-                                                    lineHeight: 'normal',
                                                     justifyContent: 'center',
                                                     alignContent: 'center',
                                                     justifyItems: 'center',
-                                                    alignItems: 'center'
+                                                    alignItems: 'center',
+                                                    borderRadius: 4,
+                                                    boxShadow: '4px 10px 15px 0px rgba(0, 0, 0, 0.12)',
+                                                    fontSize: 13,
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    textAlign: 'center',
+                                                    fontFamily: 'Maven Pro'
+                                                    //paddingLeft: 10
+
                                                 }}
                                             >
                                                 {row.status === 'active' ? 'Activo' : 'Inactivo'}
-
+                                              
                                             </div>
                                         </TableCell>
                                         <TableCell
@@ -421,7 +438,7 @@ const EmpleadosTable = ({
                                             fontFamily: 'Maven Pro'
                                         }}
                                     >
-
+                                        
                                         Sin Registros
 
                                     </TableCell>
@@ -469,7 +486,7 @@ const EmpleadosTable = ({
                         alignItems: 'center',
                         //backgroundColor: 'green'
                     }}
-                >
+                > 
                     <select
                         value={pageSize!}
                         onChange={(e) => setPageSize(Number(e.target.value))}
@@ -561,7 +578,7 @@ const EmpleadosTable = ({
                     </button>
                 </div>
             </div>
-        </div >
+        </div>
 
     )
 

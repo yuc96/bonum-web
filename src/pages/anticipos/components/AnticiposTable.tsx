@@ -28,7 +28,7 @@ const AnticiposTable = ({
     solicitudesData,
     search,
     searchData,
-    sortStatus,
+    // sortStatus,
     hideCols,
     setIsChecked,
     setOpenModal,
@@ -36,7 +36,7 @@ const AnticiposTable = ({
     setPageSize,
     setSearch,
     setSearchData,
-    setSortStatus,
+    // setSortStatus,
     setHideCols,
     PAGE_SIZES,
     setStateModal
@@ -49,7 +49,7 @@ const AnticiposTable = ({
     solicitudesData: any[];
     search: string;
     searchData: boolean;
-    sortStatus: DataTableSortStatus;
+    // sortStatus: DataTableSortStatus;
     hideCols: any;
     setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -57,7 +57,7 @@ const AnticiposTable = ({
     setPageSize: React.Dispatch<React.SetStateAction<number>>;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     setSearchData: React.Dispatch<React.SetStateAction<boolean>>;
-    setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
+    // setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
     setHideCols: React.Dispatch<React.SetStateAction<any>>;
     PAGE_SIZES: any[],
     setStateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -70,7 +70,7 @@ const AnticiposTable = ({
                 margin: '1.5vh'
             }}
         >
-            <TableContainer component={Paper}>
+            <TableContainer >
                 <Table sx={{ minWidth: 500 }} size="small">
                     <TableHead sx={{  backgroundColor: '#e9efff' }}>
                         <TableRow>

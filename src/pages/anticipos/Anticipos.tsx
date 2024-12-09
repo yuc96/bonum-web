@@ -1,4 +1,4 @@
-import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+// import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import { useEffect, useState } from "react";
 import IconSearch from "../../components/Icon/IconSearch";
 import IconXCircle from "../../components/Icon/IconXCircle";
@@ -97,7 +97,7 @@ const Anticipos = () => {
     const [recordsData, setRecordsData] = useState(initialRecords);
     const [search, setSearch] = useState('');
     const [searchData, setSearchData] = useState(false);
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'idSolicitud', direction: 'asc' });
+    // const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'idSolicitud', direction: 'asc' });
 
     const dispatch = useDispatch();
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
@@ -129,11 +129,11 @@ const Anticipos = () => {
         });
     }, [search]);
 
-    useEffect(() => {
-        const data = sortBy(initialRecords, sortStatus.columnAccessor);
-        setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
-        setPage(1);
-    }, [sortStatus]);
+    // useEffect(() => {
+    //     const data = sortBy(initialRecords, sortStatus.columnAccessor);
+    //     setInitialRecords(sortStatus.direction === 'desc' ? data.reverse() : data);
+    //     setPage(1);
+    // }, [sortStatus]);
 
     const [hideCols, setHideCols] = useState<any>(['age', 'dob', 'isActive']);
 
@@ -483,7 +483,7 @@ const Anticipos = () => {
                     solicitudesData={solicitudesData}
                     search={search}
                     searchData={searchData}
-                    sortStatus={sortStatus}
+                    // sortStatus={sortStatus}
                     hideCols={hideCols}
                     setIsChecked={setIsChecked}
                     setOpenModal={setOpenModal}
@@ -491,7 +491,7 @@ const Anticipos = () => {
                     setPageSize={setPageSize}
                     setSearch={setSearch}
                     setSearchData={setSearchData}
-                    setSortStatus={setSortStatus}
+                    // setSortStatus={setSortStatus}
                     setHideCols={setHideCols}
                     PAGE_SIZES={PAGE_SIZES}
                     setStateModal={setStateModal}
