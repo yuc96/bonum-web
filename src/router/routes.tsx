@@ -1,4 +1,7 @@
+import { Login } from '@mui/icons-material';
+import { patch } from '@mui/material';
 import { lazy } from 'react';
+const Logins=lazy(() => import('../pages/login/login'));
 const Index = lazy(() => import('../pages/Index'));
 const Empleados = lazy(() => import('../pages/empleados/Empleados'));
 const Productos = lazy(() => import('../pages/productos/Productos'));
@@ -10,8 +13,14 @@ const HistorialEmpleado =  lazy(() => import('../pages/empleados/screens/Histori
 
 const routes = [
     // dashboard
+
     {
-        path: '/',
+        path:'/',
+        element: <Logins />,
+        layout: 'default',
+    },
+    {
+        path: '/index',
         element: <Index />,
         layout: 'default',
     },
