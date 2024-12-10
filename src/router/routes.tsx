@@ -1,6 +1,7 @@
 import { Login } from '@mui/icons-material';
 import { patch } from '@mui/material';
 import { lazy } from 'react';
+import React from 'react';  // Agregar esta línea al principio del archivo
 
 import ProtectedRoute from './ProtectedRoute';  // Importar el componente de protección
 
@@ -20,8 +21,8 @@ const routes = [
     {
         path: '/login',
         element: <Logins />,
-        layout: 'default',
-    },
+        layout: React.Fragment,  // Usamos React.Fragment para no aplicar un layout
+      },
 
     // Ruta principal, protegida
     {

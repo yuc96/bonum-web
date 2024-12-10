@@ -1,44 +1,95 @@
 /* Estructura básica de la página de login */
 .login-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f2f5;
+    background-color: white;
   }
 
+  .logo-bonum img {
+    width: 347px;  /* Ancho */
+    height: 136px;  /* Mantener proporciones */
+  }
+  .Logo-Country{
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    justify-content:space-between;
+    background-color: #FFFFFF;
+
+    width: 95px;
+    height: 42px;
+    position: relative;
+    top: 10px;
+    left: 300px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-radius: 8px;
+    border: 1px solid #888EA84D ;
+
+  }
   .login-box {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); */
     width: 100%;
-    max-width: 400px;
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
+    max-width: 440px;
   }
 
   .input-group {
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #FFFFFF;
+    border: 1px solid #E0E6ED;
+    border-radius: 6px;
+    width: 100%;
+    height: 38px;
   }
 
-  .input-group label {
+  .input-with-icon {
+    padding-right: 6px;
+    padding-left: 16px;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  .input-group input {
+
+    width: 100%;
+
+  }
+
+  input::placeholder {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19.1px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: var(--Icons, #888EA8); /* Color del texto del placeholder */
+  }
+  .nameInput {
+
+    width: auto;
+    height: 19px;
+
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19.1px;
+
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
     color: #555;
-  }
-
-  .input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
   }
 
   .input-group input:focus {
@@ -47,20 +98,63 @@
   }
 
   .login-btn {
-    width: 100%;
+    width: 440px;
+    height: 38px;
     padding: 12px;
-    background-color: #1b1919;
-    color: white;
-    font-size: 16px;
+    background-color: #BF5CF3;
+    color: #FFFFFF;
+
+    /* Centrar el texto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Tipografía */
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19.1px;
+    text-align: center; /* Cambiado de left a center para centrar el texto */
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+
+    /* Bordes y cursor */
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+
+    /* Efectos */
     cursor: pointer;
   }
 
+  .lost-password{
+    padding-left: 20px;
+    padding-top: 5px;
+    /* background-color: #af4c4f; */
+    padding-bottom:15px;
+  }
+
+  .lost-password p {
+    width: auto;
+    height: 19px; /* Altura fija */
+
+    font-family: 'Nunito', sans-serif; /* Fuente */
+    font-size: 14px; /* Tamaño de fuente */
+    font-weight: 600; /* Grosor */
+    line-height: 19.1px; /* Altura de línea */
+    text-align: left; /* Alineación del texto */
+    text-underline-position: from-font; /* Posición del subrayado */
+    text-decoration-skip-ink: none; /* Subrayado limpio */
+
+    color: #888EA8; /* Color del texto */
+
+    gap: 0px; /* Espaciado entre elementos (si aplica) */
+    opacity: 1; /* Cambiado a 1 para que sea visible */
+  }
+
   .login-btn:hover {
-    background-color: #45a049;
+    background-color: #4361EE70;
   }
 
   .login-btn:active {
-    background-color: #388e3c;
+    background-color: #4361EE70;
   }

@@ -2,7 +2,10 @@ const ambiente = 'local';
 const urlAmbiente = {
     local:
     {
-        host: 'http://167.172.247.51:3000', 
+        host: 'http://167.172.247.51:3000',
+    },
+    pruebas:{
+        host:'http://localhost:3000',
     },
 };
 

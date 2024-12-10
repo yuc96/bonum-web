@@ -451,12 +451,14 @@ const NuevoEmpleadoModal = (
                                                     }}>
                                                         &nbsp;Niv. Educativo
                                                     </MenuItem>
+                                                    <MenuItem value="Ninguno">&nbsp;Ninguno</MenuItem>
                                                     <MenuItem value="Primaria">&nbsp;Primaria</MenuItem>
                                                     <MenuItem value="Secundaria">&nbsp;Secundaria</MenuItem>
                                                     <MenuItem value="Técnico">&nbsp;Técnico</MenuItem>
                                                     <MenuItem value="Tecnológico">&nbsp;Tecnológico</MenuItem>
                                                     <MenuItem value="Universitario">&nbsp;Universitario</MenuItem>
                                                     <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
+                                                    <MenuItem value="Doctorado">&nbsp;Doctorado</MenuItem>
                                                 </Select>
                                             </FormControl>
                                         </div>

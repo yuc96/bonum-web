@@ -1,16 +1,14 @@
-// components/ProtectedRoute.tsx
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
- // Importación de la librería alternativa
+import { jwtDecode } from "jwt-decode"; // Importación correcta según la documentación
+
+// Definir el tipo del payload decodificado que contiene el campo "exp"
+interface DecodedToken {
+  exp: number; // El campo de expiración en el JWT (Unix timestamp)
+}
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-}
-
-
-interface DecodedToken {
-  exp: number; // El campo de expiración en el JWT (Unix timestamp)
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
@@ -36,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   // Verificación de expiración del token
   try {
-    const decoded = jwtDecode(token) // Decodificamos el token
+    const decoded = jwtDecode<DecodedToken>(token); // Decodificamos el token con el tipo DecodedToken
     if (decoded.exp * 1000 < Date.now()) {  // Multiplica por 1000 si el exp está en milisegundos
       localStorage.removeItem('token');
       return <Navigate to="/login" replace />;
