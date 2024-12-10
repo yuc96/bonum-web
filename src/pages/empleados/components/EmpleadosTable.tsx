@@ -196,7 +196,7 @@ const EmpleadosTable = ({
                                     lineHeight: 'normal'
                                 }}
                             >
-                                <p> Salario </p>
+                                <p> Sueldo </p>
                             </TableCell>
                             <TableCell
                                 align='center'

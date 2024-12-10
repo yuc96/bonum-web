@@ -393,7 +393,7 @@ const TablePagosMain = ({
                         </TableBody>
                     </Table>
                 </TableContainer> */}
-                
+
                 <TableContainer
                     component={Paper}
                 >
@@ -435,7 +435,7 @@ const TablePagosMain = ({
                                 >
                                     <p> Pago </p>
                                 </TableCell>
-                                
+
                                 <TableCell
                                     align='left'
                                     //size='small'
@@ -450,7 +450,7 @@ const TablePagosMain = ({
                                 >
                                     <p> Fecha Pago </p>
                                 </TableCell>
-                                
+
                                 <TableCell
                                     align='right'
                                     //size='small'
@@ -556,7 +556,7 @@ const TablePagosMain = ({
                                     >
                                         <p> {row.nombre} </p>
                                     </TableCell>
-                                    
+
                                     <TableCell
                                         align='left'
                                         size='medium'
@@ -571,7 +571,7 @@ const TablePagosMain = ({
                                     >
                                         <p> {row.fechaAnticipo} </p>
                                     </TableCell>
-                                    
+
                                     <TableCell
                                         align='right'
                                         size='medium'

@@ -21,7 +21,7 @@ const CargarEmpleadosModal = (
         }
 ) => {
 
-    const [fileName, setFileName] = useState<string | null>(null); 
+    const [fileName, setFileName] = useState<string | null>(null);
     const [datosEmpleados, setDatosEmpleados] = useState<any[]>([]);
 
     const { accionDatos } = useContext(AccionContext);
@@ -29,12 +29,12 @@ const CargarEmpleadosModal = (
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         const file = event.target.files?.[0];
-        
+
         if (file) {
 
             setFileName(file.name);
             const reader = new FileReader();
-            
+
             reader.onload = (e) => {
 
                 const data = new Uint8Array(e.target?.result as ArrayBuffer);
@@ -45,7 +45,7 @@ const CargarEmpleadosModal = (
 
                 const jsonData = XLSX.utils.sheet_to_json(sheet);
                 setDatosEmpleados(jsonData);
-             
+
             };
 
             reader.readAsArrayBuffer(file);
@@ -135,7 +135,7 @@ const CargarEmpleadosModal = (
                                         color: '#BF5CF3'
                                     }}
                                 >
-                                    <p> Subir nómina de empleados </p>
+                                    <p> Importar nómina de colaboradores </p>
 
                                 </div>
 
@@ -214,7 +214,7 @@ const CargarEmpleadosModal = (
                                             marginRight: 10
                                         }}
                                     >
-                                        Subir Archivo
+                                        Importar Archivo
 
                                         <input
                                             type="file"

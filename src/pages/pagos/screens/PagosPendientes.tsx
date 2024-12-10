@@ -352,6 +352,8 @@ const PagosPendientes = () => {
                                 //backgroundColor: 'yellow',
                                 display: 'flex',
                                 flexDirection: 'column',
+                                alignItems:'center',
+                                justifyContent:'center',
                                 width: window.screen.width * 1
                             }}
                         >
@@ -361,43 +363,11 @@ const PagosPendientes = () => {
                                     src="/assets/images/logo_side.png"
                                     alt="logo"
                                     style={{
-                                        width: '201px',
-                                        height: '56px',
+                                        width: '320px',
+                                        height: 'auto',
                                         objectFit: 'cover'
                                     }}
                                 />
-                            </div>
-
-                            <div
-                                style={{
-
-                                    color: '#888EA8',
-                                    //fontFamily: Nunito,
-                                    fontSize: 14,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: '24px',
-                                    marginTop: 10,
-                                    fontFamily: 'Maven Pro',
-
-                                    // color: '#888EA8',
-                                    // fontSize: 13,
-                                    // fontWeight: 400,
-                                    // lineHeight: 'normal'
-                                }}
-                            >
-                                <p>
-                                    13 Tetrick Road, Cypress Gardens, Florida, 33884, US
-                                </p>
-
-                                <p>
-                                    info@bonum.com,
-
-                                </p>
-
-                                <p>
-                                    +1 (070) 123-4567
-                                </p>
                             </div>
 
                         </div>
@@ -458,7 +428,7 @@ const PagosPendientes = () => {
                                             fontSize: 14,
                                             fontWeight: 400,
                                             fontFamily: 'Maven Pro',
-                                            
+
                                         }}
                                     >
                                         Fecha de corte

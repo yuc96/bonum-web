@@ -20,6 +20,11 @@ import { Paper } from '@mantine/core';
 import IconEye from '../../../components/Icon/IconEye';
 import InfiniteScroll from "react-infinite-scroll-component";
 
+//importaciones de iconos visto y copy
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'; // Ícono de copiar
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Ícono de visto
+
 const CobrosTable = (
     {
         isChecked,
@@ -70,6 +75,40 @@ const CobrosTable = (
 
     const [cobrosDataInf, setCobrosDataInf] = useState(cobrosData.slice(0, pageSize));
     const [addData, setAddData] = useState(cobrosData.length > pageSize);
+
+    // const [copied, setCopied] = useState(false); // Estado para manejar el ícono
+
+    //Funcion copiar en portapapeles
+    const [copiedRows, setCopiedRows] = useState<Record<number, Record<string, boolean>>>({}); // { id: { columna: boolean } }
+
+
+    // Función para copiar al portapapeles
+    const handleCopy = (id: number, value: any, identificador: string) => {
+        // Verifica si la fila ya está copiada para esa columna
+        console.log("Id", id);
+        console.log("Columna", identificador);
+        console.log("Estado de copiado para esta fila y columna", copiedRows[id]?.[identificador]);
+
+        // Si ya está copiado, revertir el estado
+        if (copiedRows[id]?.[identificador]) {
+            setCopiedRows((prev) => ({
+                ...prev,
+                [id]: { ...prev[id], [identificador]: false } // Establecer el estado de la columna como false
+            }));
+
+        } else {
+            // Si no está copiado, copiar al portapapeles
+            navigator.clipboard.writeText(value)
+                .then(() => {
+                    setCopiedRows((prev) => ({
+                        ...prev,
+                        [id]: { ...prev[id], [identificador]: true } // Establecer el estado de la columna como true
+                    }));
+
+                })
+                .catch((err) => console.error("Error al copiar al portapapeles:", err));
+        }
+    };
 
     const moreData = () => {
 
@@ -292,7 +331,7 @@ const CobrosTable = (
                             </TableCell>
                         </TableRow>
                     </TableHead>
-                    
+
                     <TableBody>
                         {recordsData.map((row, index) => (
                             <TableRow key={row.idAnticipo} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -327,6 +366,7 @@ const CobrosTable = (
                                 <TableCell
                                     align='left'
                                     size='medium'
+                                    key={index}
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -336,8 +376,28 @@ const CobrosTable = (
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.identificacion} </p>
+                                    <div style={{ display: 'flex', alignItems: 'center',justifyContent:'center' }}>
+                                    <p   style={{border:'10px',width:'80px',top: '50%', left: '50%'}}> {row.identificacion} </p>
+                                    <button
+                                        onClick={() => handleCopy(index, row.identificacion,'cedula')} // Usa el ID único de cada fila
+                                        style={{
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        padding: 0,
+                                        marginLeft: '8px',
+                                        }}
+                                    >
+                                       {
+                                          copiedRows[index]?.['cedula']
+                                            ? <CheckCircleIcon sx={{ color: 'green' }} />
+                                            : <ContentCopyIcon sx={{ color: '#888EA8' }} />
+                                       }
+                                    </button>
+                                    </div>
+
                                 </TableCell>
+
                                 <TableCell
                                     align='left'
                                     size='medium'
@@ -425,6 +485,7 @@ const CobrosTable = (
                                 <TableCell
                                     align='right'
                                     size='medium'
+                                    key={index}
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -434,7 +495,25 @@ const CobrosTable = (
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.totalDebitar} </p>
+                                    <div style={{ display: 'flex', alignItems: 'center',justifyContent:'center' }}>
+                                        <p style={{border:'10px',width:'30px',top: '50%', left: '50%'}}> {row.totalDebitar} </p>
+                                        <button
+                                            onClick={() => handleCopy(index, row.totalDebitar,'Debito')} // Usa el ID único de cada fila
+                                            style={{
+                                              background: 'none',
+                                              border: 'none',
+                                              cursor: 'pointer',
+                                              padding: 0,
+                                              marginLeft: '8px',
+                                            }}
+                                          >
+                                          {
+                                             copiedRows[index]?.['Debito']
+                                                ? <CheckCircleIcon sx={{ color: 'green' }} />
+                                                : <ContentCopyIcon sx={{ color: '#888EA8' }} />
+                                          }
+                                        </button>
+                                    </div>
                                 </TableCell>
 
                                 <TableCell
@@ -722,7 +801,7 @@ const CobrosTable = (
             </div>
 
         </div>
-        
+
 
     )
 

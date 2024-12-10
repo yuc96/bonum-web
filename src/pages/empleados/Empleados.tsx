@@ -93,7 +93,7 @@ const Empleados = () => {
                             lineHeight: 'normal',
                         }}
                     >
-                        Empleados
+                        Colaboradores
                     </Typography>
 
                 </div>
@@ -121,7 +121,7 @@ const Empleados = () => {
                                 lineHeight: 'normal'
                             }}
                         >
-                            Empleados
+                             Colaboradores
                         </Typography>
 
                     </div>
@@ -244,7 +244,7 @@ const Empleados = () => {
                                 <path d="M5.48242 10.954H18.2226" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <p style={{ paddingBottom: 2 }}>
-                                Importar Empleados
+                                Importar  Colaboradores
                             </p>
                         </button>
 
