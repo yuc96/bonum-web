@@ -8,6 +8,43 @@ import { Dayjs } from 'dayjs';
 import { AccionContext } from '../../../contexts/AccionesContext';
 import { Box, FormControl, MenuItem, Select } from '@mui/material';
 
+
+
+const Tooltip = ({
+    show,
+    message,
+    top,
+    left,
+  }: {
+    show: boolean;
+    message: string;
+    top: string;
+    left: string;
+  }) => {
+    if (!show) return null;
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: top,
+          left: left,
+          backgroundColor: 'black',
+          color: 'white',
+          borderRadius: '8px',
+          padding: '5px',
+          fontSize: '12px',
+          marginTop: '5px',
+          whiteSpace: 'nowrap',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          zIndex: 1,
+        }}
+      >
+        {message}
+      </div>
+    );
+  };
+
 const NuevoEmpleadoModal = (
     {
         openModal,
@@ -48,6 +85,25 @@ const NuevoEmpleadoModal = (
     const [observaciones, setObservaciones] = useState('');
 
 
+// Tooltip Perzonalizado
+
+const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
+    cedula: false,
+    nombre: false,
+    apellido:false,
+    fechanacimiento:false,
+    telefono:false,
+    correo:false,
+    provincia:false,
+    ciudad:false,
+    niveleducativo:false,
+    domicilio:false,
+    cargo:false,
+    sueldoBruto:false,
+    sueldoNeto:false,
+
+  });
+
 
     const handleCreateEmpleado = (data: any) => {
 
@@ -59,6 +115,7 @@ const NuevoEmpleadoModal = (
 
             })
             .catch((err) => {
+                console.log(data);
                 console.log("Error API: ", err)
             })
 
@@ -153,12 +210,13 @@ const NuevoEmpleadoModal = (
                                     paddingTop: 10,
                                     paddingLeft: 20,
                                     paddingRight: 10,
-                                    paddingBottom: 10
-                                    //backgroundColor: 'green'
+                                    paddingBottom: 10,
+                                    // backgroundColor: 'green',
                                 }}
-                            >
+                                >
 
                                 <form>
+                                <div style={{ position: 'relative' }}>
                                     <div
                                         style={{
                                             //backgroundColor: 'blue',
@@ -181,21 +239,53 @@ const NuevoEmpleadoModal = (
                                             display: 'flex',
                                             flexDirection: 'row',
                                             gap: window.screen.width * 0.02,
-                                            // backgroundColor: 'yellow'
+                                            //backgroundColor: 'yellow'
                                         }}
                                     >
 
                                         <div>
-                                            <label
-                                                style={{
+
+                                                <label
+                                                    style={{
                                                     fontSize: 14,
                                                     color: '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
-                                                }}
-                                            > Cedula de identidad</label>
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    }}
+                                                >
+                                                    <p style={{ margin: 0 }}>Cedula de identidad</p>
+                                                    <span
+                                                    style={{
+                                                        color: 'red',               // Asterisco de color rojo
+                                                        backgroundColor: 'white',   // Fondo blanco
+                                                        borderRadius: '50%',        // Bordes redondeados
+                                                        padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                        fontSize: '16px',           // Tamaño del texto
+                                                        cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                        marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                        fontWeight: 'bold',         // Asterisco en negrita
+                                                    }}
+                                                    onMouseEnter={() => setShowTooltip({ ...showTooltip, cedula: true })}
+                                                    onMouseLeave={() => setShowTooltip({ ...showTooltip, cedula: false })} // Ocultar tooltip cuando se quita el mouse
+                                                    >
+                                                    *
+                                                    </span>
+                                                </label>
+
+                                                <Tooltip
+                                                    show={showTooltip.cedula}
+                                                    message="Este campo es obligatorio"
+                                                    top="5%" // Posición relativa al campo
+                                                    left="150px" // Ajusta según el espacio disponible
+                                                />
+
+
+
+
                                             <input
                                                 onChange={(e) => setCedula(e.target.value)}
                                                 placeholder="Ingresar número de cédula"
@@ -215,16 +305,45 @@ const NuevoEmpleadoModal = (
                                         </div>
 
                                         <div>
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            > Nombres </label>
+                                            <div style={{ position: 'relative' }}>
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'revert',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        display:'flex',
+                                                        flexDirection:'row',
+                                                    }}
+                                                >
+                                                   <p style={{ margin: 0 }}> Nombre</p>
+                                                   <span
+                                                        style={{
+                                                            color: 'red',               // Asterisco de color rojo
+                                                            backgroundColor: 'white',   // Fondo blanco
+                                                            borderRadius: '50%',        // Bordes redondeados
+                                                            padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                            fontSize: '16px',           // Tamaño del texto
+                                                            cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                            marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                            fontWeight: 'bold',         // Asterisco en negrita
+                                                        }}
+                                                        onMouseEnter={() => setShowTooltip({ ...showTooltip, nombre: true })}
+                                                        onMouseLeave={() => setShowTooltip({ ...showTooltip, nombre: false })}
+                                                        >
+                                                        *
+                                                    </span>
+                                                    <Tooltip
+                                                    show={showTooltip.nombre}
+                                                    message="Este campo es obligatorio"
+                                                    top="2%" // Posición relativa al campo
+                                                    left="80px" // Ajusta según el espacio disponible
+                                                    />
+                                                </label>
+
+                                            </div>
                                             <input
                                                 onChange={(e) => setNombre(e.target.value)}
                                                 placeholder="Ingresar nombres completos"
@@ -255,8 +374,35 @@ const NuevoEmpleadoModal = (
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
+                                                    display:'flex',
+                                                    flexDirection:'row',
                                                 }}
-                                            > Apellidos </label>
+                                            >
+
+                                                <p style={{ margin: 0 }}>Apellido</p>
+                                                <span
+                                                    style={{
+                                                        color: 'red',               // Asterisco de color rojo
+                                                        backgroundColor: 'white',   // Fondo blanco
+                                                        borderRadius: '50%',        // Bordes redondeados
+                                                        padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                        fontSize: '16px',           // Tamaño del texto
+                                                        cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                        marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                        fontWeight: 'bold',         // Asterisco en negrita
+                                                    }}
+                                                    onMouseEnter={() => setShowTooltip({ ...showTooltip, apellido: true })}
+                                                    onMouseLeave={() => setShowTooltip({ ...showTooltip, apellido: false })}
+                                                    >
+                                                    *
+                                                </span>
+                                                <Tooltip
+                                                    show={showTooltip.apellido}
+                                                    message="Este campo es obligatorio"
+                                                    top="6%" // Posición relativa al campo
+                                                    left="570px" // Ajusta según el espacio disponible
+                                                />
+                                            </label>
                                             <input
                                                 onChange={(e) => setApellido(e.target.value)}
                                                 placeholder="Ingresar dos apellidos"
@@ -300,8 +446,36 @@ const NuevoEmpleadoModal = (
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
+                                                    display:'flex',
+                                                    flexDirection:'row',
                                                 }}
-                                            > Fecha de nacimiento </label>
+                                            >
+
+
+                                                <p style={{ margin: 0 }}>Fecha de nacimiento </p>
+                                                <span
+                                                    style={{
+                                                        color: 'red',               // Asterisco de color rojo
+                                                        backgroundColor: 'white',   // Fondo blanco
+                                                        borderRadius: '50%',        // Bordes redondeados
+                                                        padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                        fontSize: '16px',           // Tamaño del texto
+                                                        cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                        marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                        fontWeight: 'bold',         // Asterisco en negrita
+                                                    }}
+                                                    onMouseEnter={() => setShowTooltip({ ...showTooltip, fechanacimiento: true })}
+                                                    onMouseLeave={() => setShowTooltip({ ...showTooltip, fechanacimiento: false })}
+                                                    >
+                                                    *
+                                                </span>
+                                                <Tooltip
+                                                    show={showTooltip.fechanacimiento}
+                                                    message="Este campo es obligatorio"
+                                                    top="16%" // Posición relativa al campo
+                                                    left="160px" // Ajusta según el espacio disponible
+                                                />
+                                            </label>
                                             <LocalizationProvider
                                                 dateAdapter={AdapterDayjs}
                                             >
@@ -370,127 +544,6 @@ const NuevoEmpleadoModal = (
                                             </LocalizationProvider>
                                         </div>
 
-                                        <div
-                                            style={{
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 700,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                Nivel educativo
-                                            </label>
-
-                                            <FormControl
-                                                sx={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    '& .MuiOutlinedInput-root': {
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'normal',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        borderRadius: '6px',
-                                                        backgroundColor: '#FFFFFF',
-                                                        height: '38px',
-                                                        '& fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                        },
-                                                        '&:hover fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                        },
-                                                        '&.Mui-focused fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                            borderWidth: '1px',
-                                                        },
-                                                    },
-                                                    '& .MuiSelect-select': {
-                                                        padding: '8px',
-                                                    }
-                                                }}
-                                            >
-                                                <Select
-                                                    labelId="demo-simple-select-label"
-                                                    id="demo-simple-select"
-                                                    value={nivelEducacion}
-                                                    onChange={handleComboEducativo}
-                                                    displayEmpty
-                                                    MenuProps={{
-                                                        PaperProps: {
-                                                            sx: {
-                                                                '& .MuiMenuItem-root': {
-                                                                    fontFamily: 'Maven Pro',
-                                                                    fontSize: '14px',
-                                                                    fontWeight: 400,
-                                                                    color: '#0E1726'
-                                                                },
-                                                            },
-                                                        },
-                                                    }}
-                                                >
-                                                    <MenuItem value="" sx={{
-                                                        fontFamily: 'Maven Pro',
-                                                        fontSize: '14px',
-                                                        fontWeight: 400,
-                                                        color: '#0E1726',
-                                                        paddingLeft: '12px'
-                                                    }}>
-                                                        &nbsp;Niv. Educativo
-                                                    </MenuItem>
-                                                    <MenuItem value="Ninguno">&nbsp;Ninguno</MenuItem>
-                                                    <MenuItem value="Primaria">&nbsp;Primaria</MenuItem>
-                                                    <MenuItem value="Secundaria">&nbsp;Secundaria</MenuItem>
-                                                    <MenuItem value="Técnico">&nbsp;Técnico</MenuItem>
-                                                    <MenuItem value="Tecnológico">&nbsp;Tecnológico</MenuItem>
-                                                    <MenuItem value="Universitario">&nbsp;Universitario</MenuItem>
-                                                    <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
-                                                    <MenuItem value="Doctorado">&nbsp;Doctorado</MenuItem>
-                                                </Select>
-                                            </FormControl>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            //backgroundColor: 'blue',
-                                            marginTop: 36,
-                                            marginBottom: 15,
-                                            fontSize: 15,
-                                            color: '#0E1726',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
-                                        <p> Datos de Contacto</p>
-
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            gap: window.screen.width * 0.02,
-                                            //background: 'yellow'
-                                        }}
-                                    >
 
                                         <div>
                                             <label
@@ -501,8 +554,95 @@ const NuevoEmpleadoModal = (
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
+                                                    display:'flex',
+                                                    flexDirection:'row',
                                                 }}
-                                            > Correo Electrónico </label>
+                                            >
+
+
+
+                                                <p style={{ margin: 0 }}>Teléfono</p>
+                                                <span
+                                                    style={{
+                                                        color: 'red',               // Asterisco de color rojo
+                                                        backgroundColor: 'white',   // Fondo blanco
+                                                        borderRadius: '50%',        // Bordes redondeados
+                                                        padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                        fontSize: '16px',           // Tamaño del texto
+                                                        cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                        marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                        fontWeight: 'bold',         // Asterisco en negrita
+                                                    }}
+                                                    onMouseEnter={() => setShowTooltip({ ...showTooltip, telefono: true })}
+                                                    onMouseLeave={() => setShowTooltip({ ...showTooltip, telefono: false })}
+                                                    >
+                                                    *
+                                                </span>
+                                                <Tooltip
+                                                    show={showTooltip.telefono}
+                                                    message="Este campo es obligatorio"
+                                                    top="16%" // Posición relativa al campo
+                                                    left="330px" // Ajusta según el espacio disponible
+                                                />
+                                            </label>
+                                            <input
+                                                onChange={(e) => setPhone(e.target.value)}
+                                                placeholder="Ingresar numero de celular"
+                                                className="form-input"
+                                                style={{
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFF'
+                                                }}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    display:'flex',
+                                                    flexDirection:'row',
+                                                }}
+                                            >
+
+                                            <p style={{ margin: 0 }}>  Correo Electrónico </p>
+                                            <span
+                                                    style={{
+                                                        color: 'red',               // Asterisco de color rojo
+                                                        backgroundColor: 'white',   // Fondo blanco
+                                                        borderRadius: '50%',        // Bordes redondeados
+                                                        padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                        fontSize: '16px',           // Tamaño del texto
+                                                        cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                        marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                        fontWeight: 'bold',         // Asterisco en negrita
+                                                    }}
+                                                    onMouseEnter={() => setShowTooltip({ ...showTooltip, correo: true })}
+                                                    onMouseLeave={() => setShowTooltip({ ...showTooltip, correo: false })}
+                                                    >
+                                                    *
+                                            </span>
+                                            <Tooltip
+                                                    show={showTooltip.correo}
+                                                    message="Este campo es obligatorio"
+                                                    top="10%" // Posición relativa al campo
+                                                    left="600px" // Ajusta según el espacio disponible
+                                                />
+                                            </label>
                                             <input
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="Ingresar correo electronico"
@@ -524,74 +664,28 @@ const NuevoEmpleadoModal = (
                                             />
                                         </div>
 
-                                        <div>
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            > Teléfono Móvil </label>
-                                            <input
-                                                onChange={(e) => setPhone(e.target.value)}
-                                                placeholder="Ingresar numero de celular"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            > Teléfono Fijo </label>
-                                            <input
-                                                onChange={(e) => setNumber(e.target.value)}
-                                                placeholder="Ingresar numero de teléfono"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-                                        </div>
-
                                     </div>
 
-                                    <div>
+                                    <div
+                                         style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            // backgroundColor: 'cyan',
+                                            fontSize: 14,
+                                            color: '#0E1726',
+                                            fontStyle: 'normal',
+                                            fontWeight: 400,
+                                            lineHeight: 'normal',
+                                            fontFamily: 'Maven Pro',
+                                            marginTop:'20px',
+                                            gap: window.screen.width * 0.02,
 
+                                        }}
+                                    >
+
+                                        {/* <p>Holi</p> */}
+
+                                        <div>
                                         <label
                                             style={{
                                                 fontSize: 14,
@@ -600,30 +694,39 @@ const NuevoEmpleadoModal = (
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
-                                                marginTop: 15
+                                                display:'flex',
+                                                flexDirection:'row',
+
                                             }}
                                         >
-                                            Dirección
+
+                                            <p style={{ margin: 0 }}>  Provincia </p>
+                                            <span
+                                                    style={{
+                                                        color: 'red',               // Asterisco de color rojo
+                                                        backgroundColor: 'white',   // Fondo blanco
+                                                        borderRadius: '50%',        // Bordes redondeados
+                                                        padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                        fontSize: '16px',           // Tamaño del texto
+                                                        cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                        marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                        fontWeight: 'bold',         // Asterisco en negrita
+                                                    }}
+                                                    onMouseEnter={() => setShowTooltip({ ...showTooltip, provincia: true })}
+                                                    onMouseLeave={() => setShowTooltip({ ...showTooltip, provincia: false })}
+                                                    >
+                                                    *
+                                            </span>
+                                            <Tooltip
+                                                    show={showTooltip.provincia}
+                                                    message="Este campo es obligatorio"
+                                                    top="26%" // Posición relativa al campo
+                                                    left="95px" // Ajusta según el espacio disponible
+                                                />
                                         </label>
-
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                gap: 5,
-                                                //backgroundColor: 'cyan',
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-
                                             <FormControl
                                                 sx={{
-                                                    width: '364px',
+                                                    width: '222px',
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     '& .MuiOutlinedInput-root': {
@@ -677,7 +780,8 @@ const NuevoEmpleadoModal = (
                                                         fontFamily: 'Maven Pro',
                                                         fontSize: '14px',
                                                         fontWeight: 400,
-                                                        color: '#0E1726'
+                                                        color: '#0E1726',
+
                                                     }}>
                                                         &nbsp;Provincia
                                                     </MenuItem>
@@ -693,131 +797,281 @@ const NuevoEmpleadoModal = (
                                                         }
                                                 </Select>
                                             </FormControl>
-
-                                            {/* <input
-                                                onChange={(e) => setProvincia(e.target.value)}
-                                                placeholder="Provincia"
-                                                className="form-input"
-                                                style={{
-                                                    width: '358px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            /> */}
-
-                                            <input
-                                                onChange={(e) => setCiudad(e.target.value)}
-                                                placeholder="Ciudad"
-                                                className="form-input"
-                                                style={{
-                                                    width: '358px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-
                                         </div>
 
+                                        <div>
+                                                <label
+                                                  style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    display:'flex',
+                                                    flexDirection:'row',
+
+                                                }}
+                                                    >
+
+                                                        <p style={{ margin: 0 }}>  Ciudad </p>
+                                                        <span
+                                                                style={{
+                                                                    color: 'red',               // Asterisco de color rojo
+                                                                    backgroundColor: 'white',   // Fondo blanco
+                                                                    borderRadius: '50%',        // Bordes redondeados
+                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                    fontSize: '16px',           // Tamaño del texto
+                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                    fontWeight: 'bold',         // Asterisco en negrita
+                                                                }}
+                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, ciudad: true })}
+                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, ciudad: false })}
+                                                                >
+                                                                *
+                                                        </span>
+                                                        <Tooltip
+                                                            show={showTooltip.ciudad}
+                                                            message="Este campo es obligatorio"
+                                                            top="26%" // Posición relativa al campo
+                                                            left="310px" // Ajusta según el espacio disponible
+                                                        />
+                                                    </label>
+                                                    <input
+                                                        onChange={(e) => setCiudad(e.target.value)}
+                                                        placeholder="Ciudad"
+                                                        className="form-input"
+                                                        style={{
+                                                            width: '222px',
+                                                            height: '38px',
+                                                            flexShrink: 0,
+                                                            fontSize: 14,
+                                                            color: '#0E1726',
+                                                            fontStyle: 'normal',
+                                                            fontWeight: 400,
+                                                            lineHeight: 'normal',
+                                                            fontFamily: 'Maven Pro',
+                                                            borderRadius: '6px',
+                                                            border: '1px solid #E0E6ED',
+                                                            background: '#FFFFF'
+                                                        }}
+                                                    />
+                                            </div>
+
                                         <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                marginTop: window.screen.height * 0.015,
-                                                gap: 27,
-                                                fontSize: 14,
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 700,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            >
+                                                <label
+                                                    style={{
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        display:'flex',
+                                                        flexDirection:'row',
+                                                    }}
+                                                >
+
+                                                    <p style={{ margin: 0 }}>   Nivel educativo </p>
+                                                        <span
+                                                                style={{
+                                                                    color: 'red',               // Asterisco de color rojo
+                                                                    backgroundColor: 'white',   // Fondo blanco
+                                                                    borderRadius: '50%',        // Bordes redondeados
+                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                    fontSize: '16px',           // Tamaño del texto
+                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                    fontWeight: 'bold',         // Asterisco en negrita
+                                                                }}
+                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, niveleducativo: true })}
+                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, niveleducativo: false })}
+                                                                >
+                                                                *
+                                                        </span>
+                                                        <Tooltip
+                                                            show={showTooltip.niveleducativo}
+                                                            message="Este campo es obligatorio"
+                                                            top="24%" // Posición relativa al campo
+                                                            left="600px" // Ajusta según el espacio disponible
+                                                        />
+                                                </label>
+
+                                                <FormControl
+                                                    sx={{
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        '& .MuiOutlinedInput-root': {
+                                                            fontSize: 14,
+                                                            color: '#0E1726',
+                                                            fontStyle: 'normal',
+                                                            fontWeight: 400,
+                                                            lineHeight: 'normal',
+                                                            fontFamily: 'Maven Pro',
+                                                            borderRadius: '6px',
+                                                            backgroundColor: '#FFFFFF',
+                                                            height: '38px',
+                                                            '& fieldset': {
+                                                                borderColor: '#E0E6ED',
+                                                            },
+                                                            '&:hover fieldset': {
+                                                                borderColor: '#E0E6ED',
+                                                            },
+                                                            '&.Mui-focused fieldset': {
+                                                                borderColor: '#E0E6ED',
+                                                                borderWidth: '1px',
+                                                            },
+                                                        },
+                                                        '& .MuiSelect-select': {
+                                                            padding: '8px',
+                                                        }
+                                                    }}
+                                                >
+                                                    <Select
+                                                        labelId="demo-simple-select-label"
+                                                        id="demo-simple-select"
+                                                        value={nivelEducacion}
+                                                        onChange={handleComboEducativo}
+                                                        displayEmpty
+                                                        MenuProps={{
+                                                            PaperProps: {
+                                                                sx: {
+                                                                    '& .MuiMenuItem-root': {
+                                                                        fontFamily: 'Maven Pro',
+                                                                        fontSize: '14px',
+                                                                        fontWeight: 400,
+                                                                        color: '#0E1726'
+                                                                    },
+                                                                },
+                                                            },
+                                                        }}
+                                                    >
+                                                        <MenuItem value="" sx={{
+                                                            fontFamily: 'Maven Pro',
+                                                            fontSize: '14px',
+                                                            fontWeight: 400,
+                                                            color: '#0E1726',
+                                                            paddingLeft: '12px'
+                                                        }}>
+                                                            &nbsp;Niv. Educativo
+                                                        </MenuItem>
+                                                        <MenuItem value="Ninguno">&nbsp;Ninguno</MenuItem>
+                                                        <MenuItem value="Primaria">&nbsp;Primaria</MenuItem>
+                                                        <MenuItem value="Secundaria">&nbsp;Secundaria</MenuItem>
+                                                        <MenuItem value="Técnico">&nbsp;Técnico</MenuItem>
+                                                        <MenuItem value="Tecnológico">&nbsp;Tecnológico</MenuItem>
+                                                        <MenuItem value="Universitario">&nbsp;Universitario</MenuItem>
+                                                        <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
+                                                        <MenuItem value="Doctorado">&nbsp;Doctorado</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+
+
+                                    </div>
+
+
+
+                                    <div>
+
+                                        <div
+                                              style={{
+                                                //backgroundColor: 'blue',
+                                                marginTop: 15,
+                                                marginBottom: 15,
+                                                fontSize: 15,
                                                 color: '#0E1726',
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
                                                 lineHeight: 'normal',
                                                 fontFamily: 'Maven Pro',
+
                                             }}
-                                        >
+                                            >
+                                            <div
+                                                 style={{
+                                                    display:'flex',
+                                                    flexDirection:'row',
+                                                 }}
 
+                                            >
+                                            <p style={{ margin: 0 }}>Domicilio </p>
+                                                        <span
+                                                                style={{
+                                                                    color: 'red',               // Asterisco de color rojo
+                                                                    backgroundColor: 'white',   // Fondo blanco
+                                                                    borderRadius: '50%',        // Bordes redondeados
+                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                    fontSize: '16px',           // Tamaño del texto
+                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                    fontWeight: 'bold',         // Asterisco en negrita
+                                                                }}
+                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, domicilio: true })}
+                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, domicilio: false })}
+                                                                >
+                                                                *
+                                                        </span>
+                                                        <Tooltip
+                                                            show={showTooltip.domicilio}
+                                                            message="Este campo es obligatorio"
+                                                            top="40" // Posición relativa al campo
+                                                            left="100px" // Ajusta según el espacio disponible
+                                                        />
+                                            </div>
 
-                                            <input
-                                                onChange={(e) => setDireccionPrincipal(e.target.value)}
-                                                placeholder="Ingresar direccion principal"
-                                                className="form-input"
+                                            <div
                                                 style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    marginTop: window.screen.height * 0.015,
+                                                    gap: 27,
                                                     fontSize: 14,
                                                     color: '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
                                                 }}
-                                            />
-
-                                            <input
-                                                onChange={(e) => setNumero(e.target.value)}
-                                                placeholder="Número"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-
-                                            <input
-                                                onChange={(e) => setDireccionSecundaria(e.target.value)}
-                                                placeholder="Ingresar dirección transversal"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
+                                                >
+                                                <input
+                                                    onChange={(e) => setDireccionPrincipal(e.target.value)}
+                                                    placeholder="Ingresar direccion de Domicilio"
+                                                    className="form-input"
+                                                    style={{
+                                                        width: '94.3%',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        fontSize: 14,
+                                                        color: '#0E1726',
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        lineHeight: 'normal',
+                                                        fontFamily: 'Maven Pro',
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#FFFFF'
+                                                    }}
+                                                />
+                                            </div>
 
                                         </div>
+
 
                                         <div
                                             style={{
                                                 //backgroundColor: 'blue',
-                                                marginTop: 20,
+                                                marginTop: 50,
                                                 marginBottom: 10,
                                                 fontSize: 15,
                                                 color: '#0E1726',
@@ -839,39 +1093,6 @@ const NuevoEmpleadoModal = (
                                                 //backgroundColor: 'yellow'
                                             }}
                                         >
-
-                                            <div>
-                                                <label
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'revert',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        marginTop: 15
-                                                    }}
-                                                > Código de Empresa </label>
-                                                <input
-                                                    onChange={(e) => setCodigoEmpresa(e.target.value)}
-                                                    placeholder="Código de Empresa"
-                                                    className="form-input"
-                                                    style={{
-                                                        width: '222px',
-                                                        height: '38px',
-                                                        flexShrink: 0,
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'normal',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        borderRadius: '6px',
-                                                        border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
-                                                    }}
-                                                />
-                                            </div>
 
                                             <div>
                                                 <label
@@ -961,9 +1182,39 @@ const NuevoEmpleadoModal = (
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
-                                                        marginTop: 15
+                                                        marginTop: 15,
+                                                        display:'flex',
+                                                    flexDirection:'row',
                                                     }}
-                                                > Cargo </label>
+                                                >
+
+
+
+                                                <p style={{ margin: 0 }}> Cargo  </p>
+                                                        <span
+                                                                style={{
+                                                                    color: 'red',               // Asterisco de color rojo
+                                                                    backgroundColor: 'white',   // Fondo blanco
+                                                                    borderRadius: '50%',        // Bordes redondeados
+                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                    fontSize: '16px',           // Tamaño del texto
+                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                    fontWeight: 'bold',         // Asterisco en negrita
+                                                                }}
+                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, cargo: true })}
+                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, cargo: false })}
+                                                                >
+                                                                *
+                                                        </span>
+                                                        <Tooltip
+                                                            show={showTooltip.cargo}
+                                                            message="Este campo es obligatorio"
+                                                            top="58%" // Posición relativa al campo
+                                                            left="305px" // Ajusta según el espacio disponible
+                                                        />
+
+                                                </label>
                                                 <input
                                                     onChange={(e) => setCargo(e.target.value)}
                                                     placeholder="Ingresar cargo"
@@ -985,18 +1236,6 @@ const NuevoEmpleadoModal = (
                                                 />
                                             </div>
 
-                                        </div>
-
-                                        <div
-                                            style={{
-                                                //backgroundColor: 'purple',
-                                                marginTop: window.screen.height * 0.01,
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                gap: window.screen.width * 0.02
-                                            }}
-                                        >
-
                                             <div>
                                                 <label
                                                     style={{
@@ -1006,9 +1245,40 @@ const NuevoEmpleadoModal = (
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
-                                                        marginTop: 15
+                                                        marginTop: 15,
+                                                        display:'flex',
+                                                        flexDirection:'row',
                                                     }}
-                                                > Sueldo Bruto </label>
+                                                >
+
+
+
+                                                  <p style={{ margin: 0 }}> Sueldo Bruto  </p>
+                                                        <span
+                                                                style={{
+                                                                    color: 'red',               // Asterisco de color rojo
+                                                                    backgroundColor: 'white',   // Fondo blanco
+                                                                    borderRadius: '50%',        // Bordes redondeados
+                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                    fontSize: '16px',           // Tamaño del texto
+                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                    fontWeight: 'bold',         // Asterisco en negrita
+                                                                }}
+                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, sueldoBruto: true })}
+                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, sueldoBruto: false })}
+                                                                >
+                                                                *
+                                                        </span>
+                                                        <Tooltip
+
+                                                            show={showTooltip.sueldoBruto}
+                                                            message="Este campo es obligatorio"
+                                                            top="58%" // Posición relativa al campo
+                                                            left="580px" // Ajusta según el espacio disponible
+                                                        />
+
+                                                </label>
                                                 <input
                                                     onChange={(e) => setSueldoBruto(e.target.value)}
                                                     placeholder="Ingresar valor"
@@ -1029,6 +1299,18 @@ const NuevoEmpleadoModal = (
                                                     }}
                                                 />
                                             </div>
+                                        </div>
+
+                                        <div
+                                            style={{
+                                                //backgroundColor: 'purple',
+                                                marginTop: window.screen.height * 0.01,
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                gap: window.screen.width * 0.02
+                                            }}
+                                        >
+
 
                                             <div>
                                                 <label
@@ -1039,9 +1321,39 @@ const NuevoEmpleadoModal = (
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
-                                                        marginTop: 15
+                                                        marginTop: 15,
+                                                        display:'flex',
+                                                        flexDirection:'row',
                                                     }}
-                                                > Sueldo Neto
+                                                >
+
+                                                Sueldo Neto
+
+                                                <p style={{ margin: 0 }}> Sueldo Bruto  </p>
+                                                        <span
+                                                                style={{
+                                                                    color: 'red',               // Asterisco de color rojo
+                                                                    backgroundColor: 'white',   // Fondo blanco
+                                                                    borderRadius: '50%',        // Bordes redondeados
+                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                    fontSize: '16px',           // Tamaño del texto
+                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                    fontWeight: 'bold',         // Asterisco en negrita
+                                                                }}
+                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, sueldoNeto: true })}
+                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, sueldoNeto: false })}
+                                                                >
+                                                                *
+                                                        </span>
+                                                        <Tooltip
+
+                                                            show={showTooltip.sueldoNeto}
+                                                            message="Este campo es obligatorio"
+                                                            top="70%" // Posición relativa al campo
+                                                            left="180px" // Ajusta según el espacio disponible
+                                                        />
+
                                                 </label>
                                                 <input
                                                     onChange={(e) => setSueldoNeto(e.target.value)}
@@ -1139,7 +1451,7 @@ const NuevoEmpleadoModal = (
                                         </div>
 
                                     </div>
-
+                                </div >
                                 </form>
 
                                 <div className="flex justify-center items-center mt-2 mb-10">
@@ -1175,12 +1487,12 @@ const NuevoEmpleadoModal = (
                                                 "level_education": nivelEducacion,
                                                 "email": email,
                                                 "phoneMovil": phone,
-                                                "phoneFijo": number,
+                                                // "phoneFijo": number,
                                                 "provincia": provinciaSeleccionada,
                                                 "ciudad": ciudad,
-                                                "street_primary": direccionSecundaria,
-                                                "address_secondary": direccionSecundaria,
-                                                "company_code": codigoEmpresa,
+                                                // "street_primary": direccionSecundaria,
+                                                // "address_secondary": direccionSecundaria,
+                                                // "company_code": codigoEmpresa,
                                                 "job_title": cargo,
                                                 "gross_salary": sueldoBruto,
                                                 "net_salary": sueldoNeto,
