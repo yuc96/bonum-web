@@ -275,7 +275,7 @@ const PagosPendientesTable = ({
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.saldo} </p>
+                                    <p> {'$'+' '+row.saldo.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -289,7 +289,7 @@ const PagosPendientesTable = ({
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.valorCuota} </p>
+                                    <p> {'$'+' '+row.valorCuota.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -303,7 +303,7 @@ const PagosPendientesTable = ({
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.tasaUnica} </p>
+                                    <p> {'$'+' '+row.tasaUnica.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -317,9 +317,9 @@ const PagosPendientesTable = ({
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.totalDebitar} </p>
+                                    <p> {'$'+' '+row.totalDebitar.toFixed(2)} </p>
                                 </TableCell>
-                            
+
                             </TableRow>
                         ))}
                     </TableBody>

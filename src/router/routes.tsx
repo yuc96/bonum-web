@@ -6,7 +6,7 @@ import React from 'react';  // Agregar esta línea al principio del archivo
 import ProtectedRoute from './ProtectedRoute';  // Importar el componente de protección
 
 // Rutas Lazy Loaded
-const Logins = lazy(() => import('../pages/login/login'));
+const Logins = lazy(() => import('../pages/login/Login'));
 const Index = lazy(() => import('../pages/Index'));
 const Empleados = lazy(() => import('../pages/empleados/Empleados'));
 const Productos = lazy(() => import('../pages/productos/Productos'));

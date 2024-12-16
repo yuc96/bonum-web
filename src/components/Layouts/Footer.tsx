@@ -16,7 +16,7 @@ const Footer = () => {
             fontWeight: 'bold'
          }}
       >
-         Physeter
+       Bonum - Todos los derechos reservados
       </text>
    </div>;
 };

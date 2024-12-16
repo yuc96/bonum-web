@@ -298,7 +298,8 @@ const EmpleadosTable = ({
                                                 lineHeight: 'normal'
                                             }}
                                         >
-                                            <p> {row.net_salary} </p>
+                                            <p> {'$' + row.net_salary.toFixed(2)} </p>
+
                                         </TableCell>
                                         <TableCell
                                             align='center'

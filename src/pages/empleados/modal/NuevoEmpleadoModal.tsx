@@ -217,6 +217,30 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
 
                                 <form>
                                 <div style={{ position: 'relative' }}>
+                                    <style>
+                                    {`
+                                            .input-style::placeholder {
+                                                font-weight: 400; /* Elimina la negrita */
+                                                font-style: normal;
+                                                font-family: 'Maven Pro', sans-serif;
+                                                color: #b0b0b0; /* Cambia el color si lo deseas */
+                                                padding:5px;
+                                            }
+
+                                            .input-style {
+                                                width: 222px;
+                                                height: 38px;
+                                                flex-shrink: 0;
+                                                font-size: 14px;
+                                                color: #0E1726;
+                                                font-style: normal;
+                                                font-weight: 400;
+                                                line-height: normal;
+                                                font-family: 'Maven Pro', sans-serif;
+                                                padding:10px;
+                                            }
+                                        `}
+                                    </style>
                                     <div
                                         style={{
                                             //backgroundColor: 'blue',
@@ -289,7 +313,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                             <input
                                                 onChange={(e) => setCedula(e.target.value)}
                                                 placeholder="Ingresar número de cédula"
-                                                className="form-input"
+                                                className="input-style"
                                                 style={{
                                                     width: '222px',
                                                     height: '38px',
@@ -300,6 +324,8 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
+                                                    border: '1px solid #E0E6ED',
+                                                    borderRadius:'6px',
                                                 }}
                                             />
                                         </div>
@@ -347,7 +373,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                             <input
                                                 onChange={(e) => setNombre(e.target.value)}
                                                 placeholder="Ingresar nombres completos"
-                                                className="form-input"
+                                                className="input-style"
                                                 style={{
                                                     width: '222px',
                                                     height: '38px',
@@ -406,7 +432,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                             <input
                                                 onChange={(e) => setApellido(e.target.value)}
                                                 placeholder="Ingresar dos apellidos"
-                                                className="form-input"
+                                                className="input-style"
                                                 style={{
                                                     width: '222px',
                                                     height: '38px',
@@ -524,6 +550,8 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                 '& .MuiInputBase-input': {
                                                                     '::placeholder': {
                                                                         //color: '#888EA8',
+
+
                                                                         fontSize: 14,
                                                                         fontStyle: 'normal',
                                                                         fontWeight: 400,
@@ -532,7 +560,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                         // fontSize: 13,
                                                                         // fontFamily: 'serif',
                                                                         // fontWeight: 400,
-                                                                        color: '#0E1726',
+                                                                        color: '#b0b0b0',
                                                                         opacity: 1
                                                                     },
                                                                 },
@@ -588,7 +616,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                             <input
                                                 onChange={(e) => setPhone(e.target.value)}
                                                 placeholder="Ingresar numero de celular"
-                                                className="form-input"
+                                                className="input-style"
                                                 style={{
                                                     width: '222px',
                                                     height: '38px',
@@ -646,7 +674,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                             <input
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="Ingresar correo electronico"
-                                                className="form-input"
+                                                className="input-style"
                                                 style={{
                                                     width: '222px',
                                                     height: '38px',
@@ -724,38 +752,38 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     left="95px" // Ajusta según el espacio disponible
                                                 />
                                         </label>
-                                            <FormControl
+                                        <FormControl
                                                 sx={{
                                                     width: '222px',
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     '& .MuiOutlinedInput-root': {
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'normal',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        borderRadius: '6px',
-                                                        backgroundColor: '#FFFFFF',
-                                                        height: '38px',
-                                                        '& fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                        },
-                                                        '&:hover fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                        },
-                                                        '&.Mui-focused fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                            borderWidth: '1px',
-                                                        },
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    backgroundColor: '#FFFFFF',
+                                                    height: '38px',
+                                                    '& fieldset': {
+                                                        borderColor: '#E0E6ED',
+                                                    },
+                                                    '&:hover fieldset': {
+                                                        borderColor: '#E0E6ED',
+                                                    },
+                                                    '&.Mui-focused fieldset': {
+                                                        borderColor: '#E0E6ED',
+                                                        borderWidth: '1px',
+                                                    },
                                                     },
                                                     '& .MuiSelect-select': {
-                                                        padding: '8px',
-                                                    }
-                                                }
-                                                }
-                                            >
+                                                    padding: '8px',
+                                                    color: provinciaSeleccionada === '' ? '#B0B0B0' : '#0E1726', // Cambiar color del placeholder
+                                                    },
+                                                }}
+                                                >
                                                 <Select
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
@@ -763,218 +791,271 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     onChange={handleProvinciaChange}
                                                     displayEmpty
                                                     MenuProps={{
-                                                        PaperProps: {
-                                                            sx: {
-                                                                '& .MuiMenuItem-root': {
-                                                                    fontFamily: 'Maven Pro',
-                                                                    fontSize: '14px',
-                                                                    fontWeight: 400,
-                                                                    color: '#0E1726'
-                                                                },
-                                                            },
+                                                    PaperProps: {
+                                                        sx: {
+                                                        '& .MuiMenuItem-root': {
+                                                            fontFamily: 'Maven Pro',
+                                                            fontSize: '14px',
+                                                            fontWeight: 400,
+                                                            color: '#0E1726',
                                                         },
+                                                        },
+                                                    },
                                                     }}
-
                                                 >
                                                     <MenuItem value="" sx={{
-                                                        fontFamily: 'Maven Pro',
-                                                        fontSize: '14px',
-                                                        fontWeight: 400,
-                                                        color: '#0E1726',
-
-                                                    }}>
-                                                        &nbsp;Provincia
-                                                    </MenuItem>
-                                                        {
-                                                            provincias.map((provincia, index) => (
-                                                                <MenuItem
-                                                                    key={index}
-                                                                    value={provincia}
-                                                                >
-                                                                    &nbsp;{provincia}
-                                                                </MenuItem>
-                                                            ))
-                                                        }
-                                                </Select>
-                                            </FormControl>
-                                        </div>
-
-                                        <div>
-                                                <label
-                                                  style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
+                                                    fontFamily: 'Maven Pro',
+                                                    fontSize: '14px',
                                                     fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    display:'flex',
-                                                    flexDirection:'row',
+                                                    color: '#B0B0B0', // Cambiar el color del texto del placeholder
+                                                    paddingLeft: '12px',
+                                                    }}>
+                                                    &nbsp;Provincia
+                                                    </MenuItem>
+                                                    {provincias.map((provincia, index) => (
+                                                    <MenuItem key={index} value={provincia}>
+                                                        &nbsp;{provincia}
+                                                    </MenuItem>
+                                                    ))}
+                                                </Select>
+                                                </FormControl>
+                                                </div>
 
-                                                }}
-                                                    >
-
-                                                        <p style={{ margin: 0 }}>  Ciudad </p>
-                                                        <span
-                                                                style={{
-                                                                    color: 'red',               // Asterisco de color rojo
-                                                                    backgroundColor: 'white',   // Fondo blanco
-                                                                    borderRadius: '50%',        // Bordes redondeados
-                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
-                                                                    fontSize: '16px',           // Tamaño del texto
-                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
-                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
-                                                                    fontWeight: 'bold',         // Asterisco en negrita
-                                                                }}
-                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, ciudad: true })}
-                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, ciudad: false })}
-                                                                >
-                                                                *
-                                                        </span>
-                                                        <Tooltip
-                                                            show={showTooltip.ciudad}
-                                                            message="Este campo es obligatorio"
-                                                            top="26%" // Posición relativa al campo
-                                                            left="310px" // Ajusta según el espacio disponible
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        onChange={(e) => setCiudad(e.target.value)}
-                                                        placeholder="Ciudad"
-                                                        className="form-input"
-                                                        style={{
-                                                            width: '222px',
-                                                            height: '38px',
-                                                            flexShrink: 0,
-                                                            fontSize: 14,
-                                                            color: '#0E1726',
-                                                            fontStyle: 'normal',
-                                                            fontWeight: 400,
-                                                            lineHeight: 'normal',
-                                                            fontFamily: 'Maven Pro',
-                                                            borderRadius: '6px',
-                                                            border: '1px solid #E0E6ED',
-                                                            background: '#FFFFF'
-                                                        }}
-                                                    />
-                                            </div>
-
-                                        <div
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 700,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            >
+                                                <div>
                                                 <label
                                                     style={{
                                                         fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'normal',
+                                                        // color: '#0E1726',
+                                                        fontStyle: 'revert',
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
                                                         display:'flex',
                                                         flexDirection:'row',
+
                                                     }}
                                                 >
+                                                    <p style={{ margin: 0 }}>Ciudad</p>
+                                                    <span
+                                                        style={{
+                                                            color: 'red',               // Asterisco de color rojo
+                                                            backgroundColor: 'white',   // Fondo blanco
+                                                            borderRadius: '50%',        // Bordes redondeados
+                                                            padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                            fontSize: '16px',           // Tamaño del texto
+                                                            cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                            marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                            fontWeight: 'bold',
 
-                                                    <p style={{ margin: 0 }}>   Nivel educativo </p>
-                                                        <span
-                                                                style={{
-                                                                    color: 'red',               // Asterisco de color rojo
-                                                                    backgroundColor: 'white',   // Fondo blanco
-                                                                    borderRadius: '50%',        // Bordes redondeados
-                                                                    padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
-                                                                    fontSize: '16px',           // Tamaño del texto
-                                                                    cursor: 'pointer',         // Hace que el puntero sea una mano
-                                                                    marginLeft: '5px',          // Espacio entre el texto y el asterisco
-                                                                    fontWeight: 'bold',         // Asterisco en negrita
-                                                                }}
-                                                                onMouseEnter={() => setShowTooltip({ ...showTooltip, niveleducativo: true })}
-                                                                onMouseLeave={() => setShowTooltip({ ...showTooltip, niveleducativo: false })}
-                                                                >
-                                                                *
-                                                        </span>
-                                                        <Tooltip
-                                                            show={showTooltip.niveleducativo}
-                                                            message="Este campo es obligatorio"
-                                                            top="24%" // Posición relativa al campo
-                                                            left="600px" // Ajusta según el espacio disponible
-                                                        />
-                                                </label>
-
-                                                <FormControl
-                                                    sx={{
-                                                        width: '222px',
-                                                        height: '38px',
-                                                        '& .MuiOutlinedInput-root': {
-                                                            fontSize: 14,
-                                                            color: '#0E1726',
-                                                            fontStyle: 'normal',
-                                                            fontWeight: 400,
-                                                            lineHeight: 'normal',
-                                                            fontFamily: 'Maven Pro',
-                                                            borderRadius: '6px',
-                                                            backgroundColor: '#FFFFFF',
-                                                            height: '38px',
-                                                            '& fieldset': {
-                                                                borderColor: '#E0E6ED',
-                                                            },
-                                                            '&:hover fieldset': {
-                                                                borderColor: '#E0E6ED',
-                                                            },
-                                                            '&.Mui-focused fieldset': {
-                                                                borderColor: '#E0E6ED',
-                                                                borderWidth: '1px',
-                                                            },
-                                                        },
-                                                        '& .MuiSelect-select': {
-                                                            padding: '8px',
-                                                        }
-                                                    }}
-                                                >
-                                                    <Select
-                                                        labelId="demo-simple-select-label"
-                                                        id="demo-simple-select"
-                                                        value={nivelEducacion}
-                                                        onChange={handleComboEducativo}
-                                                        displayEmpty
-                                                        MenuProps={{
-                                                            PaperProps: {
-                                                                sx: {
+                                                        }}
+                                                        onMouseEnter={() => setShowTooltip({ ...showTooltip, ciudad: true })}
+                                                        onMouseLeave={() => setShowTooltip({ ...showTooltip, ciudad: false })}
+                                                    >
+                                                        *
+                                                    </span>
+                                                    </label>
+                                                    <Tooltip
+                                                        show={showTooltip.ciudad}
+                                                        message="Este campo es obligatorio"
+                                                        top="24%" // Posición relativa al campo
+                                                        left="600px" // Ajusta según el espacio disponible
+                                                    />
+                                                    <FormControl
+                                                            sx={{
+                                                                width: '222px',
+                                                                height: '38px',
+                                                                '& .MuiOutlinedInput-root': {
+                                                                fontSize: 14,
+                                                                color: '#0E1726',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: 400,
+                                                                lineHeight: 'normal',
+                                                                fontFamily: 'Maven Pro',
+                                                                borderRadius: '6px',
+                                                                backgroundColor: '#FFFFFF',
+                                                                height: '38px',
+                                                                '& fieldset': {
+                                                                    borderColor: '#E0E6ED',
+                                                                },
+                                                                '&:hover fieldset': {
+                                                                    borderColor: '#E0E6ED',
+                                                                },
+                                                                '&.Mui-focused fieldset': {
+                                                                    borderColor: '#E0E6ED',
+                                                                    borderWidth: '1px',
+                                                                },
+                                                                },
+                                                                '& .MuiSelect-select': {
+                                                                padding: '8px',
+                                                                color: ciudad === '' ? '#B0B0B0' : '#0E1726',
+                                                                },
+                                                            }}
+                                                            >
+                                                            <Select
+                                                                labelId="demo-simple-select-label"
+                                                                id="demo-simple-select"
+                                                                value={ciudad}
+                                                                onChange={(e) => setCiudad(e.target.value)}
+                                                                displayEmpty
+                                                                MenuProps={{
+                                                                PaperProps: {
+                                                                    sx: {
                                                                     '& .MuiMenuItem-root': {
                                                                         fontFamily: 'Maven Pro',
                                                                         fontSize: '14px',
                                                                         fontWeight: 400,
-                                                                        color: '#0E1726'
+                                                                        color: '#0E1726',
+                                                                    },
                                                                     },
                                                                 },
-                                                            },
+                                                                }}
+                                                            >
+                                                                <MenuItem
+                                                                value=""
+                                                                sx={{
+                                                                    fontFamily: 'Maven Pro',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 400,
+                                                                    color: '#B0B0B0',
+                                                                    paddingLeft: '12px',
+                                                                }}
+                                                                >
+                                                                Seleccione una ciudad
+                                                                </MenuItem>
+                                                                <MenuItem value="Quito">Quito</MenuItem>
+                                                                <MenuItem value="Guayaquil">Guayaquil</MenuItem>
+                                                                <MenuItem value="Cuenca">Cuenca</MenuItem>
+                                                                <MenuItem value="Santo Domingo">Santo Domingo</MenuItem>
+                                                                <MenuItem value="Machala">Machala</MenuItem>
+                                                                <MenuItem value="Durán">Durán</MenuItem>
+                                                                <MenuItem value="Ambato">Ambato</MenuItem>
+                                                                <MenuItem value="Manta">Manta</MenuItem>
+                                                                <MenuItem value="Portoviejo">Portoviejo</MenuItem>
+                                                                <MenuItem value="Loja">Loja</MenuItem>
+                                                            </Select>
+                                                            </FormControl>
+                                                </div>
+
+
+                                                <div
+                                                        style={{
+                                                            fontSize: 14,
+                                                            color: '#0E1726',
+                                                            fontStyle: 'normal',
+                                                            fontWeight: 700,
+                                                            lineHeight: 'normal',
+                                                            fontFamily: 'Maven Pro',
                                                         }}
                                                     >
-                                                        <MenuItem value="" sx={{
-                                                            fontFamily: 'Maven Pro',
-                                                            fontSize: '14px',
-                                                            fontWeight: 400,
-                                                            color: '#0E1726',
-                                                            paddingLeft: '12px'
-                                                        }}>
-                                                            &nbsp;Niv. Educativo
-                                                        </MenuItem>
-                                                        <MenuItem value="Ninguno">&nbsp;Ninguno</MenuItem>
-                                                        <MenuItem value="Primaria">&nbsp;Primaria</MenuItem>
-                                                        <MenuItem value="Secundaria">&nbsp;Secundaria</MenuItem>
-                                                        <MenuItem value="Técnico">&nbsp;Técnico</MenuItem>
-                                                        <MenuItem value="Tecnológico">&nbsp;Tecnológico</MenuItem>
-                                                        <MenuItem value="Universitario">&nbsp;Universitario</MenuItem>
-                                                        <MenuItem value="Posgrado">&nbsp;Posgrado</MenuItem>
-                                                        <MenuItem value="Doctorado">&nbsp;Doctorado</MenuItem>
-                                                    </Select>
-                                                </FormControl>
+                                                        <label
+                                                            style={{
+                                                                fontSize: 14,
+                                                                color: '#0E1726',
+                                                                fontStyle: 'normal',
+                                                                fontWeight: 400,
+                                                                lineHeight: 'normal',
+                                                                fontFamily: 'Maven Pro',
+                                                                display:'flex',
+                                                                flexDirection:'row',
+                                                            }}
+                                                        >
+
+                                                            <p style={{ margin: 0 }}>   Nivel educativo </p>
+                                                                <span
+                                                                        style={{
+                                                                            color: 'red',               // Asterisco de color rojo
+                                                                            backgroundColor: 'white',   // Fondo blanco
+                                                                            borderRadius: '50%',        // Bordes redondeados
+                                                                            padding: '0 5px',           // Espaciado horizontal para hacerlo más grande
+                                                                            fontSize: '16px',           // Tamaño del texto
+                                                                            cursor: 'pointer',         // Hace que el puntero sea una mano
+                                                                            marginLeft: '5px',          // Espacio entre el texto y el asterisco
+                                                                            fontWeight: 'bold',         // Asterisco en negrita
+                                                                        }}
+                                                                        onMouseEnter={() => setShowTooltip({ ...showTooltip, niveleducativo: true })}
+                                                                        onMouseLeave={() => setShowTooltip({ ...showTooltip, niveleducativo: false })}
+                                                                        >
+                                                                        *
+                                                                </span>
+                                                                <Tooltip
+                                                                    show={showTooltip.niveleducativo}
+                                                                    message="Este campo es obligatorio"
+                                                                    top="24%" // Posición relativa al campo
+                                                                    left="600px" // Ajusta según el espacio disponible
+                                                                />
+                                                        </label>
+                                                        <FormControl
+                                                                sx={{
+                                                                    width: '222px',
+                                                                    height: '38px',
+                                                                    '& .MuiOutlinedInput-root': {
+                                                                    fontSize: 14,
+                                                                    color: '#0E1726',
+                                                                    fontStyle: 'normal',
+                                                                    fontWeight: 400,
+                                                                    lineHeight: 'normal',
+                                                                    fontFamily: 'Maven Pro',
+                                                                    borderRadius: '6px',
+                                                                    backgroundColor: '#FFFFFF',
+                                                                    height: '38px',
+                                                                    '& fieldset': {
+                                                                        borderColor: '#E0E6ED',
+                                                                    },
+                                                                    '&:hover fieldset': {
+                                                                        borderColor: '#E0E6ED',
+                                                                    },
+                                                                    '&.Mui-focused fieldset': {
+                                                                        borderColor: '#E0E6ED',
+                                                                        borderWidth: '1px',
+                                                                    },
+                                                                    },
+                                                                    '& .MuiSelect-select': {
+                                                                    padding: '8px',
+                                                                    color: nivelEducacion === '' ? '#B0B0B0' : '#0E1726', // Cambiar color del placeholder
+                                                                    },
+                                                                }}
+                                                                >
+                                                                <Select
+                                                                    labelId="demo-simple-select-label"
+                                                                    id="demo-simple-select"
+                                                                    value={nivelEducacion}
+                                                                    onChange={handleComboEducativo}
+                                                                    displayEmpty
+                                                                    MenuProps={{
+                                                                    PaperProps: {
+                                                                        sx: {
+                                                                        '& .MuiMenuItem-root': {
+                                                                            fontFamily: 'Maven Pro',
+                                                                            fontSize: '14px',
+                                                                            fontWeight: 400,
+                                                                            color: '#0E1726',
+                                                                        },
+                                                                        },
+                                                                    },
+                                                                    }}
+                                                                >
+                                                                    <MenuItem value="" sx={{
+                                                                    fontFamily: 'Maven Pro',
+                                                                    fontSize: '14px',
+                                                                    fontWeight: 400,
+                                                                    color: '#B0B0B0', // Cambiar el color del texto del placeholder
+                                                                    paddingLeft: '12px',
+                                                                    }}>
+                                                                    Niv. Educativo
+                                                                    </MenuItem>
+                                                                    <MenuItem value="Ninguno">Ninguno</MenuItem>
+                                                                    <MenuItem value="Primaria">Primaria</MenuItem>
+                                                                    <MenuItem value="Secundaria">Secundaria</MenuItem>
+                                                                    <MenuItem value="Técnico">Técnico</MenuItem>
+                                                                    <MenuItem value="Tecnológico">Tecnológico</MenuItem>
+                                                                    <MenuItem value="Universitario">Universitario</MenuItem>
+                                                                    <MenuItem value="Posgrado">Posgrado</MenuItem>
+                                                                    <MenuItem value="Doctorado">Doctorado</MenuItem>
+                                                                </Select>
+                                                            </FormControl>
+
+
+
                                             </div>
 
 
@@ -1047,7 +1128,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 <input
                                                     onChange={(e) => setDireccionPrincipal(e.target.value)}
                                                     placeholder="Ingresar direccion de Domicilio"
-                                                    className="form-input"
+                                                    className="input-style"
                                                     style={{
                                                         width: '94.3%',
                                                         height: '38px',
@@ -1160,7 +1241,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                             // fontSize: 13,
                                                                             // fontFamily: 'serif',
                                                                             // fontWeight: 400,
-                                                                            color: '#0E1726',
+                                                                            color: '#b0b0b0',
                                                                             opacity: 1,
                                                                             fontFamily: 'Maven Pro',
                                                                         },
@@ -1218,7 +1299,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 <input
                                                     onChange={(e) => setCargo(e.target.value)}
                                                     placeholder="Ingresar cargo"
-                                                    className="form-input"
+                                                    className="input-style"
                                                     style={{
                                                         width: '222px',
                                                         height: '38px',
@@ -1282,7 +1363,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 <input
                                                     onChange={(e) => setSueldoBruto(e.target.value)}
                                                     placeholder="Ingresar valor"
-                                                    className="form-input"
+                                                    className="input-style"
                                                     style={{
                                                         width: '222px',
                                                         height: '38px',
@@ -1358,7 +1439,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 <input
                                                     onChange={(e) => setSueldoNeto(e.target.value)}
                                                     placeholder="Ingresar valor"
-                                                    className="form-input"
+                                                    className="input-style"
                                                     style={{
                                                         width: '222px',
                                                         height: '38px',
@@ -1391,7 +1472,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 <input
                                                     onChange={(e) => setOtrosIngresos(e.target.value)}
                                                     placeholder="Ingresar valor"
-                                                    className="form-input"
+                                                    className="input-style"
                                                     style={{
                                                         width: '222px',
                                                         height: '38px',
@@ -1436,7 +1517,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 <textarea
                                                     onChange={(e) => setObservaciones(e.target.value)}
                                                     placeholder="Ingresar observaciones"
-                                                    className="form-input"
+                                                    className="input-style"
                                                     style={{
                                                         width: '725px',
                                                         height: '78px',

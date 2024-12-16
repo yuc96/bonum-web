@@ -424,7 +424,7 @@ const CobrosTable = (
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.anticipoActivo} </p>
+                                    <p> {'$' + ' '+row.anticipoActivo.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -452,7 +452,7 @@ const CobrosTable = (
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.saldo} </p>
+                                    <p> {'$'+' '+row.saldo.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -466,7 +466,7 @@ const CobrosTable = (
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.valorCuota} </p>
+                                    <p> {'$'+' '+row.valorCuota.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -480,7 +480,7 @@ const CobrosTable = (
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> {row.tasaUnica} </p>
+                                    <p> {'$'+' '+row.tasaUnica.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -586,7 +586,7 @@ const CobrosTable = (
                                     fontFamily: 'Maven Pro',
                                 }}
                             >
-                                {totales.anticipoActivo.toFixed(2)}
+                                {'$'+' '+totales.anticipoActivo.toFixed(2)}
                             </TableCell>
                             <TableCell
                                 size='medium'
@@ -614,7 +614,7 @@ const CobrosTable = (
                                     fontFamily: 'Maven Pro',
                                 }}
                             >
-                                {totales.saldo.toFixed(2)}
+                                {'$'+' '+totales.saldo.toFixed(2)}
                             </TableCell>
 
                             <TableCell
@@ -628,7 +628,7 @@ const CobrosTable = (
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro',
                                 }}>
-                                {totales.valorCuota.toFixed(2)}
+                                {'$'+' '+totales.valorCuota.toFixed(2)}
                             </TableCell>
                             <TableCell
                                 size='medium'
@@ -641,7 +641,7 @@ const CobrosTable = (
                                     lineHeight: 'normal',
                                     fontFamily: 'Maven Pro',
                                 }}>
-                                {totales.tasaUnica.toFixed(2)}
+                                {'$'+' '+totales.tasaUnica.toFixed(2)}
                             </TableCell>
                             <TableCell
                                 size='medium'
@@ -655,7 +655,7 @@ const CobrosTable = (
                                     fontFamily: 'Maven Pro'
                                 }}
                             >
-                                {totales.totalDebitar.toFixed(2)}
+                                {'$'+' '+totales.totalDebitar.toFixed(2)}
                             </TableCell>
                             <TableCell />
                         </TableRow>

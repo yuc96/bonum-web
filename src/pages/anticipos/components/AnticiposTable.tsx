@@ -78,7 +78,7 @@ const AnticiposTable = ({
                                 align='left'
                                 //size='small'
                                 sx={{
-                                   
+
                                     color: '#0E1726',
                                     fontSize: 13,
                                     fontStyle: 'normal',
@@ -210,7 +210,7 @@ const AnticiposTable = ({
                                     align='left'
                                     size='medium'
                                     sx={{
-                                        
+
                                         color: '#0E1726',
                                         fontSize: 13,
                                         fontStyle: 'normal',
@@ -233,7 +233,7 @@ const AnticiposTable = ({
                                         fontFamily: 'Maven Pro'
                                     }}
                                 >
-                                    <p> {row.sueldo} </p>
+                                    <p> {'$'+' '+row.sueldo.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
@@ -247,7 +247,7 @@ const AnticiposTable = ({
                                         fontFamily: 'Maven Pro'
                                     }}
                                 >
-                                    <p> {row.montoSolicitado} </p>
+                                    <p> {'$'+' '+row.montoSolicitado.toFixed(2)} </p>
                                 </TableCell>
                                 <TableCell
                                     align='left'

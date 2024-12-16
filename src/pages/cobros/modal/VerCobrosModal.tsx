@@ -7,14 +7,16 @@ import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import IconEye from '../../../components/Icon/IconEye';
 
 const documentos = [
-    { id: 1, title: "Documento 1", description: "" },
-    { id: 2, title: "Documento 2", description: "" }
+    { id: 1, title: "Convenio Aprobado | dd-mm-yyyy/hh:mm", description: "" },
+
 ];
 
 const cuotas = [
-    { id: 1, description: "Cuota 1", valor: 123.23 },
-    { id: 2, description: "Cuota 2", valor: 100.00 },
-    { id: 3, description: "Cuota 3", valor: 100.00 },
+    { id: 1, description: "Primera Cuota ", valor: 100.00 },
+    { id: 2, description: "Costo por Servicio ", valor: 23.23 },
+    { id: 3, description: "Primer Débito del Rol ", valor: 123.23 },
+    { id: 4, description: "Segunda Cuota ", valor: 100.00 },
+    { id: 5, description: "Tercera Cuota ", valor: 100.00 },
 ];
 
 const VerCobrosModal = (
@@ -75,13 +77,16 @@ const VerCobrosModal = (
                         >
                             <div
                                 style={{
-                                    //backgroundColor: 'red',
+                                    // backgroundColor: 'red',
                                     display: 'flex',
                                     flexDirection: 'row',
                                     gap: 20,
                                     marginLeft: 29,
-                                    marginTop: 18,
-                                    marginRight: 29
+                                    marginTop: 20,
+                                    marginBottom:'5px',
+                                    marginRight: 29,
+                                    borderBottom: '2px solid #D1D1D1', // Línea estilizada
+                                    paddingBottom:'25px'
 
                                 }}
                             >
@@ -89,7 +94,7 @@ const VerCobrosModal = (
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        //backgroundColor: 'yellow'
+                                        // backgroundColor: 'yellow'
                                     }}
                                 >
 
@@ -107,21 +112,27 @@ const VerCobrosModal = (
                                         style={{
                                             display: 'flex',
                                             flexDirection: 'row',
-                                            marginTop: 7
+                                            alignItems:'center',
+                                            marginTop: 7,
+                                            // background:'red'
                                         }}
                                     >
                                         <label
                                             htmlFor="hrDefaultinput"
                                             style={{
-                                                fontSize: 14,
                                                 paddingTop: 7,
                                                 width: '84px',
                                                 //backgroundColor: 'green',
-                                                fontFamily: 'Maven Pro',
-                                                fontWeight: 400,
+                                                fontFamily: 'Nunito', // Familia tipográfica
+                                                fontSize: '14px', // Tamaño de fuente
+                                                fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                lineHeight: '19px', // Altura de línea
+                                                textAlign: 'left', // Alineación de texto a la izquierda
+                                                textUnderlinePosition: 'from-font', // Subrayado basado en la fuente
+                                                textDecorationSkipInk: 'none', // No saltar tinta en subrayado
                                             }}
                                         >
-                                            ID Solicitud:
+                                            ID Solicitud
                                         </label>
 
                                         <form>
@@ -131,7 +142,7 @@ const VerCobrosModal = (
                                                 className="form-input"
                                                 style={{
                                                     width: '250px',
-                                                    height: '35px',
+                                                    height: '38px',
                                                     flexShrink: 0,
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
@@ -143,78 +154,103 @@ const VerCobrosModal = (
 
                                 </div>
 
-                                <form>
+                                <form style={{
+                                        // background:'red',
+                                        // display:'flex',
+                                        // alignItems:'colum'
+
+                                    }}>
                                     <div
                                         style={{
                                             display: 'flex',
-                                            flexDirection: 'row',
-                                            margin: window.screen.height * 0.002,
-                                            gap: 5,
+                                            flexDirection: 'column',
+                                            justifyContent:'center',
+                                            // margin: window.screen.height * 0.002,
+                                            gap: 25,
                                             //padding: 5,
-                                            //backgroundColor: 'blue'
+                                            // backgroundColor: 'blue',
+                                            height:'auto'
+
                                         }}
                                     >
                                         <div
                                             style={{
-                                                flexDirection: 'column',
                                                 display: 'flex',
+                                                flexDirection: 'row',
                                                 gap: 25,
+                                                // background:'green'
                                             }}
                                         >
                                             <label
                                                 htmlFor="hrDefaultinput"
                                                 style={{
-                                                    fontSize: 14,
+
                                                     marginTop: window.screen.height * 0.005,
                                                     width: window.screen.width * 0.083,
-                                                    fontFamily: 'Maven Pro',
-                                                    fontWeight: 400,
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19px', // Altura de línea
+                                                    textAlign: 'left', // Alineación de texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Subrayado basado en la fuente
+                                                    textDecorationSkipInk: 'none', // No saltar tinta en subrayado
                                                 }}
                                             >
-                                                Estado:
+                                                Estado
                                             </label>
-
-                                            <label
-                                                htmlFor="hrDefaultinput"
+                                            <div
                                                 style={{
-                                                    fontSize: 14,
-                                                    width: window.screen.width * 0.083,
-                                                    fontFamily: 'Maven Pro',
-                                                    fontWeight: 400,
-                                                    marginRight: 2
+                                                    width: '88.2px',
+                                                    height: '22px',
+                                                    backgroundColor: '#00AB55',
+                                                    color: '#FFFFFF',
+                                                    alignContent: 'center',
+                                                    fontFamily: 'Nunito Sans, sans-serif',
+                                                    fontWeight: 600,
+                                                    fontSize: 12,
+                                                    lineHeight: '16px',
+                                                    textAlign: 'left', // Ya configurado
+                                                    textUnderlinePosition: 'from-font', // Agregado
+                                                    textDecorationSkipInk: 'none', // Agregado
+                                                    paddingLeft:'10px',
+                                                    // marginLeft: window.screen.width * 0.05,
+                                                    borderRadius: '4px',
                                                 }}
+
                                             >
-                                                Fecha de Ingreso:
-                                            </label>
+                                                {'Aprobado'}
+                                            </div>
 
                                         </div>
 
                                         <div
                                             style={{
-                                                flexDirection: 'column',
                                                 display: 'flex',
-                                                gap: 17
+                                                flexDirection: 'row',
+                                                justifyContent:'center',
+                                                alignItems:'center',
+                                                gap: 17,
                                                 //gap: window.screen.width * 0.01,
+                                                // background:'brown'
                                             }}
                                         >
-                                            <div
+                                            <label
+                                                htmlFor="hrDefaultinput"
                                                 style={{
-                                                    width: window.screen.width * 0.08,
-                                                    height: window.screen.height * 0.04,
-                                                    backgroundColor: 'green',
-                                                    color: 'white',
-                                                    alignContent: 'center',
-                                                    fontWeight: 'bold',
-                                                    borderRadius: 5,
-                                                    fontSize: 12,
-                                                    textAlign: 'left',
-                                                    paddingLeft: window.screen.height * 0.02,
-                                                    marginLeft: window.screen.width * 0.05,
-                                                    fontFamily: 'Maven Pro'
+                                                    // width: window.screen.width * 0.083,
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19px', // Altura de línea
+                                                    textAlign: 'center', // Alineación de texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Subrayado basado en la fuente
+                                                    textDecorationSkipInk: 'none', // No saltar tinta en subrayado
+
                                                 }}
                                             >
-                                                {'Activo'}
-                                            </div>
+                                                Fecha de Solicitud
+                                            </label>
+
 
                                             <LocalizationProvider
                                                 dateAdapter={AdapterDayjs}
@@ -231,9 +267,10 @@ const VerCobrosModal = (
                                                                 readOnly: true,
                                                             },
                                                             sx: {
-                                                                width: '230px',
-                                                                height: '35px',
+                                                                width: '250px',
+                                                                height: '38px',
                                                                 flexShrink: 0,
+                                                                // background:'red',
                                                                 '& .MuiInputBase-root': {
                                                                     height: '35px',
 
@@ -273,9 +310,9 @@ const VerCobrosModal = (
                                                     }}
                                                 />
 
-                                            </LocalizationProvider>
+                                                </LocalizationProvider>
 
-                                        </div>
+                                            </div>
 
                                     </div>
                                 </form>
@@ -368,19 +405,18 @@ const VerCobrosModal = (
 
                                     <div
                                         style={{
-                                            //paddingTop: 5,
-                                            //paddingRight: 5,
-                                            //paddingBottom: 5,
-                                            //marginLeft: window.screen.width * 0.008,
-                                            fontSize: 16,
+                                            fontFamily: 'Nunito', // Familia tipográfica
+                                            fontSize: '18px', // Tamaño de fuente
+                                            fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                            lineHeight: '24.55px', // Altura de línea
+                                            textAlign: 'left', // Alineación del texto a la izquierda
+                                            textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                            textDecorationSkipInk: 'none', // No saltar tinta en subrayado
                                             color: '#0E1726',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            fontFamily: 'Maven Pro',
-                                        }}
+                                          }}
+
                                     >
-                                        <p> Informacion del Solicitante: </p>
+                                        <p> Información del Solicitante </p>
                                     </div>
 
                                     <div
@@ -403,53 +439,65 @@ const VerCobrosModal = (
                                             <label
                                                 htmlFor="hrDefaultinput"
                                                 style={{
-                                                    fontSize: 14,
-                                                    //marginTop: window.screen.height * 0.005,
-                                                    //width: window.screen.width * 0.083,
-                                                    fontFamily: 'Maven Pro',
-                                                    fontWeight: 400,
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none',
+                                                    color:'#0E1726',
                                                 }}
                                             >
-                                                Nombre:
+                                                Nombre
                                             </label>
 
                                             <label
                                                 htmlFor="hrDefaultinput"
                                                 style={{
-                                                    fontSize: 14,
-                                                    //marginTop: window.screen.height * 0.005,
-                                                    //width: window.screen.width * 0.083,
-                                                    fontFamily: 'Maven Pro',
-                                                    fontWeight: 400,
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none',
+                                                    color:'#0E1726',
                                                 }}
                                             >
-                                                Email:
+                                                Email
                                             </label>
 
                                             <label
                                                 htmlFor="hrDefaultinput"
                                                 style={{
-                                                    fontSize: 14,
-                                                    //marginTop: window.screen.height * 0.005,
-                                                    //width: window.screen.width * 0.083,
-                                                    fontFamily: 'Maven Pro',
-                                                    fontWeight: 400,
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none',
+                                                    color:'#0E1726',
                                                 }}
                                             >
-                                                Cargo:
+                                                Cargo
                                             </label>
 
                                             <label
                                                 htmlFor="hrDefaultinput"
                                                 style={{
-                                                    fontSize: 14,
-                                                    //marginTop: window.screen.height * 0.005,
-                                                    //width: window.screen.width * 0.083,
-                                                    fontFamily: 'Maven Pro',
-                                                    fontWeight: 400,
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none',
+                                                    color:'#0E1726',
                                                 }}
                                             >
-                                                Ingresos:
+                                                Ingresos
                                             </label>
 
                                         </div>
@@ -541,21 +589,22 @@ const VerCobrosModal = (
                                     <form>
 
                                         <div
-                                            style={{
-                                                //paddingTop: 5,
-                                                //paddingRight: 5,
-                                                //paddingBottom: 5,
-                                                //marginLeft: window.screen.width * 0.008,
-                                                fontSize: '16px',
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
+
+                                                style={{
+                                                    fontFamily: 'Nunito', // Familia tipográfica
+                                                    fontSize: '18px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '24.55px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none', // No saltar tinta en subrayado
+                                                    color: '#0E1726', // Fondo del texto o contenedor
+                                                  }}
+
+
                                         >
 
-                                            <p>Detalles del Pago:</p>
+                                            <p>Detalles del Desembolso</p>
 
                                         </div>
 
@@ -564,7 +613,7 @@ const VerCobrosModal = (
                                                 display: 'flex',
                                                 flexDirection: 'row',
                                                 // marginTop: 15,
-                                                // gap: 13, 
+                                                // gap: 13,
                                                 //margin: window.screen.height * 0.002,
                                                 //gap: window.screen.width * 0.1,
                                                 //padding: 10,
@@ -586,54 +635,68 @@ const VerCobrosModal = (
                                                 <label
                                                     htmlFor="hrDefaultinput"
                                                     style={{
-                                                        fontFamily: 'Maven Pro',
-                                                        fontSize: 14,
-                                                        fontWeight: 400,
-                                                        //marginTop: window.screen.height * 0.005,
-                                                        width: stateModal ? window.screen.width * 0.083 : window.screen.width * 0.1
-                                                    }}
+                                                        fontFamily: 'Nunito', // Familia tipográfica
+                                                        fontSize: '14px', // Tamaño de fuente
+                                                        fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                        lineHeight: '19.1px', // Altura de línea
+                                                        textAlign: 'left', // Alineación del texto a la izquierda
+                                                        textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                        textDecorationSkipInk: 'none',
+                                                        color:'#0E1726',
+                                                        width: stateModal ? window.screen.width * 0.083 : window.screen.width * 0.1, // Ancho dinámico
+                                                      }}
+
                                                 >
-                                                    <p>  Metodo de Pago: </p>
+                                                    <p>  Método de Pago </p>
                                                 </label>
 
                                                 <label
                                                     htmlFor="hrDefaultinput"
                                                     style={{
-                                                        fontSize: 14,
-                                                        //marginTop: window.screen.height * 0.005,
-                                                        //width: window.screen.width * 0.083,
-                                                        fontFamily: 'Maven Pro',
-                                                        fontWeight: 400,
+                                                        fontFamily: 'Nunito', // Familia tipográfica
+                                                        fontSize: '14px', // Tamaño de fuente
+                                                        fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                        lineHeight: '19.1px', // Altura de línea
+                                                        textAlign: 'left', // Alineación del texto a la izquierda
+                                                        textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                        textDecorationSkipInk: 'none',
+                                                        color:'#0E1726',
                                                     }}
                                                 >
-                                                    <p> Banco: </p>
+                                                    <p> Banco </p>
                                                 </label>
 
 
                                                 <label
                                                     htmlFor="hrDefaultinput"
                                                     style={{
-                                                        fontSize: 14,
-                                                        //marginTop: window.screen.height * 0.005,
-                                                        //width: window.screen.width * 0.083,
-                                                        fontFamily: 'Maven Pro',
-                                                        fontWeight: 400,
+                                                        fontFamily: 'Nunito', // Familia tipográfica
+                                                        fontSize: '14px', // Tamaño de fuente
+                                                        fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                        lineHeight: '19.1px', // Altura de línea
+                                                        textAlign: 'left', // Alineación del texto a la izquierda
+                                                        textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                        textDecorationSkipInk: 'none',
+                                                        color:'#0E1726',
                                                     }}
                                                 >
-                                                    <p> Referencia: </p>
+                                                    <p> Referencia </p>
                                                 </label>
 
                                                 <label
                                                     htmlFor="hrDefaultinput"
                                                     style={{
-                                                        fontSize: 14,
-                                                        //marginTop: window.screen.height * 0.005,
-                                                        //width: window.screen.width * 0.083,
-                                                        fontFamily: 'Maven Pro',
-                                                        fontWeight: 400,
+                                                        fontFamily: 'Nunito', // Familia tipográfica
+                                                        fontSize: '14px', // Tamaño de fuente
+                                                        fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                        lineHeight: '19.1px', // Altura de línea
+                                                        textAlign: 'left', // Alineación del texto a la izquierda
+                                                        textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                        textDecorationSkipInk: 'none',
+                                                        color:'#0E1726',
                                                     }}
                                                 >
-                                                    Comprobante:
+                                                    Comprobante
                                                 </label>
 
                                             </div>
@@ -733,201 +796,244 @@ const VerCobrosModal = (
                             <div
                                 style={{
                                     marginLeft: 24,
-                                    marginRight: 24
+                                    marginRight: 24,
+                                    paddingBottom:'20px',
+
+
                                 }}
                             >
-
                                 <div
                                     style={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        backgroundColor: '#e9efff',
-                                        padding: 5
+
+                                        // background:'yellow',
+                                        paddingBottom:'25px',
+                                        borderBottom: '2px solid #E0E6ED', // Línea estilizada
+
                                     }}
                                 >
+                                <div>
                                     <div
                                         style={{
-                                            //backgroundColor: 'blue',
-                                            width: '60%',
-                                            color: '#0E1726',
-                                            fontSize: '14px',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            alignContent: 'center',
-                                            paddingLeft: 1,
-                                            fontFamily: 'Maven Pro',
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            backgroundColor: 'rgba(224, 230, 237, 0.3)', // Fondo con opacidad del 30%,
+                                            padding: 5,
+                                            position: 'relative'
                                         }}
                                     >
-                                        <p> Item </p>
+                                        <div
+                                            style={{
+                                                fontFamily: 'Nunito', // Cambiado a Nunito
+                                                fontSize: '14px', // Tamaño de fuente
+                                                fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                lineHeight: '19.1px', // Altura de línea
+                                                textAlign: 'left', // Alineación del texto a la izquierda
+                                                textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                textDecorationSkipInk: 'none', // No saltar tinta en subrayado
+                                                width: '60%', // Ancho ajustado al 60% del contenedor
+                                                color: '#0E1726', // Color del texto
+                                                fontStyle: 'normal', // Estilo normal para la fuente
+                                                alignContent: 'center', // Alineación del contenido (centro)
+                                                paddingLeft: 2, // Espaciado a la izquierda
+
+                                            }}
+
+                                        >
+                                            <p> Item </p>
+                                        </div>
+                                            <div
+                                                style={{
+                                                    fontFamily: 'Nunito', // Cambiado a Nunito
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none', // No saltar tinta en subrayado
+                                                    width: '60%', // Ancho ajustado al 60% del contenedor
+                                                    color: '#0E1726', // Color del texto
+                                                    fontStyle: 'normal', // Estilo normal para la fuente
+                                                    alignContent: 'center', // Alineación del contenido (centro)
+                                                    paddingLeft: 1, // Espaciado a la izquierda
+                                                    position: 'absolute',
+                                                    left:'59%'
+                                                }}
+                                            >
+                                                <p> Cuotas </p>
+                                            </div>
+                                            <div
+                                                style={{
+                                                    fontFamily: 'Nunito', // Cambiado a Nunito
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none', // No saltar tinta en subrayado
+                                                    width: 'auto', // Ancho ajustado al 60% del contenedor
+                                                    color: '#0E1726', // Color del texto
+                                                    fontStyle: 'normal', // Estilo normal para la fuente
+                                                    alignContent: 'center', // Alineación del contenido (centro)
+                                                    paddingLeft: 1, // Espaciado a la izquierda
+                                                    // background:'red',
+                                                    position: 'absolute',
+                                                    left:'73%'
+                                                }}
+                                            >
+                                                <p> Monto </p>
+                                            </div>
+                                            <div
+                                                style={{
+                                                    fontFamily: 'Nunito', // Cambiado a Nunito
+                                                    fontSize: '14px', // Tamaño de fuente
+                                                    fontWeight: 600, // Peso de la fuente (semi-negrita)
+                                                    lineHeight: '19.1px', // Altura de línea
+                                                    textAlign: 'left', // Alineación del texto a la izquierda
+                                                    textUnderlinePosition: 'from-font', // Posición del subrayado desde la fuente
+                                                    textDecorationSkipInk: 'none', // No saltar tinta en subrayado
+                                                    width: '180px', // Ancho ajustado al 60% del contenedor
+                                                    color: '#0E1726', // Color del texto
+                                                    fontStyle: 'normal', // Estilo normal para la fuente
+                                                    alignContent: 'center', // Alineación del contenido (centro)
+                                                    paddingLeft: 1, // Espaciado a la izquierda
+                                                    // background:'yellow',
+                                                    position: 'absolute',
+                                                    left:'86.5%'
+                                                }}
+                                            >
+                                                <p> Costo por Servicio </p>
+                                            </div>
                                     </div>
+
+                                    </div>
+
+
                                     <div
                                         style={{
-                                            //backgroundColor: 'green',
-                                            width: '14%',
-                                            color: '#0E1726',
-                                            fontSize: '14px',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            alignContent: 'center',
-                                            fontFamily: 'Maven Pro',
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            width: '100%',
+                                            //height: window.screen.height * 0.05,
+                                            marginTop: 10,
+                                            //backgroundColor: 'red',
+                                            //marginBottom: 5,
+                                            gap: '5px'
                                         }}
                                     >
-                                        <p> Cuotas </p>
+                                        <div
+                                            style={{ width: '60%' }}
+                                        >
+                                            <input
+                                                id="hrDefaultinput"
+                                                placeholder=""
+                                                className="form-input"
+                                                style={{
+                                                    width: '100%',
+                                                    height: '35px',
+                                                    flexShrink: 0,
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFFF'
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div
+                                            style={{ width: '14%' }}
+                                        >
+                                            <input
+                                                id="hrDefaultinput"
+                                                placeholder=""
+                                                className="form-input"
+                                                style={{
+                                                    width: '100%',
+                                                    height: '35px',
+                                                    flexShrink: 0,
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFFF'
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div
+                                            style={{ width: '14%' }}
+                                        >
+                                            <input
+                                                id="hrDefaultinput"
+                                                placeholder=""
+                                                className="form-input"
+                                                style={{
+                                                    width: '100%',
+                                                    height: '35px',
+                                                    flexShrink: 0,
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFFF'
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div
+                                            style={{ width: '14%' }}
+                                        >
+                                            <input
+                                                id="hrDefaultinput"
+                                                placeholder=""
+                                                className="form-input"
+                                                style={{
+                                                    width: '100%',
+                                                    height: '35px',
+                                                    flexShrink: 0,
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    background: '#FFFFFF'
+                                                }}
+                                            />
+                                        </div>
+
                                     </div>
-                                    <div
-                                        style={{
-                                            //backgroundColor: 'cyan',
-                                            width: '14%',
-                                            color: '#0E1726',
-                                            fontSize: '14px',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            alignContent: 'center',
-                                            paddingLeft: 5,
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
-                                        <p> Monto </p>
-                                    </div>
-                                    <div
-                                        style={{
-                                            //backgroundColor: 'orange',
-                                            width: '14%',
-                                            color: '#0E1726',
-                                            fontSize: '14px',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            alignContent: 'center',
-                                            paddingLeft: 10,
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
-                                        <p> Tarifa única </p>
-                                    </div>
+
                                 </div>
 
                                 <div
                                     style={{
                                         display: 'flex',
-                                        flexDirection: 'row',
-                                        width: '100%',
-                                        //height: window.screen.height * 0.05,
-                                        marginTop: 10,
-                                        //backgroundColor: 'red',
-                                        //marginBottom: 5,
-                                        gap: '5px'
-                                    }}
-                                >
-                                    <div
-                                        style={{ width: '60%' }}
-                                    >
-                                        <input
-                                            id="hrDefaultinput"
-                                            placeholder=""
-                                            className="form-input"
-                                            style={{
-                                                width: '100%',
-                                                height: '35px',
-                                                flexShrink: 0,
-                                                borderRadius: '6px',
-                                                border: '1px solid #E0E6ED',
-                                                background: '#FFFFFF'
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div
-                                        style={{ width: '14%' }}
-                                    >
-                                        <input 
-                                            id="hrDefaultinput" 
-                                            placeholder="" 
-                                            className="form-input" 
-                                            style={{
-                                                width: '100%',
-                                                height: '35px',
-                                                flexShrink: 0,
-                                                borderRadius: '6px',
-                                                border: '1px solid #E0E6ED',
-                                                background: '#FFFFFF'
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div
-                                        style={{ width: '14%' }}
-                                    >
-                                        <input 
-                                            id="hrDefaultinput" 
-                                            placeholder="" 
-                                            className="form-input" 
-                                            style={{
-                                                width: '100%',
-                                                height: '35px',
-                                                flexShrink: 0,
-                                                borderRadius: '6px',
-                                                border: '1px solid #E0E6ED',
-                                                background: '#FFFFFF'
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div
-                                        style={{ width: '14%' }}
-                                    >
-                                        <input 
-                                            id="hrDefaultinput" 
-                                            placeholder="" 
-                                            className="form-input" 
-                                            style={{
-                                                width: '100%',
-                                                height: '35px',
-                                                flexShrink: 0,
-                                                borderRadius: '6px',
-                                                border: '1px solid #E0E6ED',
-                                                background: '#FFFFFF'
-                                            }}
-                                        />
-                                    </div>
-
-                                </div>
-
-                                <div
-                                    style={{
-                                        display: 'flex',
+                                        flexDirection:'row',
                                         justifyContent: 'center',
-                                        //backgroundColor: 'red',
-                                        gap: window.screen.width * 0.1
+                                        alignItems:'center',
+                                        // backgroundColor: 'green',
+                                        gap: '30px'
                                     }}
                                 >
 
                                     <div
                                         style={{
-                                            width: '40%',
+                                            width: '550px',
+                                            height:'138px',
                                             flexShrink: 0,
                                             marginTop: 10,
                                             marginBottom: 20,
                                             border: '1px solid #E5E5E5',
                                             borderRadius: '8px',
                                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                            //backgroundColor: 'blue'
+                                            // backgroundColor: 'blue'
                                         }}
                                     >
 
                                         <p
                                             style={{
-                                                padding: 20,
-                                                color: '#0E1726',
+                                                fontFamily: 'Nunito',
                                                 fontSize: '18px',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
+                                                fontWeight: 600,
+                                                lineHeight: '24.55px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                padding: '20px',
+                                                color: '#0E1726',
                                             }}
+
                                         >
                                             Documentación
                                         </p>
@@ -935,16 +1041,23 @@ const VerCobrosModal = (
                                         {documentos.map((doc, index) => (
                                             <div
                                                 key={doc.id}
-                                                style={{
-                                                    marginTop: 5,
-                                                    marginLeft: 20,
-                                                    marginRight: 20,
-                                                    display: "flex",
-                                                    //backgroundColor: 'pink',
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center",
-                                                    borderBottom: index !== documentos.length - 1 ? "1px solid #E5E5E5" : "none",
-                                                }}
+                                                    style={{
+                                                        fontFamily: 'Nunito',
+                                                        fontSize: '14px',
+                                                        fontWeight: 400,
+                                                        lineHeight: '19.1px',
+                                                        textAlign: 'left',
+                                                        textUnderlinePosition: 'from-font',
+                                                        textDecorationSkipInk: 'none',
+                                                        marginTop: '5px',
+                                                        marginLeft: '20px',
+                                                        marginRight: '20px',
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+                                                        borderBottom: index !== documentos.length - 1 ? '1px solid #E5E5E5' : 'none',
+                                                    }}
+
                                             >
 
                                                 <div
@@ -973,15 +1086,21 @@ const VerCobrosModal = (
 
                                     <div
                                         style={{
-                                            width: '40%',
+                                            width: '80%',
                                             marginTop: 20,
-                                            marginBottom: 20
+                                            marginBottom: 20,
+                                            // background:'red'
+
                                         }}
                                     >
 
-                                        {cuotas.map((cuota) => (
+                                        {cuotas.map((cuota, index) => (
+
+
                                             <div
-                                                key={cuota.id}
+
+                                            >
+                                                <div key={cuota.id}
                                                 style={{
                                                     display: "flex",
                                                     justifyContent: "space-between",
@@ -991,24 +1110,51 @@ const VerCobrosModal = (
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     fontFamily: 'Maven Pro',
-                                                }}
-                                            >
-                                                <p style={{ 
-                                                    color: 'green',  
-                                                    fontSize: 14,
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 600,
-                                                    fontFamily: 'Maven Pro'
                                                 }}>
-                                                    {cuota.description}
-                                                </p>
-                                                <p>
-                                                    ${cuota.valor.toFixed(2)}
-                                                </p>
+                                                    <p
+                                                    style={{
+                                                        fontFamily: 'Nunito',
+                                                        fontSize: '14px',
+                                                        fontWeight: 400,
+                                                        lineHeight: '37px',
+                                                        textAlign: 'left',
+                                                        textUnderlinePosition: 'from-font',
+                                                        textDecorationSkipInk: 'none',
+                                                        color: ' #0E1726',
+                                                    }}
+                                                >
+                                                        {cuota.description}
+                                                    </p>
+                                                    <p>
+                                                        ${cuota.valor.toFixed(2)}
+                                                    </p>
+
+                                                </div>
+
+                                                {index === 2 && (
+                                                    <p
+
+                                                    style={{
+                                                        fontFamily: 'Nunito',
+                                                        fontSize: '14px',
+                                                        fontWeight: 600, // Aumenta el grosor del texto
+                                                        lineHeight: '19.1px', // Ajusta la altura de línea para mejor legibilidad
+                                                        textAlign: 'left',
+                                                        textUnderlinePosition: 'from-font',
+                                                        textDecorationSkipInk: 'none',
+                                                        color: '#B2B6B8',
+                                                        margin: '10px 0', // Espaciado uniforme arriba y abajo
+                                                        borderBottom: '1px solid #000000',
+                                                    }}
+
+                                                    >
+                                                        Incluye IVA y solo se cobra 1 vez
+                                                    </p>
+                                                )}
                                             </div>
                                         ))}
 
-                                        <div
+                                        {/* <div
                                             style={{
                                                 display: "flex",
                                                 justifyContent: "space-between",
@@ -1022,7 +1168,7 @@ const VerCobrosModal = (
                                         >
                                             <span>Total</span>
                                             <span>${total.toFixed(2)}</span>
-                                        </div>
+                                        </div> */}
 
                                     </div>
 

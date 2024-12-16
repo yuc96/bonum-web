@@ -20,6 +20,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { an_empleados, update_empleados } from '../../../server/empleados/EmpleadosApi';
 import { AccionContext } from '../../../contexts/AccionesContext';
 import { Box, FormControl, MenuItem, Select } from '@mui/material';
+import Empleados from '../Empleados';
 
 const historialData = [
     {
@@ -101,11 +102,14 @@ const EditarEmpleadoModal = (
         setPage(1);
     }, [pageSize]);
 
+
+    // Función filtra las filas de la tabla
     useEffect(() => {
         const from = (page - 1) * pageSize;
         const to = from + pageSize;
         setRecordsData([...initialRecords.slice(from, to)]);
     }, [page, pageSize, initialRecords]);
+
 
     useEffect(() => {
         setInitialRecords(() => {
@@ -150,11 +154,36 @@ const EditarEmpleadoModal = (
         { accessor: 'age', title: 'Age' },
         { accessor: 'dob', title: 'Birthdate' },
         { accessor: 'isActive', title: 'Active' },
+
+
     ];
+    // interface Empleado {
+    //     id_empleado: number;
+    //     identification_number: string;
+    //     name: string;
+    //     lastname: string;
+    //     address: string;
+    //     date_of_birth: Date;
+    //     level_education: string;
+    //     email: string;
+    //     phoneMovil: string;
+    //     phoneFijo: string;
+    //     provincia: string;
+    //     ciudad: string;
+    //     street_primary: string;
+    //     address_secondary: string;
+    //     company_code: string;
+    //     job_title: string;
+    //     gross_salary: number;
+    //     net_salary: number;
+    //     other_income: number;
+    //     observations: string;
+    // }
+
 
     const { accionDatos, recargarDatos } = useContext(AccionContext);
     const [empleado, setEmpleado] = useState<any>({})
-    const [nuevoEmpleado, setNuevoEmpleado] = useState<any>(
+    const [nuevoEmpleado, setNuevoEmpleado] = useState<any>(                //Empleado-any
         {
             id_empleado: 0,
             identification_number: '',
@@ -172,6 +201,7 @@ const EditarEmpleadoModal = (
             address_secondary: '',
             company_code: '',
             job_title: '',
+            registration_date:'',
             gross_salary: 0,
             net_salary: 0,
             other_income: 0,
@@ -201,6 +231,7 @@ const EditarEmpleadoModal = (
                     address_secondary: empleado.address_secondary || '',
                     company_code: empleado.company_code || '',
                     job_title: empleado.job_title || '',
+                    registration_date:empleado.registration_date ||'',
                     gross_salary: empleado.gross_salary || 0,
                     net_salary: empleado.net_salary || 0,
                     other_income: empleado.other_income || 0,
@@ -247,10 +278,20 @@ const EditarEmpleadoModal = (
 
     const editDate = (newValue: any) => {
         if (newValue) {
+
             const formattedDate = newValue.format("YYYY-MM-DD");
             return formattedDate
         }
     };
+
+    //Cambia el estado del input
+
+    const [isDisabled, setIsDisabled] = useState(true);
+
+    const toggleInput = () => {
+      setIsDisabled((prev) => !prev);
+    };
+
 
 
     return (
@@ -304,7 +345,7 @@ const EditarEmpleadoModal = (
                             >
                                 <div
                                     style={{
-                                        //backgroundColor: 'green', 
+                                        //backgroundColor: 'green',
                                         width: '80%'
                                     }}
                                 >
@@ -404,22 +445,24 @@ const EditarEmpleadoModal = (
                                                 }}
                                             > Cedula de identidad</label>
                                             <input
-                                                //disabled={true}
+                                                disabled={isDisabled}
                                                 name={'identification_number'}
                                                 onChange={handleEditarEmpleado}
                                                 value={nuevoEmpleado.identification_number}
                                                 placeholder="Ingresar número de cédula"
                                                 className="form-input"
+
                                                 style={{
                                                     width: '222px',
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     fontSize: 14,
-                                                    color: '#0E1726',
+                                                    color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
+                                                    backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                 }}
                                             />
                                         </div>
@@ -436,6 +479,7 @@ const EditarEmpleadoModal = (
                                                 }}
                                             > Nombres </label>
                                             <input
+                                                disabled={isDisabled}
                                                 name='name'
                                                 onChange={handleEditarEmpleado}
                                                 value={nuevoEmpleado.name}
@@ -446,14 +490,14 @@ const EditarEmpleadoModal = (
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     fontSize: 14,
-                                                    color: '#0E1726',
+                                                    color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                 }}
                                             />
                                         </div>
@@ -470,6 +514,7 @@ const EditarEmpleadoModal = (
                                                 }}
                                             > Apellidos </label>
                                             <input
+                                                disabled={isDisabled}
                                                 name='lastname'
                                                 onChange={handleEditarEmpleado}
                                                 value={nuevoEmpleado.lastname}
@@ -480,14 +525,14 @@ const EditarEmpleadoModal = (
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     fontSize: 14,
-                                                    color: '#0E1726',
+                                                    color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                 }}
                                             />
                                         </div>
@@ -520,9 +565,17 @@ const EditarEmpleadoModal = (
                                                 dateAdapter={AdapterDayjs}
                                             >
                                                 <DatePicker
+                                                    disabled={isDisabled}
                                                     name='date_of_birth'
                                                     value={dayjs(nuevoEmpleado.date_of_birth) || null}
-                                                    onChange={handleEditarEmpleado}
+                                                    onChange={(date) => {
+                                                        handleEditarEmpleado({
+                                                            target: {
+                                                                name: "date_of_birth", // Campo del estado a actualizar
+                                                                value: date, // Valor seleccionado por el usuario
+                                                            },
+                                                        });
+                                                    }}
                                                     slotProps={{
                                                         textField: {
                                                             placeholder: 'Fecha',
@@ -536,6 +589,7 @@ const EditarEmpleadoModal = (
                                                             sx: {
                                                                 width: '222px',
                                                                 height: '38px',
+
                                                                 flexShrink: 0,
                                                                 '& .MuiInputBase-root': {
                                                                     height: '38px',
@@ -546,7 +600,7 @@ const EditarEmpleadoModal = (
                                                                     fontWeight: 300,
                                                                     lineHeight: 'normal',
                                                                     fontFamily: 'Maven Pro',
-                                                                    backgroundColor: 'white',
+                                                                    backgroundColor: isDisabled ? '#F5F5F5' : 'white',
                                                                     border: '1px solid #E0E6ED',
                                                                     borderRadius: '6px',
                                                                     boxShadow: 'none',
@@ -596,8 +650,245 @@ const EditarEmpleadoModal = (
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                 }}
+                                            > Correo Electrónico </label>
+                                            <input
+                                                //onChange={}
+                                                disabled={isDisabled}
+                                                name={'email'}
+                                                value={nuevoEmpleado.email}
+                                                onChange={handleEditarEmpleado}
+                                                placeholder="Ingresar correo electronico"
+                                                className="form-input"
+                                                style={{
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: isDisabled ? '#B0B0B0' : '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
+                                            > Teléfono Móvil </label>
+                                            <input
+                                                //onChange={}
+                                                disabled={isDisabled}
+                                                name={'phoneMovil'}
+                                                value={nuevoEmpleado.phoneMovil}
+                                                onChange={handleEditarEmpleado}
+                                                placeholder="Ingresar numero de celular"
+                                                className="form-input"
+                                                style={{
+                                                    width: '222px',
+                                                    height: '38px',
+                                                    flexShrink: 0,
+                                                    fontSize: 14,
+                                                    color: isDisabled ? '#B0B0B0' : '#0E1726',
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    borderRadius: '6px',
+                                                    border: '1px solid #E0E6ED',
+                                                    backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
+                                                }}
+                                            />
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            gap: window.screen.width * 0.02,
+                                            // background: 'yellow',
+                                            paddingTop:'15px',
+                                        }}
+                                    >
+
+
+
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                gap: window.screen.width * 0.02,
+                                                // marginTop: window.screen.height * 0.01,
+                                                //backgroundColor: 'cyan',
+                                                fontSize: 14,
+                                                color: '#0E1726',
+                                                fontStyle: 'normal',
+                                                fontWeight: 400,
+                                                lineHeight: 'normal',
+                                                fontFamily: 'Maven Pro',
+                                            }}
+                                        >
+                                            <div>
+                                                <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                    }}
+                                                > Provincia</label>
+                                                <FormControl
+                                                    disabled={isDisabled}
+                                                    sx={{
+                                                        width: '222px',
+                                                        height: '38px',
+                                                        flexShrink: 0,
+                                                        '& .MuiOutlinedInput-root': {
+                                                            fontSize: 14,
+                                                            color: '#0E1726',
+                                                            fontStyle: 'normal',
+                                                            fontWeight: 400,
+                                                            lineHeight: 'normal',
+                                                            fontFamily: 'Maven Pro',
+                                                            borderRadius: '6px',
+                                                            backgroundColor: isDisabled ? '#F5F5F5' : 'white',
+                                                            height: '38px',
+                                                            '& fieldset': {
+                                                                borderColor: '#E0E6ED',
+                                                            },
+                                                            '&:hover fieldset': {
+                                                                borderColor: '#E0E6ED',
+                                                            },
+                                                            '&.Mui-focused fieldset': {
+                                                                borderColor: '#E0E6ED',
+                                                                borderWidth: '1px',
+                                                            },
+                                                        },
+                                                        '& .MuiSelect-select': {
+                                                            padding: '8px',
+                                                        }
+                                                    }
+                                                    }
+                                                >
+                                                    <Select
+
+                                                        // labelId="demo-simple-select-label"
+                                                        // id="demo-simple-select"
+                                                        name={'provincia'}
+                                                        value={nuevoEmpleado.provincia}
+                                                        onChange={handleEditarEmpleado}
+                                                        displayEmpty
+                                                        MenuProps={{
+                                                            PaperProps: {
+                                                                sx: {
+                                                                    '& .MuiMenuItem-root': {
+                                                                        fontFamily: 'Maven Pro',
+                                                                        fontSize: '14px',
+                                                                        fontWeight: 400,
+                                                                        color: '#0E1726'
+                                                                    },
+                                                                },
+                                                            },
+                                                        }}
+
+                                                    >
+                                                        <MenuItem value="" sx={{
+                                                            fontFamily: 'Maven Pro',
+                                                            fontSize: '14px',
+                                                            fontWeight: 400,
+                                                            color: '#0E1726'
+                                                        }}>
+                                                            &nbsp;Provincia
+                                                        </MenuItem>
+                                                        {
+                                                            provincias.map((provincia, index) => (
+                                                                <MenuItem
+                                                                    key={index}
+                                                                    value={provincia}
+                                                                >
+                                                                    &nbsp;{provincia}
+                                                                </MenuItem>
+                                                            ))
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+
+                                            </div>
+
+
+
+                                            <div>
+                                                    <label
+                                                        style={{
+                                                            fontSize: 14,
+                                                            color: '#0E1726',
+                                                            fontStyle: 'revert',
+                                                            fontWeight: 400,
+                                                            lineHeight: 'normal',
+                                                            fontFamily: 'Maven Pro',
+                                                        }}
+                                                        > Ciudad</label>
+
+                                                    <input
+                                                        //onChange={(e) => setCiudad(e.target.value)}
+                                                        //disabled={true}
+                                                        disabled={isDisabled}
+                                                        name={'ciudad'}
+                                                        value={nuevoEmpleado.ciudad}
+                                                        onChange={handleEditarEmpleado}
+                                                        placeholder="Ciudad"
+                                                        className="form-input"
+                                                        style={{
+                                                            width: '222px',
+                                                            height: '38px',
+                                                            flexShrink: 0,
+                                                            fontSize: 14,
+                                                            color: isDisabled ? '#B0B0B0' : '#0E1726',
+                                                            fontStyle: 'normal',
+                                                            fontWeight: 400,
+                                                            lineHeight: 'normal',
+                                                            fontFamily: 'Maven Pro',
+                                                            borderRadius: '6px',
+                                                            border: '1px solid #E0E6ED',
+                                                            backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
+                                                        }}
+                                                    />
+                                            </div>
+
+
+                                        </div>
+
+                                        <div>
+                                            <label
+                                                style={{
+                                                    fontSize: 14,
+                                                    color: '#0E1726',
+                                                    fontStyle: 'revert',
+                                                    fontWeight: 400,
+                                                    lineHeight: 'normal',
+                                                    fontFamily: 'Maven Pro',
+                                                }}
                                             > Nivel educativo </label>
                                             <FormControl
+                                                 disabled={isDisabled}
                                                 sx={{
                                                     width: '222px',
                                                     height: '38px',
@@ -609,7 +900,7 @@ const EditarEmpleadoModal = (
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
-                                                        backgroundColor: '#FFFFFF',
+                                                        backgroundColor: isDisabled ? '#F5F5F5' : 'white',
                                                         height: '38px',
                                                         '& fieldset': {
                                                             borderColor: '#E0E6ED',
@@ -668,161 +959,7 @@ const EditarEmpleadoModal = (
                                                 </Select>
                                             </FormControl>
 
-                                            {/* <input
-                                                name={'level_education'}
-                                                value={nuevoEmpleado.level_education}
-                                                onChange={handleEditarEmpleado}
-                                                placeholder="Ingresar nivel educativo"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            /> */}
-                                        </div>
 
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            //backgroundColor: 'blue',
-                                            marginTop: 36,
-                                            marginBottom: 15,
-                                            fontSize: 15,
-                                            color: '#0E1726',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
-                                        <p> Datos de Contacto</p>
-
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            gap: window.screen.width * 0.02,
-                                            //background: 'yellow'
-                                        }}
-                                    >
-
-                                        <div>
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            > Correo Electrónico </label>
-                                            <input
-                                                //onChange={}
-                                                name={'email'}
-                                                value={nuevoEmpleado.email}
-                                                onChange={handleEditarEmpleado}
-                                                placeholder="Ingresar correo electronico"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            > Teléfono Móvil </label>
-                                            <input
-                                                //onChange={}
-                                                name={'phoneMovil'}
-                                                value={nuevoEmpleado.phoneMovil}
-                                                onChange={handleEditarEmpleado}
-                                                placeholder="Ingresar numero de celular"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label
-                                                style={{
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'revert',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                }}
-                                            > Teléfono Fijo </label>
-                                            <input
-                                                //onChange={()={}}
-                                                //disabled={true}
-                                                name={'phoneFijo'}
-                                                value={nuevoEmpleado.phoneFijo}
-                                                onChange={handleEditarEmpleado}
-                                                placeholder="Ingresar numero de teléfono"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
                                         </div>
 
                                     </div>
@@ -840,148 +977,9 @@ const EditarEmpleadoModal = (
                                                 marginTop: 15
                                             }}
                                         >
-                                            Dirección
+                                            Domicilio
                                         </label>
 
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                gap: 5,
-                                                //backgroundColor: 'cyan',
-                                                fontSize: 14,
-                                                color: '#0E1726',
-                                                fontStyle: 'normal',
-                                                fontWeight: 400,
-                                                lineHeight: 'normal',
-                                                fontFamily: 'Maven Pro',
-                                            }}
-                                        >
-                                            <FormControl
-                                                sx={{
-                                                    width: '364px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    '& .MuiOutlinedInput-root': {
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'normal',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        borderRadius: '6px',
-                                                        backgroundColor: '#FFFFFF',
-                                                        height: '38px',
-                                                        '& fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                        },
-                                                        '&:hover fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                        },
-                                                        '&.Mui-focused fieldset': {
-                                                            borderColor: '#E0E6ED',
-                                                            borderWidth: '1px',
-                                                        },
-                                                    },
-                                                    '& .MuiSelect-select': {
-                                                        padding: '8px',
-                                                    }
-                                                }
-                                                }
-                                            >
-                                                <Select
-
-                                                    // labelId="demo-simple-select-label"
-                                                    // id="demo-simple-select"
-                                                    name={'provincia'}
-                                                    value={nuevoEmpleado.provincia}
-                                                    onChange={handleEditarEmpleado}
-                                                    displayEmpty
-                                                    MenuProps={{
-                                                        PaperProps: {
-                                                            sx: {
-                                                                '& .MuiMenuItem-root': {
-                                                                    fontFamily: 'Maven Pro',
-                                                                    fontSize: '14px',
-                                                                    fontWeight: 400,
-                                                                    color: '#0E1726'
-                                                                },
-                                                            },
-                                                        },
-                                                    }}
-
-                                                >
-                                                    <MenuItem value="" sx={{
-                                                        fontFamily: 'Maven Pro',
-                                                        fontSize: '14px',
-                                                        fontWeight: 400,
-                                                        color: '#0E1726'
-                                                    }}>
-                                                        &nbsp;Provincia
-                                                    </MenuItem>
-                                                    {
-                                                        provincias.map((provincia, index) => (
-                                                            <MenuItem
-                                                                key={index}
-                                                                value={provincia}
-                                                            >
-                                                                &nbsp;{provincia}
-                                                            </MenuItem>
-                                                        ))
-                                                    }
-                                                </Select>
-                                            </FormControl>
-
-
-                                            {/* <input
-                                                //onChange={(e) => setProvincia(e.target.value)}
-                                                //disabled={true}
-                                                value={nuevoEmpleado.provincia}
-                                                name={'provincia'}
-                                                onChange={handleEditarEmpleado}
-                                                placeholder="Provincia"
-                                                className="form-input"
-                                                style={{
-                                                    width: '358px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            /> */}
-
-                                            <input
-                                                //onChange={(e) => setCiudad(e.target.value)}
-                                                //disabled={true}
-                                                name={'ciudad'}
-                                                value={nuevoEmpleado.ciudad}
-                                                onChange={handleEditarEmpleado}
-                                                placeholder="Ciudad"
-                                                className="form-input"
-                                                style={{
-                                                    width: '358px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-
-                                        </div>
 
                                         <div
                                             style={{
@@ -1001,69 +999,25 @@ const EditarEmpleadoModal = (
 
                                             <input
                                                 //onChange={(e) => setDireccionPrincipal(e.target.value)}
+                                                disabled={isDisabled}
                                                 name={'address'}
                                                 value={nuevoEmpleado.address}
                                                 onChange={handleEditarEmpleado}
                                                 placeholder="Ingresar direccion principal"
                                                 className="form-input"
                                                 style={{
-                                                    width: '222px',
+                                                    width: '100%',
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     fontSize: 14,
-                                                    color: '#0E1726',
+                                                    color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-
-                                            <input
-                                                //onChange={(e) => setNumero(e.target.value)}
-                                                disabled={true}
-                                                //value={}
-                                                placeholder="Número"
-                                                className="form-input"
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
-                                                }}
-                                            />
-
-                                            <input
-                                                //onChange={(e) => setDireccionSecundaria(e.target.value)}
-                                                onChange={handleEditarEmpleado}
-                                                name={'address_secondary'}
-                                                placeholder="Ingresar dirección transversal"
-                                                className="form-input"
-                                                value={nuevoEmpleado.address_secondary}
-                                                style={{
-                                                    width: '222px',
-                                                    height: '38px',
-                                                    flexShrink: 0,
-                                                    fontSize: 14,
-                                                    color: '#0E1726',
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    lineHeight: 'normal',
-                                                    fontFamily: 'Maven Pro',
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                 }}
                                             />
 
@@ -1106,51 +1060,23 @@ const EditarEmpleadoModal = (
                                                         fontFamily: 'Maven Pro',
                                                         marginTop: 15
                                                     }}
-                                                > Código de Empresa </label>
-                                                <input
-                                                    //onChange={(e) => setCodigoEmpresa(e.target.value)}
-                                                    //disabled={true}
-                                                    name={'company_code'}
-                                                    onChange={handleEditarEmpleado}
-                                                    value={nuevoEmpleado.company_code}
-                                                    placeholder="Código de Empresa"
-                                                    className="form-input"
-                                                    style={{
-                                                        width: '222px',
-                                                        height: '38px',
-                                                        flexShrink: 0,
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'normal',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        borderRadius: '6px',
-                                                        border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
-                                                    }}
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label
-                                                    style={{
-                                                        fontSize: 14,
-                                                        color: '#0E1726',
-                                                        fontStyle: 'revert',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        marginTop: 15
-                                                    }}
                                                 > Fecha de Ingreso </label>
                                                 <LocalizationProvider
                                                     dateAdapter={AdapterDayjs}
                                                 >
                                                     <DatePicker
-                                                        //onChange={(newValue) => setFechaIngreso(newValue)}
+
                                                         value={dayjs(nuevoEmpleado.registration_date)}
+                                                        onChange={(date) => {
+                                                            handleEditarEmpleado({
+                                                                target: {
+                                                                    name: "registration_date", // Campo del estado a actualizar
+                                                                    value: date, // Valor seleccionado por el usuario
+                                                                },
+                                                            });
+                                                        }}
                                                         name={'registration_date'}
+                                                        disabled={isDisabled}
                                                         slotProps={{
                                                             textField: {
                                                                 placeholder: 'Fecha',
@@ -1172,7 +1098,7 @@ const EditarEmpleadoModal = (
                                                                         fontStyle: 'normal',
                                                                         fontWeight: 300,
                                                                         lineHeight: 'normal',
-                                                                        backgroundColor: 'white',
+                                                                        backgroundColor: isDisabled ? '#F5F5F5' : 'white',
                                                                         border: '1px solid #E0E6ED',
                                                                         borderRadius: '4px',
                                                                         boxShadow: 'none',
@@ -1203,6 +1129,7 @@ const EditarEmpleadoModal = (
                                                                             color: '#0E1726',
                                                                             opacity: 1,
                                                                             fontFamily: 'Maven Pro',
+
                                                                         },
                                                                     },
                                                                 },
@@ -1227,6 +1154,7 @@ const EditarEmpleadoModal = (
                                                 > Cargo </label>
                                                 <input
                                                     //onChange={(e) => setCargo(e.target.value)}
+                                                    disabled={isDisabled}
                                                     value={nuevoEmpleado.job_title}
                                                     name={'job_title'}
                                                     onChange={handleEditarEmpleado}
@@ -1237,30 +1165,17 @@ const EditarEmpleadoModal = (
                                                         height: '38px',
                                                         flexShrink: 0,
                                                         fontSize: 14,
-                                                        color: '#0E1726',
+                                                        color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                         fontStyle: 'normal',
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                     }}
                                                 />
                                             </div>
-
-                                        </div>
-
-                                        <div
-                                            style={{
-                                                //backgroundColor: 'purple',
-                                                marginTop: window.screen.height * 0.01,
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                gap: window.screen.width * 0.02
-                                            }}
-                                        >
-
                                             <div>
                                                 <label
                                                     style={{
@@ -1275,6 +1190,7 @@ const EditarEmpleadoModal = (
                                                 > Sueldo Bruto </label>
                                                 <input
                                                     //onChange={(e) => setSueldoBruto(e.target.value)}
+                                                    disabled={isDisabled}
                                                     value={nuevoEmpleado.gross_salary}
                                                     onChange={handleEditarEmpleado}
                                                     name={'gross_salary'}
@@ -1285,17 +1201,31 @@ const EditarEmpleadoModal = (
                                                         height: '38px',
                                                         flexShrink: 0,
                                                         fontSize: 14,
-                                                        color: '#0E1726',
+                                                        color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                         fontStyle: 'normal',
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                     }}
                                                 />
                                             </div>
+
+                                        </div>
+
+                                        <div
+                                            style={{
+                                                //backgroundColor: 'purple',
+
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                gap: window.screen.width * 0.02,
+                                                marginTop: window.screen.height * 0.01,
+                                            }}
+                                        >
+
 
                                             <div>
                                                 <label
@@ -1312,6 +1242,7 @@ const EditarEmpleadoModal = (
                                                 </label>
                                                 <input
                                                     //onChange={(e) => setSueldoNeto(e.target.value)}
+                                                    disabled={isDisabled}
                                                     value={nuevoEmpleado.net_salary}
                                                     onChange={handleEditarEmpleado}
                                                     placeholder="Ingresar valor"
@@ -1322,13 +1253,13 @@ const EditarEmpleadoModal = (
                                                         height: '38px',
                                                         flexShrink: 0,
                                                         fontSize: 14,
-                                                        color: '#0E1726',
+                                                        color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                         fontStyle: 'normal',
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
-                                                        border: '1px solid #E0E6ED',
+                                                        backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                         background: '#FFFFF'
                                                     }}
                                                 />
@@ -1348,6 +1279,7 @@ const EditarEmpleadoModal = (
                                                 > Otros ingresos </label>
                                                 <input
                                                     //onChange={(e) => setOtrosIngresos(e.target.value)}
+                                                    disabled={isDisabled}
                                                     value={nuevoEmpleado.other_income}
                                                     name={'other_income'}
                                                     onChange={handleEditarEmpleado}
@@ -1358,13 +1290,13 @@ const EditarEmpleadoModal = (
                                                         height: '38px',
                                                         flexShrink: 0,
                                                         fontSize: 14,
-                                                        color: '#0E1726',
+                                                        color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                         fontStyle: 'normal',
                                                         fontWeight: 400,
                                                         lineHeight: 'normal',
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
-                                                        border: '1px solid #E0E6ED',
+                                                        backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
                                                         background: '#FFFFF'
                                                     }}
                                                 />
@@ -1401,13 +1333,15 @@ const EditarEmpleadoModal = (
                                                     onChange={handleEditarEmpleado}
                                                     placeholder="Ingresar observaciones"
                                                     className="form-input"
+                                                    disabled={isDisabled}
                                                     style={{
                                                         width: '725px',
                                                         height: '78px',
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF'
+                                                        backgroundColor: isDisabled ? '#F5F5F5' : '#FFFFFF',
+                                                        color: isDisabled ? '#B0B0B0' : '#0E1726',
                                                     }}
                                                 />
                                             </div>
@@ -1424,7 +1358,8 @@ const EditarEmpleadoModal = (
 
                                         <button
                                             onClick={() => {
-                                                setHideButton(!hideButton)
+                                                setHideButton(!hideButton);
+                                                toggleInput();
                                             }}
                                             type="button"
                                             style={{
@@ -1449,8 +1384,9 @@ const EditarEmpleadoModal = (
                                     <div className="flex justify-center items-center mt-2 mb-10">
                                         <button
                                             onClick={() => {
-                                                setOpenModalEdit(!openModalEdit)
-                                                setHideButton(!hideButton)
+                                                setOpenModalEdit(!openModalEdit);
+                                                setHideButton(!hideButton);
+                                                setIsDisabled(true);
                                             }}
                                             type="button"
                                             style={{
@@ -1481,10 +1417,13 @@ const EditarEmpleadoModal = (
                                                         setHideButton(!hideButton)
                                                         setOpenMessage(!openMessage)
                                                         setOpenModalEdit(!openModalEdit)
+                                                        setIsDisabled(true);
                                                     })
                                                     .catch((err) => {
                                                         console.log("Error de la API: ", err)
+                                                        // setIsDisabled(true);
                                                     })
+
 
                                             }}
                                             type="button"
