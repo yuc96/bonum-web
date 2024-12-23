@@ -104,7 +104,7 @@ const PagosPendientesTable = ({
                                     lineHeight: 'normal'
                                 }}
                             >
-                                <p> Nombre </p>
+                                <p> Colaborador </p>
                             </TableCell>
                             <TableCell
                                 align='center'

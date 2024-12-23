@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { useState, Fragment, useEffect, useContext } from 'react';
+import { useState, Fragment, useEffect, useContext, useRef } from 'react';
 import { create_empleados } from '../../../server/empleados/EmpleadosApi';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -7,7 +7,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Dayjs } from 'dayjs';
 import { AccionContext } from '../../../contexts/AccionesContext';
 import { Box, FormControl, MenuItem, Select } from '@mui/material';
-
+import  MensajeModal from './MensajeModal';
+import ModalEmpleadoCreado from "./ModalNuevoEmpleado";
+import path from 'path';
 
 
 const Tooltip = ({
@@ -46,14 +48,20 @@ const Tooltip = ({
   };
 
 const NuevoEmpleadoModal = (
+
     {
         openModal,
         setOpenModal,
+        // openMessage,
+        // setOpenMessage,
+
     }
         :
         {
             openModal: boolean;
             setOpenModal: (isOpen: boolean) => void;
+            // openMessage: boolean;
+            // setOpenMessage: (isOpen: boolean) => void;
         }
 ) => {
 
@@ -85,6 +93,71 @@ const NuevoEmpleadoModal = (
     const [observaciones, setObservaciones] = useState('');
 
 
+   // Control Modal de Errores o Confirmacion de Éxito
+
+    const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [mensaje, setMensaje] = useState<string | null>(null);
+    const [errores, setErrores] = useState<string[] | null>(null);
+    const [erroresLabel,setErroresLabel]=useState<{ msg: string; path: string }[]>([]);
+
+    const resetForm = () => {
+        setCedula('');
+        setNombre('');
+        setApellido('');
+        setFechaNac(null);
+        setNivelEducativo('');
+        setEmail('');
+        setPhone('');
+        setNumber('');
+        setProvincia('');
+        setCiudad('');
+        setDireccionPrincipal('');
+        setNumero('');
+        setDireccionSecundaria('');
+        setCodigoEmpresa('');
+        setFechaIngreso(null);
+        setCargo('');
+        setSueldoBruto('');
+        setSueldoNeto('');
+        setOtrosIngresos('');
+        setObservaciones('');
+        setOpenModalCreate(false);
+        setMensaje(null);
+        setErrores(null);
+        setErroresLabel([]);
+      };
+    const handleCloseModal = () => {
+        setOpenModalCreate(false); // Cierra el modal
+        setMensaje(null); // Limpiar el mensaje al cerrar el modal
+        setErrores(null); // Limpiar errores al cerrar el modal
+    };
+
+    const refs = useRef<Record<string, HTMLInputElement | null>>({});
+
+      // Actualiza el color del placeholder dinámicamente para todos los inputs
+      useEffect(() => {
+        // Actualiza el color del placeholder dinámicamente para todos los inputs
+        Object.keys(refs.current).forEach((key) => {
+          const inputElement = refs.current[key];
+          if (inputElement) {
+            const hasError = erroresLabel.some((error) => error.path === key);
+            inputElement.style.setProperty(
+              '--placeholder-color',
+              hasError ? 'rgb(237, 129, 135)' : 'gray' // Cambia entre rojo y gris
+            );
+          }
+        });
+      }, [erroresLabel]);
+
+    // Método para registrar referencias dinámicamente
+    const setInputRef = (key: string, element: HTMLInputElement | null) => {
+        if (element) {
+        refs.current[key] = element;
+        } else {
+        delete refs.current[key];
+        }
+    };
+
 // Tooltip Perzonalizado
 
 const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
@@ -105,21 +178,94 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
   });
 
 
-    const handleCreateEmpleado = (data: any) => {
 
-        create_empleados(data)
-            .then((res) => {
-                console.log(res)
-                accionDatos();
-                setOpenModal(false);
+  const handleCreateEmpleado = (data: any) => {
+    create_empleados(data)
+      .then((res) => {
+        // Verifica si la respuesta del servidor tiene un código de éxito (2xx)
+        console.log('Esto es Resss:::::::::');
+        console.log(res);
+        if (res.success || res.success===undefined) {
+          console.log(res);
+          accionDatos();
+          setMensaje("Empleado creado con éxito");
+          setErrores(null); // Limpia los errores si la creación fue exitosa
+          setOpenModalCreate(true); // Abre el modal para mostrar éxito
 
-            })
-            .catch((err) => {
-                console.log(data);
-                console.log("Error API: ", err)
-            })
+          // Introducir un delay de 900ms antes de cerrar el modal
+          setTimeout(() => {
+            setOpenModal(false); // Cierra el modal después de 900ms
+            setOpenModalCreate(false);
+          }, 900); // 900 milisegundos = 0.9 segundos
+        } else if (res.success === false) {
+            // Manejar el mensaje general de error
+            setMensaje(res?.message || "Error desconocido en la creación del empleado");
 
-    }
+
+
+            // Verificar si `res.details` existe y es un array
+            if (Array.isArray(res.details) && res.details.length > 0) {
+
+
+                    // Guardamos el mensaje (msg) y el path en la variable errores
+               const newErrores = res.details.map((error: any) => ({
+                   msg: error.msg,
+                   path: error.path
+               }));
+               setErroresLabel(newErrores); // Actualiza el estado con el nuevo array
+               console.log('ESTO ES MIII ERRORESLABEL')
+               console.log(erroresLabel[0].path)  ;
+                // Si `res.details[0].msg` está definido
+                if (res.details[0].msg !== undefined) {
+                    // setErrores(
+                    // res.details.map((errorDetail: any) => errorDetail.msg)
+                    // );
+                    setErrores([res.details[0].message || 'Existen campos vacíos o inválidos. Por favor, revisa los datos ingresados']);
+                } else {
+
+                    setErrores([res.details[0].message || "Error desconocido"]);
+                }
+            } else {
+              console.log('No hay detalles de error disponibles');
+              setErrores(["No hay detalles de error disponibles"]);
+            }
+              setOpenModalCreate(true);
+          }
+
+      })
+      .catch((err) => {
+        // Aquí se manejan los errores que vienen del backend pero esta parte no sirve, ya que los errores se manejan |^|,
+        //mantenida para atrapar cualquieri otro error por parte del servidor                                         |^|
+        if (err.response) {
+          // Si hay una respuesta del backend (errores HTTP)
+          console.log('error');
+          console.log(err);
+          const { error, details } = err.response.data;
+
+          // Verifica si hay detalles de validación y maneja los errores
+          if (details) {
+            setMensaje(null); // No hay mensaje de éxito
+            setErrores(
+              Array.isArray(details)
+                ? details.map((errorDetail: any) => errorDetail.message)
+                : [details]
+            );
+          } else {
+            // Si no hay detalles, muestra un error genérico
+            setErrores([error || "Error desconocido"]);
+          }
+        } else {
+          // Si no hay respuesta del backend (posiblemente un error de red)
+          setErrores(["Error de conexión con el servidor"]);
+        }
+
+        // Abre el modal para mostrar los errores
+        setOpenModalCreate(true);
+        console.log("Error API: ", err);
+      });
+  };
+
+
 
     const editDate = (newValue: any) => {
         if (newValue) {
@@ -145,6 +291,8 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
     const handleProvinciaChange = (event: any) => {
         setProvinciaSeleccionada(event.target.value);
     };
+
+
 
     return (
 
@@ -197,10 +345,28 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                 }}
                             >
                                 <p> Agregar Colaborador</p>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ marginRight: 10 }} onClick={() => { setOpenModal(false) }}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    style={{ marginRight: 10, cursor: 'pointer' }}
+                                    onClick={() =>
+                                        {
+                                            setOpenModal(false)
+                                            setOpenModalCreate(false)// Cierra el modal
+                                            // setErrores(null);
+                                            // setMensaje(null); // Limpiar el mensaje al cerrar el modal
+                                            // setErroresLabel([]);//Limpio mensajes de error
+                                            resetForm();
+                                        }
+                                    }
+                                >
                                     <path d="M18 6L6 18" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M6 6L18 18" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
+
 
                             </div>
 
@@ -311,6 +477,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
 
 
                                             <input
+                                                ref={(el) => setInputRef('identification_number', el)}
                                                 onChange={(e) => setCedula(e.target.value)}
                                                 placeholder="Ingresar número de cédula"
                                                 className="input-style"
@@ -319,15 +486,27 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     height: '38px',
                                                     flexShrink: 0,
                                                     fontSize: 14,
-                                                    color: '#0E1726',
+                                                    color:'ed8187' ,//'#0E1726', erroresLabel.some(error => error.path === "identification_number") ? 'ed8187' : '#0E1726',
                                                     fontStyle: 'normal',
                                                     fontWeight: 400,
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                     border: '1px solid #E0E6ED',
                                                     borderRadius:'6px',
+                                                    backgroundColor: erroresLabel.some(error => error.path === "identification_number") ? 'rgb(253, 241, 242)' : 'white',
+
                                                 }}
+
                                             />
+                                             <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "identification_number")?.msg || null}
+                                            </p>
+
+                                            <style>{`
+                                                    input::placeholder {
+                                                    color: var(--placeholder-color, gray);
+                                                    }
+                                            `}</style>
                                         </div>
 
                                         <div>
@@ -386,9 +565,13 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    background: '#FFFFF',
+                                                    backgroundColor: erroresLabel.some(error => error.path === "name") ? 'rgb(253, 241, 242)' : 'white',
                                                 }}
                                             />
+                                            <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "name")?.msg || null}
+                                            </p>
                                         </div>
 
                                         <div>
@@ -445,9 +628,13 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    background: '#FFFFF',
+                                                    backgroundColor: erroresLabel.some(error => error.path === "lastname") ? 'rgb(253, 241, 242)' : 'white',
                                                 }}
                                             />
+                                             <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "lastname")?.msg || null}
+                                            </p>
                                         </div>
 
                                     </div>
@@ -536,7 +723,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                     boxShadow: 'none',
                                                                     transition: 'none',
                                                                     '&:hover': {
-                                                                        backgroundColor: 'white',
+                                                                        backgroundColor: erroresLabel.some(error => error.path === "date_of_birth") ? 'rgb(253, 241, 242)' : 'white',
                                                                         borderColor: '#E0E6ED',
                                                                     },
                                                                     '&.Mui-focused': {
@@ -570,6 +757,9 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 />
 
                                             </LocalizationProvider>
+                                            <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "date_of_birth")?.msg || null}
+                                            </p>
                                         </div>
 
 
@@ -629,9 +819,13 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    background: '#FFFFF',
+                                                    backgroundColor: erroresLabel.some(error => error.path === "phoneMovil") ? 'rgb(253, 241, 242)' : 'white',
                                                 }}
                                             />
+                                                <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "phoneMovil")?.msg || null}
+                                                </p>
                                         </div>
                                         <div>
                                             <label
@@ -687,9 +881,13 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFF'
+                                                    background: '#FFFFF',
+                                                    backgroundColor: erroresLabel.some(error => error.path === "email") ? 'rgb(253, 241, 242)' : 'white',
                                                 }}
                                             />
+                                               <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "email")?.msg || null}
+                                                </p>
                                         </div>
 
                                     </div>
@@ -765,10 +963,11 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     lineHeight: 'normal',
                                                     fontFamily: 'Maven Pro',
                                                     borderRadius: '6px',
-                                                    backgroundColor: '#FFFFFF',
                                                     height: '38px',
+                                                    backgroundColor: erroresLabel.some(error => error.path === "provincia") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                     '& fieldset': {
                                                         borderColor: '#E0E6ED',
+
                                                     },
                                                     '&:hover fieldset': {
                                                         borderColor: '#E0E6ED',
@@ -819,9 +1018,12 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     ))}
                                                 </Select>
                                                 </FormControl>
-                                                </div>
+                                                <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                        {erroresLabel.find(error => error.path === "provincia")?.msg || null}
+                                                </p>
+                                            </div>
 
-                                                <div>
+                                            <div>
                                                 <label
                                                     style={{
                                                         fontSize: 14,
@@ -872,7 +1074,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                 lineHeight: 'normal',
                                                                 fontFamily: 'Maven Pro',
                                                                 borderRadius: '6px',
-                                                                backgroundColor: '#FFFFFF',
+                                                                backgroundColor: erroresLabel.some(error => error.path === "ciudad") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                                 height: '38px',
                                                                 '& fieldset': {
                                                                     borderColor: '#E0E6ED',
@@ -934,6 +1136,9 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                 <MenuItem value="Loja">Loja</MenuItem>
                                                             </Select>
                                                             </FormControl>
+                                                            <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                                {erroresLabel.find(error => error.path === "ciudad")?.msg || null}
+                                                            </p>
                                                 </div>
 
 
@@ -996,7 +1201,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                     lineHeight: 'normal',
                                                                     fontFamily: 'Maven Pro',
                                                                     borderRadius: '6px',
-                                                                    backgroundColor: '#FFFFFF',
+                                                                    backgroundColor: erroresLabel.some(error => error.path === "level_education") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                                     height: '38px',
                                                                     '& fieldset': {
                                                                         borderColor: '#E0E6ED',
@@ -1053,7 +1258,9 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                     <MenuItem value="Doctorado">Doctorado</MenuItem>
                                                                 </Select>
                                                             </FormControl>
-
+                                                            <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                                {erroresLabel.find(error => error.path === "level_education")?.msg || null}
+                                                            </p>
 
 
                                             </div>
@@ -1141,10 +1348,15 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor: erroresLabel.some(error => error.path === "address") ? 'rgb(253, 241, 242)' : '#FFFFFF',
+
                                                     }}
                                                 />
+
                                             </div>
+                                            <p style={{ color: 'red', fontSize: '12px' , width:'auto',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "address")?.msg || null}
+                                            </p>
 
                                         </div>
 
@@ -1206,6 +1418,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                     width: '222px',
                                                                     height: '38px',
                                                                     flexShrink: 0,
+
                                                                     '& .MuiInputBase-root': {
                                                                         width: '222px',
                                                                         height: '38px',
@@ -1213,7 +1426,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                                         fontStyle: 'normal',
                                                                         fontWeight: 300,
                                                                         lineHeight: 'normal',
-                                                                        backgroundColor: 'white',
+                                                                        backgroundColor:erroresLabel.some(error => error.path === "registration_date") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                                         border: '1px solid #E0E6ED',
                                                                         borderRadius: '4px',
                                                                         boxShadow: 'none',
@@ -1252,6 +1465,9 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                     />
 
                                                 </LocalizationProvider>
+                                                <p style={{ color: 'red', fontSize: '12px' , width:'auto',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "registration_date")?.msg || null}
+                                                </p>
                                             </div>
 
                                             <div>
@@ -1312,9 +1528,12 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor:erroresLabel.some(error => error.path === "job_title") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                     }}
                                                 />
+                                                 <p style={{ color: 'red', fontSize: '12px' , width:'auto',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "job_title")?.msg || null}
+                                                </p>
                                             </div>
 
                                             <div>
@@ -1376,9 +1595,12 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor:erroresLabel.some(error => error.path === "gross_salary") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                     }}
                                                 />
+                                                 <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "gross_salary")?.msg || null}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -1452,9 +1674,12 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor:erroresLabel.some(error => error.path === "net_salary") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                     }}
                                                 />
+                                                 <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "net_salary")?.msg || null}
+                                                </p>
                                             </div>
 
                                             <div>
@@ -1485,11 +1710,13 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                         fontFamily: 'Maven Pro',
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFF'
+                                                        backgroundColor:erroresLabel.some(error => error.path === "other_income") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                     }}
                                                 />
                                             </div>
-
+                                                <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "other_income")?.msg || null}
+                                                </p>
                                         </div>
 
                                         <div
@@ -1524,9 +1751,12 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF'
+                                                        backgroundColor:erroresLabel.some(error => error.path === "observations") ? 'rgb(253, 241, 242)' : '#FFFFFF',
                                                     }}
                                                 />
+                                                    <p style={{ color: 'red', fontSize: '12px' , width:'222px',paddingLeft:'5px'}}>
+                                                            {erroresLabel.find(error => error.path === "observations")?.msg || null}
+                                                    </p>
                                             </div>
 
                                         </div>
@@ -1537,7 +1767,13 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
 
                                 <div className="flex justify-center items-center mt-2 mb-10">
                                     <button
-                                        onClick={() => setOpenModal(false)}
+                                        onClick={() =>
+                                            {
+                                                setOpenModal(false);
+                                                setOpenModalCreate(false);// Cierra el modal
+                                                resetForm(); //Limpia o resetea todos los campos
+                                            }
+                                        }
                                         type="button"
                                         style={{
                                             width: '85px',
@@ -1607,7 +1843,7 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                                 "status": "active"
                                             }*/
 
-                                            console.log("Data para crear: ", data)
+                                            // console.log("Data para crear: ", data)
 
 
                                             // const data = {
@@ -1632,7 +1868,10 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                                             //     "observations": "Empleado destacado en proyectos de desarrollo.",
                                             //     "status": "active"
                                             // }
+                                            setOpenModalCreate(false);
                                             handleCreateEmpleado(data)
+
+
 
                                         }}
                                         type="button"
@@ -1657,9 +1896,27 @@ const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
                             </div>
                         </Dialog.Panel>
                     </div>
+
+
+
                 </div>
             </Dialog >
 
+                      {/* Modal de creación de empleado */}
+                      <ModalEmpleadoCreado
+                                open={openModalCreate}
+                                mensaje={mensaje}
+                                errores={errores}
+                                onClose={handleCloseModal}
+
+                        />
+
+                        {/* Estilo embebido para manejar placeholders */}
+                        <style>{`
+                            input::placeholder {
+                            color: var(--placeholder-color, gray); /* Cambia con la variable CSS */
+                            }
+                        `}</style>
 
         </Transition>
 )}

@@ -334,6 +334,8 @@ const EditarEmpleadoModal = (
                                     color: '#0E1726',
                                     display: 'flex',
                                     flexDirection: 'row',
+                                    alignContent:'center',
+                                    justifyContent:'space-between',
                                     //textAlign: 'center',
                                     //fontFamily: Nunito,
                                     fontSize: 18,
@@ -361,31 +363,22 @@ const EditarEmpleadoModal = (
                                     }}
                                 >
 
-                                    <NavLink
-                                        to="/empleados/historial"
-                                        state={{ data: historialData }}
-                                        style={{
-                                            width: '139px',
-                                            height: '38px',
-                                            flexShrink: 0,
-                                            marginLeft: window.screen.width * 0.005,
-                                            backgroundColor: '#bf5cf3',
-                                            padding: 5,
-                                            borderRadius: 5,
-                                            color: 'white',
-                                            fontSize: 14,
-                                            justifyItems: 'center',
-                                            justifyContent: 'center',
-                                            alignContent: 'center',
-                                            alignItems: 'center',
-                                            textAlign: 'center',
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
-                                        Ver Historial
-                                    </NavLink>
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ marginRight: 10, marginTop: 7 }} onClick={() => { setOpenModalEdit(false) }}>
+
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ marginRight: 10, marginTop: 7 }} onClick={() => { setOpenModalEdit(false) }}>
+                                        <path d="M18 6L6 18" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M6 6L18 18" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg> */}
+
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        style={{ marginRight: 10, cursor: 'pointer' }}
+                                        onClick={() => { setOpenModalEdit(false) }}
+                                    >
                                         <path d="M18 6L6 18" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         <path d="M6 6L18 18" stroke="#0E1726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>

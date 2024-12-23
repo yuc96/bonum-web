@@ -20,6 +20,7 @@ import { Paper } from '@mantine/core';
 import IconEye from '../../../components/Icon/IconEye';
 import { NavLink } from 'react-router-dom';
 
+
 const HistorialEmpleadoTable = ({
     isChecked,
     page,

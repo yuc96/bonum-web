@@ -79,7 +79,8 @@ const Empleados = () => {
                 <div
                     style={{
                         paddingTop: 15,
-                        paddingLeft: 15
+                        paddingLeft: 15,
+                        background:'#fafafa'
                     }}
                 >
 

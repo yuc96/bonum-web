@@ -8,12 +8,29 @@ import sortBy from 'lodash/sortBy';
 import { useSelector } from "react-redux";
 import { IRootState } from "../../../store";
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import {
+            Checkbox,
+            Paper,
+            Table,
+            TableBody,
+            TableCell,
+            TableContainer,
+            TableHead,
+            TableRow,
+            Typography,
+        } from '@mui/material';
 import IconTrash from '../../../components/Icon/IconTrash';
 import IconEye from '../../../components/Icon/IconEye';
 import { delete_empleados } from '../../../server/empleados/EmpleadosApi';
 import { AccionContext } from '../../../contexts/AccionesContext';
 import EditarEmpleadoModal from '../modal/EditarEmpleadoModal';
+import ModalConfirmacion from "../modal/ModalConfirmacion";
+
+
+
+
+
 
 const EmpleadosTable = ({
     rowData,
@@ -74,6 +91,45 @@ const EmpleadosTable = ({
     openMessage: boolean;
     setOpenMessage: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+// Datos de prueba de historial
+    const historialData = [
+        {
+            codigo: "#AS100-1",
+            nombre: "Adelanto de Sueldo $100",
+            monto: 100,
+            plazo: 1,
+            costoPorServicio: 15.22,
+            fechaSolicitud: "20-Oct-2024",
+            fechaFinalizacion: "1-Nov-2024",
+        },
+        {
+            codigo: "#AS100-2",
+            nombre: "Adelanto de Sueldo $100",
+            monto: 100,
+            plazo: 2,
+            costoPorServicio: 18.25,
+            fechaSolicitud: "10-Jul-2024",
+            fechaFinalizacion: "1-Sep-2024",
+        },
+        {
+            codigo: "#AS100-3",
+            nombre: "Adelanto de Sueldo $100",
+            monto: 100, // Número
+            plazo: 3, // Número
+            costoPorServicio: 20.50, // Número
+            fechaSolicitud: "5-Abril-2024",
+            fechaFinalizacion: "1-Jul-2024",
+        },
+        {
+            codigo: "#AS200-1",
+            nombre: "Adelanto de Sueldo $200",
+            monto: 200, // Número
+            plazo: 1, // Número
+            costoPorServicio: 20.35, // Número
+            fechaSolicitud: "12-Ene-2024",
+            fechaFinalizacion: "1-Feb-2024",
+        },
+    ];
 
     useEffect(() => {
         console.log(rowData)
@@ -81,17 +137,46 @@ const EmpleadosTable = ({
 
     const { accionDatos } = useContext(AccionContext);
     const [idEmpleado, setIdEmpleado] = useState(0)
+    const [openModalDelete, setOpenModalDelete] = useState(false); // Controla el modal
 
     const handleDelete = (id: any) => {
-        delete_empleados(id)
-            .then((res) => {
-                accionDatos();
-                console.log("Borrado?: ", res);
-            })
-            .catch((err) => {
-                console.log("Error en la API: ", err);
-            })
+        // delete_empleados(id)
+        //     .then((res) => {
+        //         accionDatos();
+        //         console.log("Borrado?: ", res);
+        //     })
+        //     .catch((err) => {
+        //         console.log("Error en la API: ", err);
+        //     })
+        setIdEmpleado(id);
+        setOpenModalDelete(true);
+
     }
+
+    const handleDeleteConfirm = () => {
+
+        if(idEmpleado!=0){
+
+            delete_empleados(idEmpleado)
+                .then((res) => {
+                    accionDatos();
+                    console.log("Borrado?: ", res);
+                })
+                .catch((err) => {
+                    console.log("Error en la API: ", err);
+                })
+            setIdEmpleado(0);
+
+        }
+
+        setOpenModalDelete(false); // Cierra el modal
+
+
+    }
+
+    const handleCancelar = () => {
+        setOpenModalDelete(false); // Cierra el modal sin hacer nada
+      };
 
     function configDate(fecha: string): string {
 
@@ -345,7 +430,9 @@ const EmpleadosTable = ({
                                         </TableCell>
                                         <TableCell
                                             sx={{
-                                                width: window.screen.width * 0.08,
+                                                width: 'auto',
+                                                display:'flex',
+                                                flexDirection:'row',
                                                 justifyContent: 'center',
                                                 justifyItems: 'center',
                                                 alignContent: 'center',
@@ -357,7 +444,7 @@ const EmpleadosTable = ({
                                                     backgroundColor: 'transparent',
                                                     border: 'none',
                                                     cursor: 'pointer',
-                                                    marginTop: window.screen.height * 0.009
+                                                    marginTop: window.screen.height * 0.001
                                                 }}
                                                 onClick={() => {
                                                     setIdEmpleado(row._id)
@@ -374,7 +461,7 @@ const EmpleadosTable = ({
                                                     backgroundColor: 'transparent',
                                                     border: 'none',
                                                     cursor: 'pointer',
-                                                    marginLeft: window.screen.width * 0.02
+                                                    marginLeft: window.screen.width * 0.006
                                                 }}
                                                 onClick={() => {
                                                     handleDelete(row._id)
@@ -387,6 +474,30 @@ const EmpleadosTable = ({
                                                     <path d="M11.6665 9.16663V14.1666" stroke="#0E1726" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" />
                                                 </svg>
                                             </button>
+                                            <NavLink
+                                                    to="/empleados/historial"
+                                                    state={{ data: historialData }}
+                                                     style={{
+                                                         width: 'auto',
+                                                         height: 'auto',
+                                                         flexShrink: 0,
+                                                         marginLeft: window.screen.width * 0.005,
+                                                         padding: 5,
+                                                         borderRadius: 5,
+                                                         color: 'black',
+                                                     }}
+                                                >
+                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="20" height="20" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                                                    <metadata>
+                                                        Created by potrace 1.16, written by Peter Selinger 2001-2019
+                                                    </metadata>
+                                                    <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#0E1726" stroke="none">
+                                                        <path d="M810 5106 c-170 -48 -306 -159 -386 -318 l-33 -66 -135 -4 c-133 -3 -135 -3 -173 -34 -109 -87 -109 -241 0 -328 38 -31 40 -31 173 -34 l135 -4 33 -66 c64 -127 169 -229 290 -282 l46 -21 2 -1737 3 -1737 22 -58 c74 -195 197 -321 379 -390 l59 -22 935 -3 c1051 -3 1038 -4 1255 69 472 157 809 537 928 1044 21 88 21 110 24 1180 l4 1090 -23 44 c-13 25 -40 59 -61 75 -36 29 -44 31 -122 31 -78 0 -86 -2 -122 -31 -21 -16 -48 -50 -60 -74 l-23 -44 0 -811 c0 -767 -1 -812 -19 -850 -21 -46 -63 -88 -106 -106 -21 -9 -122 -15 -320 -19 -266 -5 -295 -8 -349 -28 -181 -67 -308 -197 -378 -389 -19 -52 -22 -86 -27 -348 -5 -247 -9 -295 -23 -321 -28 -51 -81 -91 -138 -103 -70 -15 -1200 -15 -1270 0 -62 13 -115 57 -141 114 -18 38 -19 117 -19 1717 l0 1678 1568 2 1567 3 59 22 c147 56 266 159 334 291 l42 80 129 4 c127 3 130 4 168 34 109 87 109 241 0 328 -38 30 -41 31 -168 34 l-129 4 -42 80 c-69 133 -186 235 -334 291 l-59 22 -1725 2 c-1356 1 -1735 -1 -1770 -11z m3390 -397 c88 -19 160 -104 160 -189 0 -85 -72 -170 -160 -189 -72 -16 -3198 -16 -3270 0 -88 19 -160 104 -160 189 0 81 66 164 147 186 64 17 3203 20 3283 3z m-260 -3503 c0 -28 -53 -181 -82 -241 -71 -140 -207 -298 -330 -383 -75 -52 -199 -110 -293 -137 -48 -14 -89 -25 -91 -25 -2 0 2 12 8 28 8 17 14 131 17 317 7 321 7 323 75 383 50 44 106 52 379 53 133 1 256 5 272 9 44 11 45 11 45 -4z"/>
+                                                        <path d="M1675 3184 c-138 -72 -154 -251 -32 -348 l39 -31 883 0 883 0 39 31 c109 87 109 241 0 328 l-39 31 -871 3 c-776 2 -875 0 -902 -14z"/>
+                                                        <path d="M1675 2384 c-138 -72 -154 -251 -32 -348 l39 -31 883 0 883 0 39 31 c109 87 109 241 0 328 l-39 31 -871 3 c-776 2 -875 0 -902 -14z"/>
+                                                    </g>
+                                                </svg>
+                                            </NavLink>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -557,6 +668,7 @@ const EmpleadosTable = ({
                             <path d="M3.0625 11.375L7.4375 7L3.0625 2.625M6.5625 11.375L10.9375 7L6.5625 2.625" stroke="#3B3F5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
+
                 </div>
             </div>
 
@@ -569,6 +681,17 @@ const EmpleadosTable = ({
                 openMessage={openMessage}
                 setOpenMessage={setOpenMessage}
             />
+
+
+            {/* Modal de Confirmación Eliminar empleado*/}
+
+            <ModalConfirmacion
+                open={openModalDelete}
+                mensaje="Se eliminaran todos los datos del colaborador y no podrán ser recuperados."
+                onClose={handleCancelar}
+                onConfirm={handleDeleteConfirm}
+            />
+
 
         </div >
 

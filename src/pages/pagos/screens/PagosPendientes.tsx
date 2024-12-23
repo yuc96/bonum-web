@@ -22,6 +22,10 @@ import Select from 'react-select';
 import IconSave from '../../../components/Icon/IconSave';
 import PagosPendientesTable from './PagosPendientesTable';
 import IconDownload from '../../../components/Icon/IconDownload';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import logoBonum from'../../../components/images/LogoBonum.png'
+import PDFViewerModal from'./modal/modalviewPDF'
 
 const pagosPendientes = [
     {
@@ -160,6 +164,8 @@ const bancos = [
     },
 ];
 
+
+
 const PagosPendientes = () => {
 
     const location = useLocation();
@@ -181,6 +187,100 @@ const PagosPendientes = () => {
     const dispatch = useDispatch();
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
     const [date1, setDate1] = useState<any>('2022-07-05');
+
+    // Estas son varibles fijas solo de meustra
+    const idPagos: string = '01588';
+    const corteDate: string= '20/12/2024';
+    const pagoDate: string= '20/10/2025';
+/////////////// Generar PDF/////////
+const generatePDF = () => {
+    const doc = new jsPDF();
+
+    // Imagen de logo
+    const imageUrl = logoBonum;
+    doc.addImage(imageUrl, 'PNG', 120, 10, 70, 40);
+
+    // Título del documento
+    doc.setFontSize(18);
+    doc.setTextColor(0, 0, 0);
+    doc.text("COMPROBANTE DE PAGO", 108, 58);
+
+    // Detalles del Pago
+    doc.setFont("times", "bold");
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text("ID PAGO", 140, 70);
+    doc.text(idPagos, 177, 70);
+
+    doc.setFont("times");
+    doc.setTextColor(150, 150, 150);
+    doc.text("FECHA DE CORTE:", 120, 80);
+    doc.text(corteDate, 169, 80);
+
+    doc.text("FECHA DE PAGO:", 122, 90);
+    doc.text(pagoDate, 169, 90);
+
+    // Configurar tabla con autoTable
+    const headers = [["ID Anticipo", "Colaborador", "Identificación", "Total a Debitar"]];
+    const data = pagosPendientes.map(row => [
+        row.idAnticipo,
+        row.nombre,
+        row.identificacion,
+        `$ ${row.totalDebitar.toFixed(2)}`
+    ]);
+
+    // Calcular el total a pagar sumando el campo `totalDebitar`
+    const totalAPagar = pagosPendientes.reduce((acc, row) => acc + row.totalDebitar, 0);
+
+    // Agregar una fila al final para el Total a Pagar
+    data.push(["", "", "Total a Pagar", `$ ${totalAPagar.toFixed(2)}`]);
+
+    // Generar la tabla con autoTable
+    doc.autoTable({
+        head: headers,
+        body: data,
+        startY: 100,
+        styles: {
+            fontSize: 10,
+            halign: 'right', // Alineación de las celdas a la derecha
+            valign: 'middle',
+            cellPadding: 2, // Reducir el relleno dentro de las celdas
+            textColor: [0, 0, 0],
+            lineColor: [0, 0, 0], // Quitar los bordes internos
+            lineWidth: 0
+        },
+        headStyles: {
+            textColor: [0, 0, 0],
+            fillColor: [255, 255, 255], // Quitar el fondo de los encabezados
+            fontSize: 12,
+            fontStyle: 'bold',
+            halign: 'right', // Alineación de los encabezados a la derecha
+        },
+        margin: { top: 30, left: 20, right: 20, bottom: 20 },
+        rowHeight: 8, // Reducir la altura de las filas
+        columnStyles: {
+            0: { cellWidth: 30 }, // Aumentar el tamaño de la columna del ID Anticipo
+            1: { cellWidth: 'auto' }, // Ajuste automático del ancho para la columna de Nombre
+            2: { cellWidth: 'auto' }, // Ajuste automático del ancho para la columna de Identificación
+            3: { cellWidth: 40 } // Ajuste para la columna Total a Debitar
+        }
+    });
+
+    // Línea horizontal al final
+    doc.setLineWidth(0.5);
+    doc.line(20, doc.autoTable.previous.finalY + 10, 190, doc.autoTable.previous.finalY + 10);
+
+    // Pie de página
+    doc.setFontSize(10);
+    doc.setTextColor(44, 62, 80);
+    doc.text("Generado por Bonum", 15, doc.autoTable.previous.finalY + 20);
+
+    // Guardar el archivo
+    doc.save("pagos-pendientes.pdf");
+};
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 
 
     useEffect(() => {
@@ -262,6 +362,7 @@ const PagosPendientes = () => {
                 //padding: 5
             }}
         >
+
 
             <div
                 style={{
@@ -385,16 +486,19 @@ const PagosPendientes = () => {
                             <form
                                 style={{
                                     display: 'flex',
-                                    flexDirection: 'row'
+                                    flexDirection: 'row',
+
                                 }}
                             >
 
                                 <div
                                     style={{
                                         marginRight: 10,
-                                        //backgroundColor: 'red',
-                                        flexDirection: 'column',
+                                        // backgroundColor: 'red',
                                         display: 'flex',
+                                        flexDirection: 'column',
+                                        alignContent:'center',
+                                        justifyContent:'center',
 
                                         //gap: window.screen.width * 0.02,
                                         color: '#0E1726',
@@ -413,7 +517,7 @@ const PagosPendientes = () => {
                                         style={{
                                             fontSize: 14,
                                             fontWeight: 400,
-                                            marginTop: 50,
+                                            marginTop: 28,
                                             fontFamily: 'Maven Pro',
                                             width: window.screen.width * 0.09,
                                         }}
@@ -483,11 +587,11 @@ const PagosPendientes = () => {
                                         {estadoPagoNav ? 'Confirmado' : 'Pendiente'}
                                     </div>
 
-                                    <input id="hrDefaultinput" placeholder="" className="form-input" />
+                                    <input disabled={true} value={`000000001physe`} id="hrDefaultinput" placeholder="" className="form-input" />
 
-                                    <input id="hrDefaultinput" placeholder="" className="form-input" />
+                                    <input disabled={true}value={`20/12/2024`} id="hrDefaultinput" placeholder="" className="form-input" />
 
-                                    <input id="hrDefaultinput" placeholder="" className="form-input" />
+                                    <input disabled={true}value={`2/01/2025`} id="hrDefaultinput" placeholder="" className="form-input" />
                                 </div>
 
                             </form>
@@ -537,63 +641,14 @@ const PagosPendientes = () => {
                         gap: window.screen.width * 0.01,
                         paddingTop: '14vh',
                         paddingBottom: '9vh',
-                        //backgroundColor: 'orange',
+                        // backgroundColor: 'orange',
                         //marginTop: window.screen.height * 0.15,
                         justifyContent: 'space-evenly',
                         alignContent: 'space-evenly'
                     }}
                 >
 
-                    <div
-                        style={{
-                            //backgroundColor: 'red',
-                            flexDirection: 'column',
-                            display: 'flex',
-                            gap: window.screen.width * 0.005
-                        }}
-                    >
-                        <label
-                            htmlFor="hrDefaultinput"
-                            style={{
-                                fontSize: 13,
-                                marginTop: window.screen.height * 0.005,
-                                fontFamily: 'Maven Pro',
-                                fontWeight: 400,
-                                //visibility: 'hidden'
-                                //display: 'none',
-                                //width: window.screen.width * 0.083,
-                            }}
-                        >
-                            Capital:
-                        </label>
 
-                        <label
-                            htmlFor="hrDefaultinput"
-                            style={{
-                                fontSize: 13,
-                                marginTop: window.screen.height * 0.005,
-                                fontFamily: 'Maven Pro',
-                                fontWeight: 400,
-                                //width: window.screen.width * 0.083,
-                            }}
-                        >
-                            Tarifa Única:
-                        </label>
-
-                        <label
-                            htmlFor="hrDefaultinput"
-                            style={{
-                                fontSize: 13,
-                                marginTop: window.screen.height * 0.005,
-                                fontFamily: 'Maven Pro',
-                                fontWeight: 400,
-                                //width: window.screen.width * 0.083,
-                            }}
-                        >
-                            Total:
-                        </label>
-
-                    </div>
 
                     <div
                         style={{
@@ -606,48 +661,26 @@ const PagosPendientes = () => {
                             //marginTop: window.screen.height * 0.125
                         }}
                     >
-                        <label
-                            htmlFor="hrDefaultinput"
-                            style={{
-                                fontSize: 13,
-                                marginTop: window.screen.height * 0.005,
-                                textAlign: 'right',
-                                fontFamily: 'Maven Pro',
-                                fontWeight: 400,
-                                //visibility: 'hidden'
-                                //display: 'none',
-                                //width: window.screen.width * 0.083,
-                            }}
-                        >
-                            $ 1300
-                        </label>
 
-                        <label
-                            htmlFor="hrDefaultinput"
+                        <p
+                            // htmlFor="hrDefaultinput"
                             style={{
-                                fontSize: 13,
+                                fontSize: 30, // Texto más grande
+                                color: ' rgba(20, 13, 13, 1)', // Verde para representar éxito
                                 marginTop: window.screen.height * 0.005,
-                                textAlign: 'right',
-                                fontFamily: 'Maven Pro',
-                                fontWeight: 400,
-                                //width: window.screen.width * 0.083,
+                                textAlign: 'center', // Alineado al centro para mayor enfoque
+                                fontFamily: 'Maven Pro, Arial, sans-serif', // Fuente estilizada
+                                // fontWeight: 0, // Más grueso para énfasis
+                                display: 'block', // Aseguramos que ocupe toda la línea
+                                // border: '3px solidrgb(222, 230, 222)', // Borde más prominente
+                                padding: '20px 30px', // Mayor espaciado interno
+                                borderRadius: '10px', // Esquinas redondeadas
+                                // backgroundColor: '#F0FFF0', // Fondo verde claro
+                                boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)', // Sombra para profundidad
                             }}
                         >
-                            $ 50.48
-                        </label>
-
-                        <label
-                            htmlFor="hrDefaultinput"
-                            style={{
-                                fontSize: 13,
-                                marginTop: window.screen.height * 0.005,
-                                textAlign: 'right',
-                                fontFamily: 'Maven Pro',
-                                fontWeight: 400
-                            }}
-                        >
-                            $ 1357.98
-                        </label>
+                            Total: $ 1357.98
+                        </p>
 
                     </div>
 
@@ -656,7 +689,7 @@ const PagosPendientes = () => {
 
 
 
-                <div
+                {/* <div
                     style={{
                         backgroundColor: 'white',
                         //marginTop: window.screen.width * 0.0035,
@@ -670,24 +703,24 @@ const PagosPendientes = () => {
                         <form className="space-y-2">
                             <div>
                                 <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Monto</label>
-                                <input type="email" placeholder="" className="form-input" style={{ width: '45%', height: '5vh' }} />
+                                <input disabled={true} value={`$500.00`} type="email" placeholder="" className="form-input" style={{ width: '45%', height: '5vh' }} />
 
                             </div>
                             <div>
                                 <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Método de Pago</label>
-                                <Select defaultValue={transacciones[0]} options={transacciones} isSearchable={false} />
+                                <Select isDisabled={true} defaultValue={transacciones[0]} options={transacciones} isSearchable={false} />
                             </div>
                             <div>
                                 <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Detalle de método de pago</label>
-                                <Select defaultValue={bancos[0]} options={bancos} isSearchable={false} />
+                                <Select isDisabled={true} defaultValue={bancos[0]} options={bancos} isSearchable={false} />
                             </div>
                             <div>
                                 <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Concepto</label>
-                                <input type="email" placeholder="Breve descripción" className="form-input" style={{ height: '5vh' }} />
+                                <input disabled={true} type="email" placeholder="Breve descripción" className="form-input" style={{ height: '5vh' }} />
                             </div>
                             <div>
                                 <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Referencia</label>
-                                <input type="email" placeholder="Ingresar numero de referencia" className="form-input" style={{ height: '5vh' }} />
+                                <input disabled={true} value={`Transaccion del corte de Octubre`} type="email" placeholder="Ingresar numero de referencia" className="form-input" style={{ height: '5vh' }} />
                             </div>
 
                             <div>
@@ -766,18 +799,19 @@ const PagosPendientes = () => {
                                             accept=".xlsx,.csv"
                                             style={{ display: 'none' }}
                                             onChange={handleFileChange}
+                                            disabled={true}
                                         />
                                     </label>
                                 </div>
-                            </div>
+                            </div> */}
 
-
+{/*
                         </form>
                     }
 
 
 
-                </div>
+                </div> */}
 
                 <div
                     style={{
@@ -796,7 +830,7 @@ const PagosPendientes = () => {
                         style={{
                             padding: 10,
                             backgroundColor: 'green',
-                            display: 'flex',
+                            display: estadoPagoNav? 'none':'flex',
                             flexDirection: 'row',
                             gap: '1vw',
                             borderRadius: 4,
@@ -804,17 +838,20 @@ const PagosPendientes = () => {
                             justifyContent: 'center',
                             alignContent: 'center',
                             color: 'white',
-                            fontFamily: 'Maven Pro'
+                            fontFamily: 'Maven Pro',
+
                         }}
+
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H13.3333L17.5 6.66667V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M14.1673 17.5002V10.8335H5.83398V17.5002" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M5.83398 2.5V6.66667H12.5007" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        Verificar Pago
+                        Notificar Pago
 
                     </button>
+                    {/* <PDFViewerModal pagosPendientes={pagosPendientes}/> */}
 
                     <button
                         style={{
@@ -830,6 +867,7 @@ const PagosPendientes = () => {
                             color: 'white',
                             fontFamily: 'Maven Pro'
                         }}
+                        onClick={generatePDF}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                             <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />

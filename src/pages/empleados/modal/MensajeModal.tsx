@@ -6,15 +6,15 @@ const MensajeModal = (
     {
         openMessage,
         setOpenMessage,
-        openModalEdit,
-        setOpenModalEdit
+         openModalEdit,
+         setOpenModalEdit
     }
     :
     {
         openMessage: boolean;
         setOpenMessage: (isOpen: boolean) => void;
-        openModalEdit: boolean;
-        setOpenModalEdit: (isOpen: boolean) => void;
+         openModalEdit: boolean;
+         setOpenModalEdit: (isOpen: boolean) => void;
 
     }
 

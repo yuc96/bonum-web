@@ -1,5 +1,5 @@
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import IconSearch from "../../../components/Icon/IconSearch";
 import IconXCircle from "../../../components/Icon/IconXCircle";
 import Dropdown from "../../../components/Dropdown";
@@ -19,11 +19,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Paper } from '@mantine/core';
 import IconEye from '../../../components/Icon/IconEye';
 import InfiniteScroll from "react-infinite-scroll-component";
+import DebitModal from '../modal/DebitModal';
 
 //importaciones de iconos visto y copy
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'; // Ícono de copiar
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Ícono de visto
+import { bool } from 'yup';
 
 const CobrosTable = (
     {
@@ -47,7 +49,9 @@ const CobrosTable = (
         setSortStatus,
         setHideCols,
         PAGE_SIZES,
-        setStateModal
+        setStateModal,
+        buttonState,
+        handleMarkAll
     }: {
         isChecked: boolean;
         openModal: boolean;
@@ -70,6 +74,8 @@ const CobrosTable = (
         setHideCols: React.Dispatch<React.SetStateAction<any>>;
         PAGE_SIZES: any[];
         setStateModal: React.Dispatch<React.SetStateAction<boolean>>;
+        buttonState:boolean;
+        handleMarkAll: () => void;
     }
 ) => {
 
@@ -78,37 +84,123 @@ const CobrosTable = (
 
     // const [copied, setCopied] = useState(false); // Estado para manejar el ícono
 
-    //Funcion copiar en portapapeles
-    const [copiedRows, setCopiedRows] = useState<Record<number, Record<string, boolean>>>({}); // { id: { columna: boolean } }
 
 
-    // Función para copiar al portapapeles
-    const handleCopy = (id: number, value: any, identificador: string) => {
-        // Verifica si la fila ya está copiada para esa columna
-        console.log("Id", id);
-        console.log("Columna", identificador);
-        console.log("Estado de copiado para esta fila y columna", copiedRows[id]?.[identificador]);
 
-        // Si ya está copiado, revertir el estado
-        if (copiedRows[id]?.[identificador]) {
-            setCopiedRows((prev) => ({
-                ...prev,
-                [id]: { ...prev[id], [identificador]: false } // Establecer el estado de la columna como false
-            }));
 
-        } else {
-            // Si no está copiado, copiar al portapapeles
-            navigator.clipboard.writeText(value)
-                .then(() => {
-                    setCopiedRows((prev) => ({
-                        ...prev,
-                        [id]: { ...prev[id], [identificador]: true } // Establecer el estado de la columna como true
-                    }));
 
-                })
-                .catch((err) => console.error("Error al copiar al portapapeles:", err));
-        }
-    };
+// Función para obtener el estado de 'copiedRows' desde el localStorage
+
+
+const [copiedRows, setCopiedRows] = useState<Record<number, Record<string, boolean>>>(() => {
+    // Obtener datos del localStorage y también inicializar con la tabla
+    const storedData = localStorage.getItem('copiedRows');
+    const initialRows = storedData ? JSON.parse(storedData) : {};
+
+    // Aquí construimos la estructura inicial de copiedRows con datos de la tabla
+
+    recordsData.forEach((row, index) => {
+      if (!initialRows[index]) {
+        initialRows[index] = { 'Debito': false ,'cedula':false}; // Si no existe, inicializamos como no copiado
+      }
+    });
+
+    return initialRows;
+  });
+  const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal
+  const handleCloseModal = () => {
+    setShowModal(false); // Cierra el modal
+  };
+  // Efecto para actualizar localStorage cuando copiedRows cambia
+  useEffect(() => {
+    // Guardar copiedRows en localStorage cuando cambia
+    localStorage.setItem('copiedRows', JSON.stringify(copiedRows));
+  }, [copiedRows]);
+
+  const getCopiedRowsFromLocalStorage = () => {
+    const storedData = localStorage.getItem('copiedRows');
+    return storedData ? JSON.parse(storedData) : {};
+  };
+
+// Función para copiar al portapapeles
+const handleCopy = (id: number, value: any, identificador: string) => {
+    console.log("Id", id);
+    console.log("Columna", identificador);
+
+    setCopiedRows((prev) => {
+        const updatedRows = {
+            ...prev,
+            [id]: { ...prev[id], [identificador]: !prev[id]?.[identificador] } // Cambiar el estado de true a false o viceversa
+        };
+
+        // Guardar el estado actualizado en localStorage
+        localStorage.setItem('copiedRows', JSON.stringify(updatedRows));
+        return updatedRows;
+    });
+
+    // Si no está copiado, copiar al portapapeles
+    if (!copiedRows[id]?.[identificador]) {
+        navigator.clipboard.writeText(value)
+            .catch((err) => console.error("Error al copiar al portapapeles:", err));
+    }
+};
+
+// Actualizar copiedRows si buttonState cambia a true
+// Definimos el tipo CopiedRows
+
+let prevMyBooleanRef = useRef<boolean>(buttonState);  // Inicializamos con 'false'
+
+const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Estado del botón
+
+const handleCancelAction = () => {
+
+    // handleMarkAll();
+
+  };
+
+  if ( prevMyBooleanRef.current !== buttonState ){
+        setIsButtonDisabled(true);
+  }
+
+useEffect(() => {
+
+        if ( prevMyBooleanRef.current !== buttonState ) {
+            setIsButtonDisabled(false);
+
+            prevMyBooleanRef.current = buttonState;
+            setCopiedRows((prev) => {
+                // Crear un objeto actualizado con todas las columnas como true
+                const updatedRows = Object.keys(prev).reduce((acc, id) => {
+                  // Convertir el ID de string a número, si es necesario
+                  const numericId = parseInt(id);
+
+                  // Recuperar las claves de las columnas en la fila
+                  const columnIdentifiers = Object.keys(prev[numericId] || {});
+
+                  // Actualizar todas las columnas de la fila a true
+                  acc[numericId] = columnIdentifiers.reduce((colAcc, column) => {
+                    colAcc[column] = buttonState? true:false; // Cambiar todas las columnas a true
+                    return colAcc;
+                  }, {} as Record<string, boolean>);
+
+                  return acc;
+                }, {} as Record<number, Record<string, boolean>>);
+
+                // Guardar el estado actualizado en localStorage
+                localStorage.setItem('copiedRows', JSON.stringify(copiedRows));
+                return updatedRows;
+              }
+
+              );
+
+
+    }
+
+}, [isButtonDisabled]);
+
+
+
+///////////////////////////////////////////////
 
     const moreData = () => {
 
@@ -152,11 +244,15 @@ const CobrosTable = (
                 initialSums.totalDebitar += item.totalDebitar;
             });
 
+            if (Object.keys(copiedRows).length > 0) {
+                localStorage.setItem('copiedRows', JSON.stringify(copiedRows)); // Guarda el estado en localStorage
+            }
+
             setTotales(initialSums);
         };
 
         calculateSums();
-    }, [recordsData]);
+    }, [recordsData || copiedRows]);
 
     return (
 
@@ -166,6 +262,7 @@ const CobrosTable = (
                 marginTop: 23
             }}
         >
+            <h1>{buttonState?'TRUE':'FALSE'}</h1>
             <TableContainer
                 component={Paper}
             >
@@ -799,7 +896,13 @@ const CobrosTable = (
                     </button>
                 </div>
             </div>
-
+          <DebitModal
+            totalDebitar={totales.totalDebitar}
+            show={isButtonDisabled}
+            onClose={handleCloseModal}
+            onActionCancel={handleCancelAction}
+            // onActionConfirm={handleConfirmAction}
+             />
         </div>
 
 

@@ -20,6 +20,8 @@ import CobrosTable from './components/CobrosTable';
 import Select from 'react-select';
 import VerCobrosModal from './modal/VerCobrosModal';
 import { WidthFull } from '@mui/icons-material';
+import { left } from '@popperjs/core';
+import { boolean } from 'yup';
 
 const cobrosData = [
     {
@@ -437,7 +439,242 @@ const cobrosData = [
         tasaUnica: 0.00,
         totalDebitar: 33.33,
         acciones: "Ver"
-    }
+    },
+    {
+        idAnticipo: "#000033",
+        nombre: "Juan Pérez",
+        identificacion: "0123456789",
+        fechaAnticipo: "10/Ene/2025",
+        anticipoActivo: 120.00,
+        cuota: "4/5",
+        saldo: 96.00,
+        valorCuota: 24.00,
+        tasaUnica: 0.00,
+        totalDebitar: 24.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000034",
+        nombre: "Laura Gómez",
+        identificacion: "0101234567",
+        fechaAnticipo: "15/Feb/2025",
+        anticipoActivo: 150.00,
+        cuota: "5/6",
+        saldo: 125.00,
+        valorCuota: 25.00,
+        tasaUnica: 0.00,
+        totalDebitar: 25.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000035",
+        nombre: "Carlos Fernández",
+        identificacion: "0109876543",
+        fechaAnticipo: "05/Mar/2025",
+        anticipoActivo: 200.00,
+        cuota: "2/3",
+        saldo: 133.33,
+        valorCuota: 66.67,
+        tasaUnica: 0.00,
+        totalDebitar: 66.67,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000036",
+        nombre: "Ana Rodríguez",
+        identificacion: "0125689032",
+        fechaAnticipo: "10/Abr/2025",
+        anticipoActivo: 80.00,
+        cuota: "1/4",
+        saldo: 60.00,
+        valorCuota: 15.00,
+        tasaUnica: 0.00,
+        totalDebitar: 15.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000037",
+        nombre: "David Martínez",
+        identificacion: "0134567890",
+        fechaAnticipo: "12/Mayo/2025",
+        anticipoActivo: 300.00,
+        cuota: "3/5",
+        saldo: 180.00,
+        valorCuota: 60.00,
+        tasaUnica: 0.00,
+        totalDebitar: 60.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000038",
+        nombre: "Marta Sánchez",
+        identificacion: "0102468135",
+        fechaAnticipo: "20/Jun/2025",
+        anticipoActivo: 500.00,
+        cuota: "1/2",
+        saldo: 250.00,
+        valorCuota: 125.00,
+        tasaUnica: 0.00,
+        totalDebitar: 125.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000039",
+        nombre: "Fernando Díaz",
+        identificacion: "0147852369",
+        fechaAnticipo: "30/Jul/2025",
+        anticipoActivo: 600.00,
+        cuota: "4/6",
+        saldo: 400.00,
+        valorCuota: 100.00,
+        tasaUnica: 0.00,
+        totalDebitar: 100.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000040",
+        nombre: "Isabel González",
+        identificacion: "0198765432",
+        fechaAnticipo: "25/Ago/2025",
+        anticipoActivo: 90.00,
+        cuota: "3/4",
+        saldo: 67.50,
+        valorCuota: 22.50,
+        tasaUnica: 0.00,
+        totalDebitar: 22.50,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000042",
+        nombre: "Patricia Jiménez",
+        identificacion: "0134256789",
+        fechaAnticipo: "20/Oct/2025",
+        anticipoActivo: 250.00,
+        cuota: "1/3",
+        saldo: 83.33,
+        valorCuota: 41.67,
+        tasaUnica: 0.00,
+        totalDebitar: 41.67,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Juana de Arco",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "Ricardo López",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+    {
+        idAnticipo: "#000041",
+        nombre: "xxxxxxxxxxxxxxxx",
+        identificacion: "0123467890",
+        fechaAnticipo: "15/Sep/2025",
+        anticipoActivo: 400.00,
+        cuota: "2/5",
+        saldo: 160.00,
+        valorCuota: 80.00,
+        tasaUnica: 0.00,
+        totalDebitar: 80.00,
+        acciones: "Ver"
+    },
+
 ];
 
 
@@ -527,7 +764,27 @@ const Cobros = () => {
         console.log(isOpen);
     }, [isOpen])
 
+// Logica para amrcar a todos como debitados
+  // Estado del botón, inicializado con el valor del localStorage o false
+  const [buttonState, setButtonState] = useState<boolean>(() => {
+    const savedState = localStorage.getItem("buttonState");
+    return savedState ? JSON.parse(savedState) : false;
+  });
 
+
+    const handleMarkAll=()=>{
+
+            setButtonState((prevState)=> !prevState);
+
+    }
+
+    useEffect(() => {
+        localStorage.setItem("buttonState", JSON.stringify(buttonState));
+      }, [buttonState]);
+
+    // const changeButtonState=(state:boolean){
+    //     setButtonState(state);
+    // }
 
     return (
         <div
@@ -559,28 +816,24 @@ const Cobros = () => {
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
-                        paddingRight: 15,
+                        justifyContent:'space-between',
+                        // paddingRight: 15,
                         width: '100%',
-                        gap: window.screen.width * 0.48
+
                     }}
                 >
 
                     <div
                         className="dropdown"
                         style={{
-                            //backgroundColor: 'orange',
+                            // backgroundColor: 'orange',
                             justifySelf: 'center',
                             display: 'flex',
                             flexDirection: 'row',
                             gap: '0.1vw'
                         }}
                     >
-
-                        <Dropdown
-                            placement={`${isRtl ? 'bottom-end' : 'bottom-start'}`}
-                            btnClassName="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-1.5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
-                            button={
-                                <div
+                          <div
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'row',
@@ -602,11 +855,8 @@ const Cobros = () => {
                                     >
                                         Periodo
                                     </p>
-                                    
-                                </div>
-                            }
-                        >
-                        </Dropdown>
+
+                            </div>
 
                         <Dropdown
                             placement="bottom-start"
@@ -674,19 +924,115 @@ const Cobros = () => {
                                 </ul>
                             )}
                         </Dropdown>
+                        <button
+                                    style={{
+                                        width: 'auto',
+                                        height: window.screen.height * 0.05,
+                                        // backgroundColor: 'green',
+                                        borderRadius: 5,
+                                        border: '1px solid #e0e6ed',
+                                        outline: 'none',
+                                        color: 'white',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        justifyItems: 'center',
+                                        alignContent: 'center',
+                                        alignItems: 'center',
+                                        // gap: '0.5vw',
+                                        fontSize: 14,
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        lineHeight: 'normal',
+                                        fontFamily: 'Maven Pro',
+                                        padding:'20px',
+                                        background:buttonState?'rgba(232, 115, 115, 0.5)':'white'
+                                    }}
+                                    onClick={handleMarkAll}
+                                >
+                                    <p
+                                        style={{
+                                            color: '#0E1726',
+                                            fontSize: 13,
+                                            fontStyle: 'normal',
+                                            fontWeight: 400,
+                                            lineHeight: 'normal',
+                                            justifySelf: 'center',
+                                            alignSelf: 'center',
+                                            paddingRight: 5,
+                                            fontFamily: 'Maven Pro'
+                                        }}
+                                    >
+                                        {buttonState?'Desmarcar todos':'Marcar todos Débitados'}
+                                    </p>
+
+                            </button>
 
                     </div>
 
                     <div
                         style={{
-                            //backgroundColor: 'pink',
-                            width: '100%',
+                            // backgroundColor: 'pink',
+                            width: 'auto',
+                            height:'auto',
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            gap: '0.5vw',
+                            justifyContent: 'center',
+                            gap: '0.6vw',
                         }}
                     >
+                            <button
+                                    style={{
+                                        width: '161px',
+                                        height: window.screen.height * 0.05,
+                                        backgroundColor: 'green',
+                                        borderRadius: 5,
+                                        border: 'none',
+                                        outline: 'none',
+                                        color: 'white',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        justifyItems: 'center',
+                                        alignContent: 'center',
+                                        alignItems: 'center',
+                                        // gap: '0.5vw',
+                                        fontSize: 14,
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        lineHeight: 'normal',
+                                        fontFamily: 'Maven Pro',
+                                    }}
+                                    onClick={() => alert('Exportar a XLS')}
+                                >
+                                    Exportar PDF
+                            </button>
+                            <button
+                                    style={{
+                                        width: '161px',
+                                        height: window.screen.height * 0.05,
+                                        backgroundColor: 'green',
+                                        borderRadius: 5,
+                                        border: 'none',
+                                        outline: 'none',
+                                        color: 'white',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        justifyItems: 'center',
+                                        alignContent: 'center',
+                                        alignItems: 'center',
+                                        // gap: '0.5vw',
+                                        fontSize: 14,
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        lineHeight: 'normal',
+                                        fontFamily: 'Maven Pro',
+                                    }}
+                                    onClick={() => alert('Exportar a XLS')}
+                                >
+                                    Exportar XLSX
+                            </button>
 
                         <button
                             style={{
@@ -703,7 +1049,7 @@ const Cobros = () => {
                                 justifyItems: 'center',
                                 alignContent: 'center',
                                 alignItems: 'center',
-                                gap: '0.5vw',
+                                // gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
                                 fontWeight: 400,
@@ -742,6 +1088,8 @@ const Cobros = () => {
                 setHideCols={setHideCols}
                 PAGE_SIZES={PAGE_SIZES}
                 setStateModal={setStateModal}
+                buttonState={buttonState} //Paso el estado del Boton
+                handleMarkAll={handleMarkAll}
             />
 
             <VerCobrosModal
