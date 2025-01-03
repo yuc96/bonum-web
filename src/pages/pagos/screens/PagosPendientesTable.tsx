@@ -20,6 +20,21 @@ import { Paper } from '@mantine/core';
 import IconEye from '../../../components/Icon/IconEye';
 import { NavLink } from 'react-router-dom';
 
+// Definición de variables globales de estilo
+const tableHeaderStyles = {
+    width: '114.82px',
+    height: '16px',
+    color: '#0E1726',
+    fontFamily: "'Maven Pro', 'Assistant', sans-serif",
+    fontSize: '13px',
+    fontWeight: 600,
+    lineHeight: '16.45px',
+    textAlign: 'left',
+    textUnderlinePosition: 'from-font',
+    textDecorationSkipInk: 'none',
+    padding: '12px 16px'
+} as const;
+
 const PagosPendientesTable = ({
     estadoPagoNav,
     isChecked,
@@ -60,410 +75,138 @@ const PagosPendientesTable = ({
     PAGE_SIZES: any[];
 }) => {
 
+    // Cálculo de registros para paginación
+    const paginatedData = pagosPendientes.slice((page - 1) * pageSize, page * pageSize);
+
     return (
-        <div
-            className="datatables"
-            style={{
-                //margin: '1.5vh'
-            }}
-        >
+        <div className="datatables">
             <TableContainer component={Paper}>
                 <Table size="small">
                     <TableHead
                         sx={{
-                            backgroundColor: '#e9efff',
-                            flexShrink: 0,
+                            backgroundColor: 'rgba(196, 211, 255, 0.3)',
+                            borderBottom: '1px solid #e0e0e0'
                         }}
                     >
                         <TableRow>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    width: '14%',
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal',
-                                    //backgroundColor: 'red'
-                                }}
-                            >
-                                <p> ID Anticipo </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>ID de transacción</p>
                             </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Colaborador </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>Colaborador</p>
                             </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Identificación </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>Identificación</p>
                             </TableCell>
-
-
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Cuota </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>Saldo</p>
                             </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Saldo </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>Valor Cuota</p>
                             </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Valor Cuota  </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>Costo por Servicio</p>
                             </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Costo por Servicio </p>
+                            <TableCell align='left' sx={tableHeaderStyles}>
+                                <p>Total a debitar</p>
                             </TableCell>
-                            <TableCell
-                                align='center'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Total a Debitar </p>
-                            </TableCell>
-                            {/* <TableCell
-                            align='center'
-                            size='small'
-                        >
-                            <p> Estado </p>
-                        </TableCell> */}
-
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {pagosPendientes.map((row, index) => (
-                            <TableRow key={row.idAnticipo}>
+                        {paginatedData.map((row) => (
+                            <TableRow
+                                key={row.idAnticipo}
+                                sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}
+                            >
                                 <TableCell
-                                    align='left'
-                                    size='medium'
                                     sx={{
-                                        width: '10%',
                                         color: '#BF5CF3',
                                         fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: '400',
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
+                                        padding: '12px 16px'
                                     }}
                                 >
-                                    <p> {row.idAnticipo} </p>
+                                    #{row.idAnticipo}
                                 </TableCell>
-                                <TableCell
-                                    align='left'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {row.nombre} </p>
-                                </TableCell>
-                                <TableCell
-                                    align='left'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {row.identificacion} </p>
-                                </TableCell>
-
-
-                                <TableCell
-                                    align='right'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontFamily: 'Maven Pro',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {row.cuota} </p>
-                                </TableCell>
-                                <TableCell
-                                    align='right'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {'$'+' '+row.saldo.toFixed(2)} </p>
-                                </TableCell>
-                                <TableCell
-                                    align='right'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {'$'+' '+row.valorCuota.toFixed(2)} </p>
-                                </TableCell>
-                                <TableCell
-                                    align='right'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {'$'+' '+row.tasaUnica.toFixed(2)} </p>
-                                </TableCell>
-                                <TableCell
-                                    align='right'
-                                    size='small'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontFamily: 'Maven Pro',
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {'$'+' '+row.totalDebitar.toFixed(2)} </p>
-                                </TableCell>
-
+                                <TableCell sx={{ fontSize: 13 }}>{row.nombre}</TableCell>
+                                <TableCell sx={{ fontSize: 13 }}>{row.identificacion}</TableCell>
+                                <TableCell align='left' sx={{ fontSize: 13 }}>$ {row.saldo.toFixed(2)}</TableCell>
+                                <TableCell align='left' sx={{ fontSize: 13 }}>$ {row.valorCuota.toFixed(2)}</TableCell>
+                                <TableCell align='left' sx={{ fontSize: 13 }}>$ {row.tasaUnica.toFixed(2)}</TableCell>
+                                <TableCell align='left' sx={{ fontSize: 13 }}>$ {row.totalDebitar.toFixed(2)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <div
-                style={{
-                    display: 'flex',
-                    marginTop: '1rem',
-                    alignItems: 'center',
-                    //backgroundColor: 'blue',
-                    width: '100%',
-                    gap: '2px'
-                }}
-            >
 
-                <div
-                    style={{
-                        //width: '25px',
-                        width: '25%',
-                        //width: window.screen.width * 0.15,
-                        marginLeft: '1vw',
-                        //backgroundColor: 'yellow'
-                    }}
-                >
-                    <Typography
-                        style={{
-                            fontWeight: 'initial',
-                            fontSize: 14,
-                            fontFamily: 'Maven Pro',
-                        }}
-                    >
-                        Mostrando {pagosPendientes!.length} de {initialRecords!.length} registros
-                    </Typography>
-                </div>
-
-                <div
-                    style={{
-                        display: 'flex',
-                        //marginLeft: window.screen.width * 0.01,
-                        alignItems: 'center',
-                        //backgroundColor: 'green'
-                    }}
-                >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px' }}>
+                <div style={{ fontSize: 13 }}>
+                    Mostrando {paginatedData.length} de {initialRecords.length} registros
                     <select
-                        value={pageSize!}
-                        onChange={(e) => setPageSize(Number(e.target.value))}
-                        style={{
-                            padding: '5px',
-                            borderRadius: '4px',
-                            borderWidth: '0.5px',
-                            borderColor: 'gray',
-                            fontFamily: 'Maven Pro',
+                        value={pageSize}
+                        onChange={(e) => {
+                            setPageSize(Number(e.target.value));
+                            setPage(1);
                         }}
+                        style={{ marginLeft: '16px', padding: '4px 8px', border: '1px solid #e0e0e0', borderRadius: '6px',height: '40px' }}
                     >
-                        {PAGE_SIZES!.map((size) => (
-                            <option key={size} value={size}>
-                                {size}
-                            </option>
+                        {PAGE_SIZES.map((size) => (
+                            <option key={size} value={size}>{size}</option>
                         ))}
                     </select>
                 </div>
 
-
-                <div
-                    style={{
-                        width: '100%',
-                        //backgroundColor: 'cyan',
-                        display: 'flex',
-                        alignItems: 'right',
-                        justifyContent: 'right',
-                        gap: '10px',
-                        //marginLeft: window.screen.width * 0.37
-                    }}
-                >
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                     <button
+                        onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                         disabled={page === 1}
-                        onClick={() => setPage(page - 1)}
                         style={{
-                            width: '40px',
-                            height: '40px',
-                            border: '1px solid #ccc',
+                            margin: '8px',
+                            padding: '8px 8px',
+                            border: '1px solid #F1F1F1',
                             borderRadius: '50%',
-                            backgroundColor: page === 1 ? '#f5f5f5' : '#ffffff',
-                            color: page === 1 ? '#ccc' : '#000',
-                            cursor: page === 1 ? 'not-allowed' : 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontFamily: 'Maven Pro',
+                            background: page === 1 ? '#FFFFFF' : '#fff'
                         }}
                     >
-                        {'<'}
+                      {'<<'}
                     </button>
 
-                    {[...Array(Math.ceil(initialRecords.length / pageSize)).keys()].map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setPage(index + 1)}
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                border: '1px solid #ccc',
-                                borderRadius: '50%',
-                                backgroundColor: page === index + 1 ? '#BF5CF3' : '#f5f5f5',
-                                color: page === index + 1 ? '#ffffff' : '#000',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontWeight: page === index + 1 ? 'bold' : 'normal',
-                                fontFamily: 'Maven Pro',
-                            }}
+                    <span
+                        style={{
+                            margin: '8px',
+                            width: '35px', // Ajusta según el tamaño deseado
+                            height: '35px', // Igual que el ancho
+                            display: 'flex', // Para centrar contenido
+                            justifyContent: 'center', // Centrado horizontal
+                            alignItems: 'center', // Centrado vertical
+                            border: '1px solid #FFFFFF',
+                            borderRadius: '50%',
+                            background: page * pageSize >= pagosPendientes.length ? '#E9EFFF' : '#E9EFFF'
+                        }}
                         >
-                            {index + 1}
-                        </button>
-                    ))}
+                        {page}
+                    </span>
+
 
                     <button
-                        disabled={page * pageSize >= initialRecords.length}
-                        onClick={() => setPage(page + 1)}
+                        onClick={() => setPage((prev) => (page * pageSize < pagosPendientes.length ? prev + 1 : prev))}
+                        disabled={page * pageSize >= pagosPendientes.length}
                         style={{
-                            width: '40px',
-                            height: '40px',
-                            border: '1px solid #ccc',
+                            margin: '8px',
+                            padding: '8px 8px',
+                            border: '1px solid #F1F1F1',
                             borderRadius: '50%',
-                            backgroundColor: page * pageSize >= initialRecords.length ? '#f5f5f5' : '#ffffff',
-                            color: page * pageSize >= initialRecords.length ? '#ccc' : '#000',
-                            cursor: page * pageSize >= initialRecords.length ? 'not-allowed' : 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontFamily: 'Maven Pro',
+                            background: page * pageSize >= pagosPendientes.length ? '#FFFFFF' : '#fff'
                         }}
                     >
-                        {'>'}
+                        {'>>'}
                     </button>
+
+
                 </div>
             </div>
-
         </div>
-
     )
-
 }
 
 export default PagosPendientesTable;

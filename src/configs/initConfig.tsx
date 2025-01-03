@@ -1,4 +1,4 @@
-const ambiente = 'local';
+const ambiente = 'pruebas';
 const urlAmbiente = {
     local:
     {

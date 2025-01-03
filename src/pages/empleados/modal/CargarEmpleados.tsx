@@ -1,4 +1,3 @@
-
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment, useEffect, useContext } from 'react';
 import * as XLSX from 'xlsx';
@@ -7,7 +6,27 @@ import ImageUploading, { ImageListType } from 'react-images-uploading';
 import IconXCircle from '../../../components/Icon/IconXCircle';
 import { create_empleados_from_excel } from '../../../server/empleados/EmpleadosApi';
 import { AccionContext } from '../../../contexts/AccionesContext';
+import { ColumnMatcher } from '../services/ColumnMatcher';
+import { NeuralLevelEducation } from '../services/NeuralLevelEducation';
+import { DataValidator } from '../services/DataValidator';
 
+interface ValidationErrorDetail {
+    param: string;
+    msg: string;
+}
+
+interface ValidationError {
+    row: number;
+    errors: ValidationErrorDetail[];
+}
+
+interface ApiError {
+    response?: {
+        data?: {
+            details?: ValidationError[];
+        };
+    };
+}
 
 const CargarEmpleadosModal = (
     {
@@ -35,7 +54,7 @@ const CargarEmpleadosModal = (
             setFileName(file.name);
             const reader = new FileReader();
 
-            reader.onload = (e) => {
+            reader.onload = async (e) => {
 
                 const data = new Uint8Array(e.target?.result as ArrayBuffer);
                 const workbook = XLSX.read(data, { type: 'array' });
@@ -43,36 +62,118 @@ const CargarEmpleadosModal = (
                 const sheetName = workbook.SheetNames[0];
                 const sheet = workbook.Sheets[sheetName];
 
-                const jsonData = XLSX.utils.sheet_to_json(sheet);
-                setDatosEmpleados(jsonData);
+                // Obtener el rango de la hoja
+                const range = XLSX.utils.decode_range(sheet['!ref'] || 'A1');
 
+                // Obtener todos los encabezados de la primera fila
+                const headers = [];
+                for (let C = range.s.c; C <= range.e.c; C++) {
+                    const cell = sheet[XLSX.utils.encode_cell({ r: 0, c: C })];
+                    headers.push(cell ? cell.v : '');
+                }
+
+                // Convertir a JSON con la opción defval para manejar celdas vacías
+                let jsonData = XLSX.utils.sheet_to_json(sheet, {
+                    defval: '', // Valor por defecto para celdas vacías
+                    raw: false  // Para asegurar que los valores se conviertan a strings
+                });
+
+                console.log('Headers encontrados:', headers);
+
+                // Crear instancia del ColumnMatcher
+                const columnMatcher = new ColumnMatcher();
+
+                // Obtener el mapeo de columnas para cambiar los nombres de las columnas por lo definidos en el modelo de la base de datos
+                const columnMappings = columnMatcher.matchColumns(headers);
+
+                // Crear instancia del NeuralLevelEducation para predecir los niveles de educación
+                const matcher = new NeuralLevelEducation();
+
+                // Transformar los datos usando el mapeo
+                const transformedData = jsonData.map(row => {
+                    const newRow: any = {};
+
+                    // Primero aplicamos el mapeo de columnas
+                    Object.entries(row as Record<string, unknown>).forEach(([key, value]) => {
+                        const normalizedKey = columnMappings.get(key) || key;
+
+                        if (normalizedKey === 'identification_number' && typeof value === 'string') {
+                            newRow[normalizedKey] = value.replace(/\D/g, '');
+                        } else if(normalizedKey === 'level_education' && typeof value === 'string'){
+                            newRow[normalizedKey] = matcher.predict(value).prediction;
+                        } else {
+                            newRow[normalizedKey] = value;
+                        }
+                    });
+
+                    return newRow;
+                });
+
+                // Aplicar la combinación de nombres y apellidos después de la transformación
+                const datosFinales = combinarNombresApellidos(transformedData);
+               // console.log('Datos finales:', datosFinales); // Agregar este log para debug
+
+                // Validar los datos antes de establecerlos
+                const validationResult = DataValidator(datosFinales);
+              // Verificar si hay errores (si existe excelBuffer)
+                if (validationResult.excelBuffer) {
+                    // Crear y descargar el archivo Excel con errores
+                    const blob = new Blob([validationResult.excelBuffer], {
+                        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                    });
+                    const url = window.URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'errores_validacion.xlsx';
+                    link.click();
+
+                    alert('Se encontraron errores en los datos. Se ha descargado un archivo con los detalles.');
+                }
+
+                setDatosEmpleados(validationResult.validData);
+                console.log('Datos finales:', validationResult.validData);
             };
 
             reader.readAsArrayBuffer(file);
         }
     };
 
-    const handleUploadData = (data: any) => {
+    const handleUploadData = async (data: any) => {
 
-        create_empleados_from_excel(data)
-            .then((res) => {
-                accionDatos();
-                setOpenModalNew(false);
-            })
-            .catch((err) => {
-                console.log("Error en API: ", err)
-            })
+        try {
+            await create_empleados_from_excel(data);
+            accionDatos();
+            setOpenModalNew(false);
+        } catch (error: unknown) {
+            const err = error as ApiError;
+            console.log("Error al cargar empleados:", err);
 
-    }
+            if (err.response?.data?.details) {
+                const validationErrors = data.map((row: any, index: number) => ({
+                    ...row,
+                    _errors: err.response?.data?.details?.find((e: ValidationError) => e.row === index + 1)?.errors
+                }));
 
-    const [images, setImages] = useState<any>([]);
-    const maxNumber = 69;
-
-    const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
-        setImages(imageList as never[]);
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(validationErrors);
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Errores');
+                XLSX.writeFile(workbook, 'errores_validacion_servidor.xlsx');
+                alert('El servidor encontró errores en los datos. Por favor revise el archivo de validación descargado.');
+            }
+        }
     };
 
-
+    const combinarNombresApellidos = (datos: any[]) => {
+       // console.log('Datos recibidos en combinarNombresApellidos:', datos); // Agregar este log para debug
+        return datos.map(empleado => {
+            const { temporalName2, temporalLastname2, ...resto } = empleado;
+            return {
+                ...resto,
+                name: [resto.name, temporalName2].filter(Boolean).join(' ').trim(),
+                lastname: [resto.lastname, temporalLastname2].filter(Boolean).join(' ').trim()
+            };
+        });
+    };
 
     return (
 

@@ -127,7 +127,6 @@ const TablePagosMain = ({
                             <TableRow>
                                 <TableCell
                                     align='left'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -142,7 +141,6 @@ const TablePagosMain = ({
 
                                 <TableCell
                                     align='left'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -157,7 +155,6 @@ const TablePagosMain = ({
 
                                 <TableCell
                                     align='left'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -172,7 +169,6 @@ const TablePagosMain = ({
 
                                 <TableCell
                                     align='right'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -186,7 +182,6 @@ const TablePagosMain = ({
                                 </TableCell>
                                 <TableCell
                                     align='right'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -196,11 +191,10 @@ const TablePagosMain = ({
                                         lineHeight: 'normal'
                                     }}
                                 >
-                                    <p> Valor Cuota  </p>
+                                    <p> Valor Cuota </p>
                                 </TableCell>
                                 <TableCell
                                     align='right'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -214,7 +208,6 @@ const TablePagosMain = ({
                                 </TableCell>
                                 <TableCell
                                     align='right'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -228,7 +221,6 @@ const TablePagosMain = ({
                                 </TableCell>
                                 <TableCell
                                     align='center'
-                                    //size='small'
                                     sx={{
                                         color: '#0E1726',
                                         fontSize: 13,
@@ -247,7 +239,7 @@ const TablePagosMain = ({
                             {recordsData.map((row, index) => (
                                 <TableRow key={row.idAnticipo} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                     <TableCell
-                                        align='left'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#BF5CF3',
@@ -262,7 +254,7 @@ const TablePagosMain = ({
                                     </TableCell>
 
                                     <TableCell
-                                        align='left'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#0E1726',
@@ -277,7 +269,7 @@ const TablePagosMain = ({
                                     </TableCell>
 
                                     <TableCell
-                                        align='left'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#0E1726',
@@ -292,7 +284,7 @@ const TablePagosMain = ({
                                     </TableCell>
 
                                     <TableCell
-                                        align='right'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#0E1726',
@@ -306,7 +298,7 @@ const TablePagosMain = ({
                                         <p> {'$'+' '+row.saldo.toFixed(2)} </p>
                                     </TableCell>
                                     <TableCell
-                                        align='right'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#0E1726',
@@ -320,7 +312,7 @@ const TablePagosMain = ({
                                         <p> {'$'+' '+row.valorCuota.toFixed(2)} </p>
                                     </TableCell>
                                     <TableCell
-                                        align='right'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#0E1726',
@@ -334,7 +326,7 @@ const TablePagosMain = ({
                                         <p> {'$'+' '+row.tasaUnica.toFixed(2)} </p>
                                     </TableCell>
                                     <TableCell
-                                        align='right'
+                                        align='center'
                                         size='medium'
                                         sx={{
                                             color: '#0E1726',
@@ -445,112 +437,6 @@ const TablePagosMain = ({
                             ))}
                         </TableBody>
 
-                        {/* <TableFooter
-                            sx={{
-                                position: 'sticky',
-                                bottom: 0,
-                                backgroundColor: 'white',
-                                zIndex: 2,
-                                width: '100%'
-                            }}
-                        >
-                            <TableRow>
-                                <TableCell
-                                    //align='center'
-                                    size='medium'
-                                    colSpan={4}
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        paddingLeft: 30
-                                    }}
-                                >
-                                    Total
-                                </TableCell>
-                                <TableCell
-                                    size='medium'
-                                    align="center"
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    {totales.anticipoActivo.toFixed(2)}
-                                </TableCell>
-                                <TableCell
-                                    size='medium'
-                                    align="center"
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-
-                                    }}>
-
-                                </TableCell>
-                                <TableCell
-                                    size='medium'
-                                    align="center"
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    {totales.saldo.toFixed(2)}
-                                </TableCell>
-
-                                <TableCell
-                                    size='medium'
-                                    align="center"
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}>
-                                    {totales.valorCuota.toFixed(2)}
-                                </TableCell>
-                                <TableCell
-                                    size='medium'
-                                    align="center"
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}>
-                                    {totales.tasaUnica.toFixed(2)}
-                                </TableCell>
-                                <TableCell
-                                    size='medium'
-                                    align="center"
-                                    style={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    {totales.totalDebitar.toFixed(2)}
-                                </TableCell>
-                                <TableCell />
-                            </TableRow>
-                        </TableFooter> */}
-
                     </Table>
 
                 </TableContainer>
@@ -560,20 +446,15 @@ const TablePagosMain = ({
                         display: 'flex',
                         marginTop: '1rem',
                         alignItems: 'center',
-                        //backgroundColor: 'blue',
                         width: '100%',
                         gap: '2px',
                         fontFamily: 'Maven Pro',
                     }}
                 >
-
                     <div
                         style={{
-                            //width: '25px',
                             width: '25%',
-                            //width: window.screen.width * 0.15,
                             marginLeft: '1vw',
-                            //backgroundColor: 'yellow'
                         }}
                     >
                         <Typography
@@ -590,9 +471,7 @@ const TablePagosMain = ({
                     <div
                         style={{
                             display: 'flex',
-                            //marginLeft: window.screen.width * 0.01,
                             alignItems: 'center',
-                            //backgroundColor: 'green'
                         }}
                     >
                         <select
@@ -614,79 +493,50 @@ const TablePagosMain = ({
                         </select>
                     </div>
 
-
                     <div
                         style={{
                             width: '100%',
-                            //backgroundColor: 'cyan',
                             display: 'flex',
-                            alignItems: 'right',
-                            justifyContent: 'right',
-                            gap: '10px',
-                            //marginLeft: window.screen.width * 0.37
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            gap: '5px',
+                            marginRight: '20px'
                         }}
                     >
                         <button
-                            disabled={page === 1}
+                            className={`flex items-center justify-center px-3 py-2 ${
+                                page === 1 ? 'text-gray-300' : 'text-gray-500 hover:text-indigo-500'
+                            } rounded-full`}
                             onClick={() => setPage(page - 1)}
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                border: '1px solid #ccc',
-                                borderRadius: '50%',
-                                backgroundColor: page === 1 ? '#f5f5f5' : '#ffffff',
-                                color: page === 1 ? '#ccc' : '#000',
-                                cursor: page === 1 ? 'not-allowed' : 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontFamily: 'Maven Pro',
-                            }}
+                            disabled={page === 1}
                         >
-                            {'<'}
+                            <IconArrowLeft className="w-5 h-5" />
                         </button>
 
-                        {[...Array(Math.ceil(initialRecords.length / pageSize)).keys()].map((_, index) => (
+                        {[...Array(Math.ceil(initialRecords.length / pageSize))].map((_, index) => (
                             <button
                                 key={index}
+                                className={`w-10 h-10 rounded-full ${
+                                    page === index + 1
+                                        ? 'bg-indigo-500 text-white'
+                                        : 'text-gray-500 hover:text-indigo-500'
+                                }`}
                                 onClick={() => setPage(index + 1)}
-                                style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    border: '1px solid #ccc',
-                                    borderRadius: '50%',
-                                    backgroundColor: page === index + 1 ? '#BF5CF3' : '#f5f5f5',
-                                    color: page === index + 1 ? '#ffffff' : '#000',
-                                    cursor: 'pointer',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontWeight: page === index + 1 ? 'bold' : 'normal',
-                                    fontFamily: 'Maven Pro',
-                                }}
                             >
                                 {index + 1}
                             </button>
                         ))}
 
                         <button
-                            disabled={page * pageSize >= initialRecords.length}
+                            className={`flex items-center justify-center px-3 py-2 ${
+                                page === Math.ceil(initialRecords.length / pageSize)
+                                    ? 'text-gray-300'
+                                    : 'text-gray-500 hover:text-indigo-500'
+                            } rounded-full`}
                             onClick={() => setPage(page + 1)}
-                            style={{
-                                width: '40px',
-                                height: '40px',
-                                border: '1px solid #ccc',
-                                borderRadius: '50%',
-                                backgroundColor: page * pageSize >= initialRecords.length ? '#f5f5f5' : '#ffffff',
-                                color: page * pageSize >= initialRecords.length ? '#ccc' : '#000',
-                                cursor: page * pageSize >= initialRecords.length ? 'not-allowed' : 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontFamily: 'Maven Pro',
-                            }}
+                            disabled={page === Math.ceil(initialRecords.length / pageSize)}
                         >
-                            {'>'}
+                            <IconArrowLeft className="w-5 h-5 transform rotate-180" />
                         </button>
                     </div>
                 </div>

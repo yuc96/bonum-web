@@ -27,6 +27,47 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'; // Ícono de copi
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Ícono de visto
 import { bool } from 'yup';
 
+interface Employee {
+    idAnticipo: string;
+    nombre: string;
+    identificacion: string;
+    fechaAnticipo: string;
+    anticipoActivo: number;
+    cuota: string;
+    saldo: number;
+    valorCuota: number;
+    tasaUnica: number;
+    totalDebitar: number;
+    acciones: string;
+}
+
+interface CobrosTableProps {
+    isChecked: boolean;
+    openModal: boolean;
+    page: number;
+    pageSize: number;
+    initialRecords: any[];
+    recordsData: any[];
+    cobrosData: any[];
+    search: string;
+    searchData: boolean;
+    sortStatus: DataTableSortStatus;
+    hideCols: any;
+    setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setPage: React.Dispatch<React.SetStateAction<number>>;
+    setPageSize: React.Dispatch<React.SetStateAction<number>>;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
+    setSearchData: React.Dispatch<React.SetStateAction<boolean>>;
+    setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
+    setHideCols: React.Dispatch<React.SetStateAction<any>>;
+    PAGE_SIZES: any[];
+    setStateModal: React.Dispatch<React.SetStateAction<boolean>>;
+    buttonState:boolean;
+    handleMarkAll: () => void;
+    onEmployeeSelect: (employee: Employee) => void;
+}
+
 const CobrosTable = (
     {
         isChecked,
@@ -51,32 +92,9 @@ const CobrosTable = (
         PAGE_SIZES,
         setStateModal,
         buttonState,
-        handleMarkAll
-    }: {
-        isChecked: boolean;
-        openModal: boolean;
-        page: number;
-        pageSize: number;
-        initialRecords: any[];
-        recordsData: any[];
-        cobrosData: any[];
-        search: string;
-        searchData: boolean;
-        sortStatus: DataTableSortStatus;
-        hideCols: any;
-        setIsChecked: React.Dispatch<React.SetStateAction<boolean>>;
-        setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-        setPage: React.Dispatch<React.SetStateAction<number>>;
-        setPageSize: React.Dispatch<React.SetStateAction<number>>;
-        setSearch: React.Dispatch<React.SetStateAction<string>>;
-        setSearchData: React.Dispatch<React.SetStateAction<boolean>>;
-        setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus>>;
-        setHideCols: React.Dispatch<React.SetStateAction<any>>;
-        PAGE_SIZES: any[];
-        setStateModal: React.Dispatch<React.SetStateAction<boolean>>;
-        buttonState:boolean;
-        handleMarkAll: () => void;
-    }
+        handleMarkAll,
+        onEmployeeSelect
+    }: CobrosTableProps
 ) => {
 
     const [cobrosDataInf, setCobrosDataInf] = useState(cobrosData.slice(0, pageSize));
@@ -84,37 +102,22 @@ const CobrosTable = (
 
     // const [copied, setCopied] = useState(false); // Estado para manejar el ícono
 
-
-
-
-
+    const isFirstRender = useRef(true); // uso para evitar que useEffect se ejecute al montar el componente
 
 // Función para obtener el estado de 'copiedRows' desde el localStorage
 
 
 const [copiedRows, setCopiedRows] = useState<Record<number, Record<string, boolean>>>(() => {
-    // Obtener datos del localStorage y también inicializar con la tabla
-    const storedData = localStorage.getItem('copiedRows');
-    const initialRows = storedData ? JSON.parse(storedData) : {};
+    // Cargar estado inicial del localStorage
+    const savedState = localStorage.getItem('copiedRows');
+    return savedState ? JSON.parse(savedState) : {};
+});
 
-    // Aquí construimos la estructura inicial de copiedRows con datos de la tabla
-
-    recordsData.forEach((row, index) => {
-      if (!initialRows[index]) {
-        initialRows[index] = { 'Debito': false ,'cedula':false}; // Si no existe, inicializamos como no copiado
-      }
-    });
-
-    return initialRows;
-  });
-  const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal
-  const handleCloseModal = () => {
-    setShowModal(false); // Cierra el modal
-  };
   // Efecto para actualizar localStorage cuando copiedRows cambia
   useEffect(() => {
-    // Guardar copiedRows en localStorage cuando cambia
-    localStorage.setItem('copiedRows', JSON.stringify(copiedRows));
+    if (!isFirstRender.current) {
+        localStorage.setItem('copiedRows', JSON.stringify(copiedRows));
+    }
   }, [copiedRows]);
 
   const getCopiedRowsFromLocalStorage = () => {
@@ -150,53 +153,70 @@ const handleCopy = (id: number, value: any, identificador: string) => {
 
 let prevMyBooleanRef = useRef<boolean>(buttonState);  // Inicializamos con 'false'
 
-const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Estado del botón
+const [chekAll, setChekAll] = useState(false);
+const [showDebitModal, setShowDebitModal] = useState(false); // Estado del botón
 
 const handleCancelAction = () => {
 
-    // handleMarkAll();
+    setChekAll(false);
+    setShowDebitModal(false);
+    handleMarkAll()
+    setDebitAll(false);
 
   };
 
-  if ( prevMyBooleanRef.current !== buttonState ){
-        setIsButtonDisabled(true);
-  }
+
+const handleConfirmAction = () => {
+
+    setChekAll(true);
+    setShowDebitModal(false);
+    setDebitAll(true);
+
+
+  };
+
+const handleCloseModal = () => {
+    setShowDebitModal(false); // Cierra el modal
+  };
 
 useEffect(() => {
 
-        if ( prevMyBooleanRef.current !== buttonState ) {
-            setIsButtonDisabled(false);
-
-            prevMyBooleanRef.current = buttonState;
-            setCopiedRows((prev) => {
-                // Crear un objeto actualizado con todas las columnas como true
-                const updatedRows = Object.keys(prev).reduce((acc, id) => {
-                  // Convertir el ID de string a número, si es necesario
-                  const numericId = parseInt(id);
-
-                  // Recuperar las claves de las columnas en la fila
-                  const columnIdentifiers = Object.keys(prev[numericId] || {});
-
-                  // Actualizar todas las columnas de la fila a true
-                  acc[numericId] = columnIdentifiers.reduce((colAcc, column) => {
-                    colAcc[column] = buttonState? true:false; // Cambiar todas las columnas a true
-                    return colAcc;
-                  }, {} as Record<string, boolean>);
-
-                  return acc;
-                }, {} as Record<number, Record<string, boolean>>);
-
-                // Guardar el estado actualizado en localStorage
-                localStorage.setItem('copiedRows', JSON.stringify(copiedRows));
-                return updatedRows;
-              }
-
-              );
-
+    if (prevMyBooleanRef.current !== buttonState) {
+        prevMyBooleanRef.current = buttonState;
+        if(buttonState){
+            setShowDebitModal(true);
+        }else{
+            setChekAll(false);
+            setDebitAll(false)
+        }
 
     }
 
-}, [isButtonDisabled]);
+}, [buttonState]);
+
+
+// Efecto para manejar chekAll y actualizar copiedRows
+
+    // Si es el primer render, solo actualizar la referencia y salir
+
+const setDebitAll=(state:boolean)=>{
+    setCopiedRows((prev) => {
+        const updatedRows = Object.keys(prev).reduce((acc, id) => {
+            const numericId = parseInt(id);
+            const columnIdentifiers = Object.keys(prev[numericId] || {});
+
+            acc[numericId] = columnIdentifiers.reduce((colAcc, column) => {
+                colAcc[column] = state;
+                return colAcc;
+            }, {} as Record<string, boolean>);
+
+            return acc;
+        }, {} as Record<number, Record<string, boolean>>);
+
+        localStorage.setItem('copiedRows', JSON.stringify(updatedRows));
+        return updatedRows;
+    });
+}
 
 
 
@@ -262,7 +282,10 @@ useEffect(() => {
                 marginTop: 23
             }}
         >
+        {/*    <h2> {chekAll?'chek all TRUE2':'chek all FALSE2'}</h2>
             <h1>{buttonState?'TRUE':'FALSE'}</h1>
+            <h3>{isFirstRender.current?'TRUE':'FALSE'}</h3>
+*/}
             <TableContainer
                 component={Paper}
             >
@@ -356,20 +379,7 @@ useEffect(() => {
                             >
                                 <p> Cuota </p>
                             </TableCell>
-                            <TableCell
-                                align='right'
-                                //size='small'
-                                sx={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontFamily: 'Maven Pro',
-                                    lineHeight: 'normal'
-                                }}
-                            >
-                                <p> Saldo </p>
-                            </TableCell>
+
                             <TableCell
                                 align='right'
                                 //size='small'
@@ -411,6 +421,20 @@ useEffect(() => {
                                 }}
                             >
                                 <p> Total a Debitar </p>
+                            </TableCell>
+                            <TableCell
+                                align='right'
+                                //size='small'
+                                sx={{
+                                    color: '#0E1726',
+                                    fontSize: 13,
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontFamily: 'Maven Pro',
+                                    lineHeight: 'normal'
+                                }}
+                            >
+                                <p> Saldo </p>
                             </TableCell>
                             <TableCell
                                 align='center'
@@ -537,20 +561,7 @@ useEffect(() => {
                                 >
                                     <p> {row.cuota} </p>
                                 </TableCell>
-                                <TableCell
-                                    align='right'
-                                    size='medium'
-                                    sx={{
-                                        color: '#0E1726',
-                                        fontSize: 13,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontFamily: 'Maven Pro',
-                                        lineHeight: 'normal'
-                                    }}
-                                >
-                                    <p> {'$'+' '+row.saldo.toFixed(2)} </p>
-                                </TableCell>
+
                                 <TableCell
                                     align='right'
                                     size='medium'
@@ -612,7 +623,20 @@ useEffect(() => {
                                         </button>
                                     </div>
                                 </TableCell>
-
+                                <TableCell
+                                    align='right'
+                                    size='medium'
+                                    sx={{
+                                        color: '#0E1726',
+                                        fontSize: 13,
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontFamily: 'Maven Pro',
+                                        lineHeight: 'normal'
+                                    }}
+                                >
+                                    <p> {'$'+' '+row.saldo.toFixed(2)} </p>
+                                </TableCell>
                                 <TableCell
                                     align='center'
                                 >
@@ -699,20 +723,7 @@ useEffect(() => {
                                 }}>
 
                             </TableCell>
-                            <TableCell
-                                size='medium'
-                                align="right"
-                                style={{
-                                    color: '#0E1726',
-                                    fontSize: 13,
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    lineHeight: 'normal',
-                                    fontFamily: 'Maven Pro',
-                                }}
-                            >
-                                {'$'+' '+totales.saldo.toFixed(2)}
-                            </TableCell>
+
 
                             <TableCell
                                 size='medium'
@@ -753,6 +764,20 @@ useEffect(() => {
                                 }}
                             >
                                 {'$'+' '+totales.totalDebitar.toFixed(2)}
+                            </TableCell>
+                            <TableCell
+                                size='medium'
+                                align="right"
+                                style={{
+                                    color: '#0E1726',
+                                    fontSize: 13,
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    lineHeight: 'normal',
+                                    fontFamily: 'Maven Pro',
+                                }}
+                            >
+                                {'$'+' '+totales.saldo.toFixed(2)}
                             </TableCell>
                             <TableCell />
                         </TableRow>
@@ -898,10 +923,10 @@ useEffect(() => {
             </div>
           <DebitModal
             totalDebitar={totales.totalDebitar}
-            show={isButtonDisabled}
+            show={showDebitModal}
             onClose={handleCloseModal}
             onActionCancel={handleCancelAction}
-            // onActionConfirm={handleConfirmAction}
+            onActionConfirm={handleConfirmAction}
              />
         </div>
 

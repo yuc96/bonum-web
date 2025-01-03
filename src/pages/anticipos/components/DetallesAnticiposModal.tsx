@@ -5,11 +5,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import IconEye from '../../../components/Icon/IconEye';
+import dayjs from 'dayjs';
 
 const documentos = [
-    { id: 1, title: "Documento 1", description: "" },
-    { id: 2, title: "Documento 2", description: "" },
-    
+    { id: 1, title: "Convenio Aprobado | dd-mm-yyyy/hh:mm", description: "" },
+    { id: 2, title: "Convenio Aprobado | dd-mm-yyyy/hh:mm", description: "" },
 ];
 
 const cuotas = [
@@ -17,6 +17,25 @@ const cuotas = [
     { id: 2, description: "Cuota 2", valor: 100.00 },
     { id: 3, description: "Cuota 3", valor: 100.00 },
 ];
+
+const datosEjemplo = {
+  idSolicitud: "SOL-2024-001",
+  nombre: "Juan Pérez González",
+  email: "juan.perez@empresa.com",
+  cargo: "Gerente de Ventas",
+  ingresos: "$5,000.00",
+  metodoPago: "Transferencia Bancaria",
+  banco: "Banco Nacional",
+  referencia: "REF-2024-123456",
+  comprobante: "COMP-2024-789",
+  item: "Anticipo de Nómina",
+  cuotas: "3",
+  monto: "$1,500.00",
+  tarifaUnica: "$45.00",
+  fecha: "2024-03-20",
+  motivoRechazo: "Documentación incompleta",
+  observaciones: "Pendiente de documentos adicionales"
+};
 
 const DetallesAnticiposModal = (
     {
@@ -116,32 +135,47 @@ const DetallesAnticiposModal = (
                                         <label
                                             htmlFor="hrDefaultinput"
                                             style={{
-                                                fontSize: 14,
+                                                fontFamily: 'Nunito',
+                                                fontSize: '14px',
+                                                fontWeight: 600,
+                                                lineHeight: '19px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
                                                 paddingTop: 7,
                                                 width: '84px',
-                                                //backgroundColor: 'green',
-                                                fontFamily: 'Maven Pro',
-                                                fontWeight: 400,
+                                                color: '#0E1726'
                                             }}
                                         >
                                             ID Solicitud:
                                         </label>
 
-                                        <form>
-                                            <input
-                                                id="hrDefaultinput"
-                                                placeholder=""
-                                                className="form-input"
-                                                style={{
-                                                    width: '250px',
-                                                    height: '35px',
-                                                    flexShrink: 0,
-                                                    borderRadius: '6px',
-                                                    border: '1px solid #E0E6ED',
-                                                    background: '#FFFFFF',
-                                                }}
-                                            />
-                                        </form>
+                                        <input
+                                            id="hrDefaultinput"
+                                            value={datosEjemplo.idSolicitud}
+                                            readOnly
+                                            className="form-input"
+                                            style={{
+                                                width: '250px',
+                                                height: '38px',
+                                                flexShrink: 0,
+                                                borderRadius: '6px',
+                                                border: '1px solid #E0E6ED',
+                                                background: '#F8F8F8',
+                                                cursor: 'default'
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                            gap: 17,
+                                            alignItems: 'center'
+                                        }}
+                                    >
+
                                     </div>
 
                                 </div>
@@ -217,14 +251,15 @@ const DetallesAnticiposModal = (
                                                     fontFamily: 'Maven Pro'
                                                 }}
                                             >
-                                                {stateModal ? 'Activo' : 'Inactivo'}
+                                                {stateModal ? 'Aprobado' : 'Rechazado'}
                                             </div>
 
                                             <LocalizationProvider
                                                 dateAdapter={AdapterDayjs}
                                             >
                                                 <DatePicker
-                                                    disabled 
+                                                    disabled
+                                                    defaultValue={dayjs(datosEjemplo.fecha)}
                                                     slotProps={{
                                                         textField: {
                                                             placeholder: 'Fecha',
@@ -244,18 +279,18 @@ const DetallesAnticiposModal = (
                                                                     fontStyle: 'normal',
                                                                     fontWeight: 300,
                                                                     lineHeight: 'normal',
-                                                                    backgroundColor: 'white',
+                                                                    backgroundColor: '#F8F8F8',
                                                                     border: '1px solid #E0E6ED',
                                                                     borderRadius: '4px',
                                                                     boxShadow: 'none',
                                                                     transition: 'none',
                                                                     fontFamily: 'Maven Pro',
                                                                     '&:hover': {
-                                                                        backgroundColor: 'white',
+                                                                        backgroundColor: '#F8F8F8',
                                                                         borderColor: '#E0E6ED',
                                                                     },
                                                                     '&.Mui-focused': {
-                                                                        backgroundColor: 'white',
+                                                                        backgroundColor: '#F8F8F8',
                                                                         borderColor: '#E0E6ED',
                                                                     },
                                                                 },
@@ -470,8 +505,8 @@ const DetallesAnticiposModal = (
                                                 }}
                                             >
                                                 <input
-                                                    id="hrDefaultinput"
-                                                    placeholder=""
+                                                    disabled
+                                                    defaultValue={datosEjemplo.nombre}
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -479,10 +514,13 @@ const DetallesAnticiposModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
-                                                    }} />
+                                                        background: '#F8F8F8',
+                                                    }}
+                                                />
 
                                                 <input
+                                                  disabled
+                                                  defaultValue={datosEjemplo.email}
                                                     id="hrDefaultinput"
                                                     placeholder=""
                                                     className="form-input"
@@ -497,6 +535,8 @@ const DetallesAnticiposModal = (
                                                 />
 
                                                 <input
+                                                    disabled
+                                                    defaultValue={datosEjemplo.cargo}
                                                     id="hrDefaultinput"
                                                     placeholder=""
                                                     className="form-input"
@@ -511,6 +551,8 @@ const DetallesAnticiposModal = (
                                                 />
 
                                                 <input
+                                                     disabled
+                                                    defaultValue={datosEjemplo.ingresos}
                                                     id="hrDefaultinput"
                                                     placeholder=""
                                                     className="form-input"
@@ -563,7 +605,7 @@ const DetallesAnticiposModal = (
                                                 display: 'flex',
                                                 flexDirection: 'row',
                                                 // marginTop: 15,
-                                                // gap: 13, 
+                                                // gap: 13,
                                                 //margin: window.screen.height * 0.002,
                                                 //gap: window.screen.width * 0.1,
                                                 //padding: 10,
@@ -663,6 +705,8 @@ const DetallesAnticiposModal = (
 
 
                                                 <input
+                                                    disabled
+                                                    defaultValue={stateModal === true ?datosEjemplo.metodoPago:datosEjemplo.motivoRechazo}
                                                     id="hrDefaultinput"
                                                     placeholder=""
                                                     className="form-input"
@@ -677,7 +721,10 @@ const DetallesAnticiposModal = (
                                                 />
 
                                                 <input
+
                                                     id="hrDefaultinput"
+                                                    disabled
+                                                    defaultValue={stateModal === true ?datosEjemplo.banco:datosEjemplo.observaciones}
                                                     placeholder=""
                                                     className="form-input"
                                                     style={{
@@ -697,6 +744,8 @@ const DetallesAnticiposModal = (
                                                         <input
                                                             id="hrDefaultinput" placeholder=""
                                                             className="form-input"
+                                                            disabled
+                                                            defaultValue={datosEjemplo.referencia}
                                                             style={{
                                                                 width: '250px',
                                                                 height: '35px',
@@ -704,14 +753,17 @@ const DetallesAnticiposModal = (
                                                                 borderRadius: '6px',
                                                                 border: '1px solid #E0E6ED',
                                                                 background: '#FFFFFF',
+
                                                             }}
                                                         />
 
                                                         <div style={{ position: 'relative', width: '100%' }}>
                                                             <input
                                                                 id="hrDefaultinput"
+                                                                disabled
                                                                 placeholder=""
                                                                 className="form-input"
+                                                                defaultValue={datosEjemplo.comprobante}
                                                                 style={{
                                                                     width: '250px',
                                                                     height: '35px',
@@ -971,14 +1023,19 @@ const DetallesAnticiposModal = (
 
                                     <div
                                         style={{
-                                            width: '40%',
+                                            width: 'auto',
+                                            height: 'auto',
                                             flexShrink: 0,
                                             marginTop: 10,
                                             marginBottom: 20,
                                             border: '1px solid #E5E5E5',
                                             borderRadius: '8px',
                                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                            //backgroundColor: 'blue'
+                                            //backgroundColor: 'blue',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'flex-start',
+                                            justifyContent: 'center',
                                         }}
                                     >
 
@@ -1043,37 +1100,56 @@ const DetallesAnticiposModal = (
                                         }}
                                     >
 
-                                        {cuotas.map((cuota) => (
-                                            <div
-                                                key={cuota.id}
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    padding: "5px 0",
-                                                    color: '#0E1726',
-                                                    fontSize: 14,
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 400,
-                                                    fontFamily: 'Maven Pro'
-                                                }}
-                                            >
-                                                <p style={{ 
-                                                    color: 'green',  
-                                                    fontSize: 14,
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 600,
-                                                    fontFamily: 'Maven Pro'
-                                                }}>
-                                                    {cuota.description}
-                                                </p>
-                                                <p>
-                                                    ${cuota.valor.toFixed(2)}
-                                                </p>
-                                            </div>
-                                        ))}
+                                        <div style={{ width: '80%', marginTop: 20, marginBottom: 20 }}>
+                                            {cuotas.map((cuota, index) => (
+                                                <div key={cuota.id}>
+                                                    <div style={{
+                                                        display: "flex",
+                                                        justifyContent: "space-between",
+                                                        padding: "5px 0",
+                                                        color: '#0E1726',
+                                                        fontSize: 14,
+                                                        fontStyle: 'normal',
+                                                        fontWeight: 400,
+                                                        fontFamily: 'Maven Pro',
+                                                    }}>
+                                                        <p style={{
+                                                            fontFamily: 'Nunito',
+                                                            fontSize: '14px',
+                                                            fontWeight: 400,
+                                                            lineHeight: '37px',
+                                                            textAlign: 'left',
+                                                            textUnderlinePosition: 'from-font',
+                                                            textDecorationSkipInk: 'none',
+                                                            color: '#0E1726',
+                                                        }}>
+                                                            {cuota.description}
+                                                        </p>
+                                                        <p>
+                                                            ${cuota.valor.toFixed(2)}
+                                                        </p>
+                                                    </div>
 
-                                        <div
-                                            style={{
+                                                    {index === 2 && (
+                                                        <p style={{
+                                                            fontFamily: 'Nunito',
+                                                            fontSize: '14px',
+                                                            fontWeight: 600,
+                                                            lineHeight: '19.1px',
+                                                            textAlign: 'left',
+                                                            textUnderlinePosition: 'from-font',
+                                                            textDecorationSkipInk: 'none',
+                                                            color: '#B2B6B8',
+                                                            margin: '10px 0',
+                                                            borderBottom: '1px solid #000000',
+                                                        }}>
+                                                            Incluye IVA y solo se cobra 1 vez
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            ))}
+
+                                            <div style={{
                                                 display: "flex",
                                                 justifyContent: "space-between",
                                                 padding: "20px 0",
@@ -1081,11 +1157,27 @@ const DetallesAnticiposModal = (
                                                 fontSize: 14,
                                                 fontStyle: 'normal',
                                                 fontWeight: 400,
-                                                fontFamily: 'Maven Pro'
-                                            }}
-                                        >
-                                            <span>Total</span>
-                                            <span>${total.toFixed(2)}</span>
+                                                fontFamily: 'Maven Pro',
+                                            }}>
+                                                <span style={{
+                                                    fontFamily: 'Nunito',
+                                                    fontSize: '14px',
+                                                    fontWeight: 400,
+                                                    lineHeight: '37px',
+                                                    color: '#0E1726',
+                                                }}>
+                                                    Total
+                                                </span>
+                                                <span style={{
+                                                    fontFamily: 'Nunito',
+                                                    fontSize: '14px',
+                                                    fontWeight: 600,
+                                                    lineHeight: '37px',
+                                                    color: '#0E1726',
+                                                }}>
+                                                    ${total.toFixed(2)}
+                                                </span>
+                                            </div>
                                         </div>
 
                                     </div>

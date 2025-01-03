@@ -23,6 +23,20 @@ import { WidthFull } from '@mui/icons-material';
 import { left } from '@popperjs/core';
 import { boolean } from 'yup';
 
+
+export interface Employee {
+    idAnticipo: string;
+    nombre: string;
+    identificacion: string;
+    fechaAnticipo: string;
+    anticipoActivo: number;
+    cuota: string;
+    saldo: number;
+    valorCuota: number;
+    tasaUnica: number;
+    totalDebitar: number;
+    acciones: string;
+}
 const cobrosData = [
     {
         idAnticipo: "#000001",
@@ -678,6 +692,7 @@ const cobrosData = [
 ];
 
 
+
 const Cobros = () => {
 
     const PAGE_SIZES = [10, 20, 30, 50, 100];
@@ -700,6 +715,8 @@ const Cobros = () => {
     const [date1, setDate1] = useState<any>('2022-07-05');
 
     const [isOpen, setIsOpen] = useState(true);
+
+    const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
     const handleOptionSelect = (option: SetStateAction<string>) => {
         setSelectedOption(option);
@@ -795,6 +812,7 @@ const Cobros = () => {
                 overflow: 'hidden'
             }}
         >
+            <h1>Débitos</h1>
 
             <div
                 style={{
@@ -817,16 +835,13 @@ const Cobros = () => {
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent:'space-between',
-                        // paddingRight: 15,
                         width: '100%',
-
                     }}
                 >
 
                     <div
                         className="dropdown"
                         style={{
-                            // backgroundColor: 'orange',
                             justifySelf: 'center',
                             display: 'flex',
                             flexDirection: 'row',
@@ -837,7 +852,6 @@ const Cobros = () => {
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'row',
-                                        //backgroundColor: 'green',
                                     }}
                                 >
                                     <p
@@ -925,54 +939,60 @@ const Cobros = () => {
                             )}
                         </Dropdown>
                         <button
-                                    style={{
-                                        width: 'auto',
-                                        height: window.screen.height * 0.05,
-                                        // backgroundColor: 'green',
-                                        borderRadius: 5,
-                                        border: '1px solid #e0e6ed',
-                                        outline: 'none',
-                                        color: 'white',
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'center',
-                                        justifyItems: 'center',
-                                        alignContent: 'center',
-                                        alignItems: 'center',
-                                        // gap: '0.5vw',
-                                        fontSize: 14,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        fontFamily: 'Maven Pro',
-                                        padding:'20px',
-                                        background:buttonState?'rgba(232, 115, 115, 0.5)':'white'
-                                    }}
-                                    onClick={handleMarkAll}
-                                >
-                                    <p
-                                        style={{
-                                            color: '#0E1726',
-                                            fontSize: 13,
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            justifySelf: 'center',
-                                            alignSelf: 'center',
-                                            paddingRight: 5,
-                                            fontFamily: 'Maven Pro'
-                                        }}
-                                    >
-                                        {buttonState?'Desmarcar todos':'Marcar todos Débitados'}
-                                    </p>
+                            style={{
+                                width: 'auto',
+                                height: window.screen.height * 0.05,
+                                borderRadius: 5,
+                                border: '1px solid #e0e6ed',
+                                outline: 'none',
+                                color: 'white',
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                padding:'20px',
+                                background: buttonState ? 'rgba(232, 115, 115, 0.5)' : 'white'
+                            }}
+                            onClick={handleMarkAll}
+                        >
+                            <p style={{
+                                color: '#0E1726',
+                                fontSize: 13,
+                                fontWeight: 400,
+                                fontFamily: 'Maven Pro'
+                            }}>
+                                {buttonState ? 'Desmarcar todos' : 'Marcar todos Débitados'}
+                            </p>
+                        </button>
 
-                            </button>
-
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            border: '1px solid #e0e6ed',
+                            borderRadius: 5,
+                            padding: '0 10px',
+                            marginLeft: '10px'
+                        }}>
+                            <IconSearch className="w-5 h-5" />
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                style={{
+                                    border: 'none',
+                                    outline: 'none',
+                                    padding: '8px',
+                                    fontSize: 13,
+                                    fontFamily: 'Maven Pro',
+                                    width: '200px'
+                                }}
+                            />
+                        </div>
                     </div>
 
                     <div
                         style={{
-                            // backgroundColor: 'pink',
                             width: 'auto',
                             height:'auto',
                             display: 'flex',
@@ -996,7 +1016,6 @@ const Cobros = () => {
                                         justifyItems: 'center',
                                         alignContent: 'center',
                                         alignItems: 'center',
-                                        // gap: '0.5vw',
                                         fontSize: 14,
                                         fontStyle: 'normal',
                                         fontWeight: 400,
@@ -1022,7 +1041,6 @@ const Cobros = () => {
                                         justifyItems: 'center',
                                         alignContent: 'center',
                                         alignItems: 'center',
-                                        // gap: '0.5vw',
                                         fontSize: 14,
                                         fontStyle: 'normal',
                                         fontWeight: 400,
@@ -1049,7 +1067,6 @@ const Cobros = () => {
                                 justifyItems: 'center',
                                 alignContent: 'center',
                                 alignItems: 'center',
-                                // gap: '0.5vw',
                                 fontSize: 14,
                                 fontStyle: 'normal',
                                 fontWeight: 400,
@@ -1088,8 +1105,9 @@ const Cobros = () => {
                 setHideCols={setHideCols}
                 PAGE_SIZES={PAGE_SIZES}
                 setStateModal={setStateModal}
-                buttonState={buttonState} //Paso el estado del Boton
+                buttonState={buttonState}
                 handleMarkAll={handleMarkAll}
+                onEmployeeSelect={(employee: Employee) => setSelectedEmployee(employee)}
             />
 
             <VerCobrosModal
@@ -1097,6 +1115,7 @@ const Cobros = () => {
                 setOpenModal={setOpenModal}
                 stateModal={stateModal}
                 setStateModal={setStateModal}
+                employeeData={selectedEmployee as Employee}
             />
 
 

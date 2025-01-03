@@ -69,21 +69,75 @@ export async function create_empleados(data) {
   }
 
 
-  export function create_empleados_from_excel(data) {
-    const token = localStorage.getItem('token'); // Obtén el token del localStorage
+  export async function create_empleados_from_excel(data) {
+    console.log('Iniciando carga de empleados desde Excel:', data);
+    try {
+        const token = localStorage.getItem('token');
 
-    return axios.post(
-        CREATE_EMPLEADO_EXCEL_URL,
-        data,
-        {
-            headers: {
-                Authorization: `Bearer ${token}` // Incluye el token en los encabezados
-            },
-            timeout: 5000
+        if (!token) {
+            console.error('Error: Token no encontrado');
+            throw new Error("Token de autenticación no encontrado. Por favor, inicia sesión.");
         }
-    )
-    .then(r => r)
-    .catch(err => err);
+
+        console.log('Realizando petición al servidor...');
+        const response = await axios.post(
+            CREATE_EMPLEADO_EXCEL_URL,
+            data,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                timeout: 5000
+            }
+        );
+
+        console.log('Respuesta exitosa del servidor:', response.data);
+        return response.data;
+    } catch (error) {
+        if (error.response) {
+            console.error('Error del servidor:', {
+                status: error.response.status,
+                data: error.response.data,
+                headers: error.response.headers
+            });
+
+            if (error.response.status === 422) {
+                const validationErrors = error.response.data.details;
+                console.error('Errores de validación:', validationErrors);
+
+                const errorMessages = validationErrors.map((error) => {
+                    return `Fila ${error.row}: ${error.errors.map((e) => e.msg).join(', ')}`;
+                }).join('\n');
+
+                return {
+                    success: false,
+                    status: error.response.status,
+                    error: error.response.data.error,
+                    details: error.response.data.details,
+                    validationErrors: errorMessages
+                };
+            }
+            // Otros errores del servidor
+            return {
+                success: false,
+                status: error.response.status,
+                error: error.response.data.error,
+                details: error.response.data.details || null
+            };
+        } else if (error.request) {
+            console.error('Error de conexión:', error.request);
+            return {
+                success: false,
+                error: "No se recibió respuesta del servidor. Verifica tu conexión a internet."
+            };
+        } else {
+            console.error('Error general:', error.message);
+            return {
+                success: false,
+                error: error.message || "Error desconocido al procesar la solicitud"
+            };
+        }
+    }
 }
 
 export function all_empleados() {

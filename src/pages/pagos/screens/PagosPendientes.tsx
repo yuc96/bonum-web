@@ -22,10 +22,12 @@ import Select from 'react-select';
 import IconSave from '../../../components/Icon/IconSave';
 import PagosPendientesTable from './PagosPendientesTable';
 import IconDownload from '../../../components/Icon/IconDownload';
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import logoBonum from'../../../components/images/LogoBonum.png'
 import PDFViewerModal from'./modal/modalviewPDF'
+import * as XLSX from 'xlsx';
+import { WorkSheet, WorkBook } from 'xlsx';
 
 const pagosPendientes = [
     {
@@ -164,6 +166,23 @@ const bancos = [
     },
 ];
 
+// Modifica la declaración del tipo para incluir las propiedades de autoTable
+declare module 'jspdf' {
+    interface jsPDF {
+        autoTable: (options: any) => {
+            previous: {
+                finalY: number;
+            };
+        } & jsPDF;
+    }
+}
+
+interface ExcelData {
+    "ID Anticipo": string;
+    "Colaborador": string;
+    "Identificación": string;
+    "Total a Debitar": string;
+}
 
 
 const PagosPendientes = () => {
@@ -192,7 +211,8 @@ const PagosPendientes = () => {
     const idPagos: string = '01588';
     const corteDate: string= '20/12/2024';
     const pagoDate: string= '20/10/2025';
-/////////////// Generar PDF/////////
+/////////////// Generar PDF////////////////////////////////////////////////////////
+
 const generatePDF = () => {
     const doc = new jsPDF();
 
@@ -263,17 +283,13 @@ const generatePDF = () => {
             1: { cellWidth: 'auto' }, // Ajuste automático del ancho para la columna de Nombre
             2: { cellWidth: 'auto' }, // Ajuste automático del ancho para la columna de Identificación
             3: { cellWidth: 40 } // Ajuste para la columna Total a Debitar
-        }
+        },
+        didDrawPage: (data:any) => {
+            const finalY = data.cursor.y;
+            doc.line(20, finalY + 10, 190, finalY + 10);
+            doc.text("Generado por Bonum", 15, finalY + 20);
+        },
     });
-
-    // Línea horizontal al final
-    doc.setLineWidth(0.5);
-    doc.line(20, doc.autoTable.previous.finalY + 10, 190, doc.autoTable.previous.finalY + 10);
-
-    // Pie de página
-    doc.setFontSize(10);
-    doc.setTextColor(44, 62, 80);
-    doc.text("Generado por Bonum", 15, doc.autoTable.previous.finalY + 20);
 
     // Guardar el archivo
     doc.save("pagos-pendientes.pdf");
@@ -282,6 +298,62 @@ const generatePDF = () => {
 
 /////////////////////////////////////////////////////////////////////////////////////
 
+/////////////Generar Excel////////////////////////////////////////////////////////
+const generateXLSX = (): void => {
+    // Preparar los datos en el formato adecuado para Excel
+    const headers: string[] = ["ID Anticipo", "Colaborador", "Identificación", "Total a Debitar"];
+
+    // Convertir los datos de pagosPendientes al formato deseado
+    const data: ExcelData[] = pagosPendientes.map(row => ({
+        "ID Anticipo": row.idAnticipo,
+        "Colaborador": row.nombre,
+        "Identificación": row.identificacion,
+        "Total a Debitar": `$ ${row.totalDebitar.toFixed(2)}`
+    }));
+
+    // Calcular el total
+    const totalAPagar: number = pagosPendientes.reduce((acc, row) => acc + row.totalDebitar, 0);
+
+    // Agregar una fila en blanco y el total
+    data.push({
+        "ID Anticipo": "",
+        "Colaborador": "",
+        "Identificación": "Total a Pagar",
+        "Total a Debitar": `$ ${totalAPagar.toFixed(2)}`
+    });
+
+    // Crear una nueva hoja de trabajo
+    const ws: WorkSheet = XLSX.utils.json_to_sheet(data, { header: headers });
+
+
+    // Agregar información adicional al principio de la hoja
+    XLSX.utils.sheet_add_aoa(ws, [
+        ["COMPROBANTE DE PAGO"],
+        [""],
+        [`ID PAGO: ${idPagos}`],
+        [`FECHA DE CORTE: ${corteDate}`],
+        [`FECHA DE PAGO: ${pagoDate}`],
+        [""]
+    ], { origin: "E1" });
+
+    // Crear un nuevo libro de trabajo
+    const wb: WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Pagos Pendientes");
+
+    // Ajustar el ancho de las columnas
+    const colWidths: { wch: number }[] = [
+        { wch: 20 },  // ID Anticipo A
+        { wch: 40 },  // Colaborador B
+        { wch: 20 },  // Identificación C
+        { wch: 20 },   // Total a Debitar D
+        { wch: 30 }, // Columna E (para que se ensanche)
+    ];
+    ws["!cols"] = colWidths;
+
+    // Guardar el archivo
+    XLSX.writeFile(wb, "pagos-pendientes.xlsx");
+};
+/////////////////////////////////////////////////////////////////////////////////////
 
     useEffect(() => {
         setPage(1);
@@ -349,29 +421,25 @@ const generatePDF = () => {
             console.log(fileName)
         }
     };
+    /// Estilos globales
+    const fontStyles = {
+        '--Fontfamilyfont-family': "'Maven Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+        '--Fontsizefont-size-400': '14px',
+    } as React.CSSProperties;
 
     return (
-
+        <div style={fontStyles}>
         <div
             style={{
                 display: 'flex',
                 flexDirection: 'row',
                 gap: window.screen.width * 0.01,
                 width: '100%',
-                // backgroundColor: 'blue',
+                //backgroundColor: 'blue',
+
                 //padding: 5
             }}
         >
-
-
-            <div
-                style={{
-                    //backgroundColor: 'red',
-                    //padding: 5,
-                    width: '72%'
-                }}
-            >
-
                 <div
                     style={{
                         //backgroundColor: 'cyan',
@@ -380,7 +448,7 @@ const generatePDF = () => {
                         flexDirection: 'row',
                         width: '100%',
                         //padding: 15,
-                        paddingTop: 5,
+                        paddingTop: 15,
                         paddingLeft: 15,
                         paddingBottom: 15,
                         color: '#0E1726',
@@ -390,523 +458,288 @@ const generatePDF = () => {
                         lineHeight: 'normal'
                     }}
                 >
-
                     <div
-                        style={{
-                            //background: 'blue',
-                            //width: window.screen.width * 1,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            gap: 5,
-                            justifyItems: 'center',
-                            paddingLeft: 10,
-                            paddingTop: 10,
-                            //marginTop: window.screen.height * 0.01
-                        }}
-                    >
-                        <p
-                            style={{
-                                color: '#BF5CF3',
-                                //fontFamily: Nunito;
-                                fontSize: 13,
-                                fontStyle: 'normal',
-                                fontWeight: 800,
-                                lineHeight: 'normal',
-                                fontFamily: 'Maven Pro',
-                            }}
-                        > Pagos </p>
-                        <p
-                            style={{
-                                fontSize: 13,
-                                fontStyle: 'normal',
-                                fontWeight: 400,
-                                lineHeight: 'normal',
-                                fontFamily: 'Maven Pro',
-                            }}
-                        >
-                            /&nbsp; {idPagoNav}
-                        </p>
-                    </div>
-
-                </div>
-
-                <div
                     style={{
                         backgroundColor: 'white',
                         marginLeft: window.screen.width * 0.015,
-                        borderRadius: 5,
-                    }}
-                >
+                        width:'70%'
 
-                    <div
-                        style={{
-                            //backgroundColor: 'green',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            padding: 15
-                            //gap: '17vw'
-                        }}
+                    }}
                     >
 
-                        <div
+
+                        <PagosPendientesTable
+                            estadoPagoNav={estadoPagoNav}
+                            isChecked={isChecked}
+                            page={page}
+                            pageSize={pageSize}
+                            initialRecords={initialRecords}
+                            pagosPendientes={pagosPendientes}
+                            search={search}
+                            searchData={searchData}
+                            sortStatus={sortStatus}
+                            hideCols={hideCols}
+                            setIsChecked={setIsChecked}
+                            setPage={setPage}
+                            setPageSize={setPageSize}
+                            setSearch={setSearch}
+                            setSearchData={setSearchData}
+                            setSortStatus={setSortStatus}
+                            setHideCols={setHideCols}
+                            PAGE_SIZES={PAGE_SIZES}
+                        />
+
+                    </div>
+
+                            <div
                             style={{
-                                //backgroundColor: 'yellow',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems:'center',
-                                justifyContent:'center',
-                                width: window.screen.width * 1
+                                backgroundColor: 'white',
+                                width: '30%',
+                                height: '80%',
+                                marginLeft: window.screen.width * 0.02,
+                                marginRight: window.screen.width * 0.01,
+                                borderRadius: 12,
+                                padding: '20px',
+                                paddingBottom: '60px',
+                                paddingTop: '60px',
+                                border: '1px solid #C7C7CC',
+                                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
                             }}
-                        >
-
-                            <div>
-                                <img
-                                    src="/assets/images/logo_side.png"
-                                    alt="logo"
-                                    style={{
-                                        width: '320px',
-                                        height: 'auto',
-                                        objectFit: 'cover'
-                                    }}
-                                />
-                            </div>
-
-                        </div>
-
-                        <div
-                            style={{
-                                //backgroundColor: 'orange',
-                                display: 'flex',
-                                flexDirection: 'row',
-                                //margin: window.screen.height * 0.002,
-                                padding: 10
-                            }}
-                        >
-
-                            <form
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-
-                                }}
                             >
-
-                                <div
-                                    style={{
-                                        marginRight: 10,
-                                        // backgroundColor: 'red',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignContent:'center',
-                                        justifyContent:'center',
-
-                                        //gap: window.screen.width * 0.02,
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '15px'
+                                }}>
+                                    <h3 style={{
+                                        width: 'auto',
+                                        height: '28px',
+                                        gap: 0,
+                                        opacity: 1,
+                                        fontFamily: 'var(--Fontfamilyfont-family)',
+                                        fontSize: '25px',
+                                        fontWeight: 700,
+                                        lineHeight: '28.2px',
+                                        textAlign: 'left',
+                                        textUnderlinePosition: 'from-font',
+                                        textDecorationSkipInk: 'none',
                                         color: '#0E1726',
-                                        //height: window.screen.height * 0.1,
-                                        //fontFamily: Nunito;
-                                        fontSize: 14,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        fontFamily: 'Maven Pro',
-                                    }}
-                                >
+                                        margin: 0
+                                    }}>
+                                        Liquidación #0001
+                                    </h3>
 
-                                    <label
-                                        htmlFor="hrDefaultinput"
-                                        style={{
-                                            fontSize: 14,
-                                            fontWeight: 400,
-                                            marginTop: 28,
-                                            fontFamily: 'Maven Pro',
-                                            width: window.screen.width * 0.09,
-                                        }}
-                                    >
-                                        Comprobante N°
-                                    </label>
-
-                                    <label
-                                        htmlFor="hrDefaultinput"
-                                        style={{
-                                            paddingTop: 25,
-                                            fontSize: 14,
-                                            fontWeight: 400,
-                                            fontFamily: 'Maven Pro',
-
-                                        }}
-                                    >
-                                        Fecha de corte
-                                    </label>
-
-                                    <label
-                                        htmlFor="hrDefaultinput"
-                                        style={{
-                                            paddingTop: 25,
-                                            fontSize: 14,
-                                            fontWeight: 400,
-                                            fontFamily: 'Maven Pro'
-                                        }}
-                                    >
-                                        Fecha de pago
-                                    </label>
-
-                                </div>
-
-                                <div
-                                    style={{
-                                        //backgroundColor: 'cyan',
+                                    <div style={{
+                                        display: 'flex',
                                         flexDirection: 'column',
-                                        display: 'flex',
-                                        gap: window.screen.width * 0.01,
-                                        width: window.screen.width * 0.2
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            width: '88.201px',
-                                            height: '22px',
-                                            flexShrink: 0,
-                                            //height: window.screen.height * 0.04,
-                                            backgroundColor: estadoPagoNav ? 'green' : '#E58B03',
-                                            color: 'white',
-                                            justifyContent: 'center',
-                                            alignContent: 'center',
-                                            justifySelf: 'center',
-                                            alignSelf: 'center',
-                                            borderRadius: 4,
-                                            boxShadow: '4px 10px 15px 0px rgba(0, 0, 0, 0.12)',
-                                            fontSize: 13,
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            lineHeight: 'normal',
-                                            textAlign: 'left',
-                                            paddingLeft: 10,
-                                            fontFamily: 'Maven Pro',
-                                        }}
-                                    >
-                                        {estadoPagoNav ? 'Confirmado' : 'Pendiente'}
-                                    </div>
-
-                                    <input disabled={true} value={`000000001physe`} id="hrDefaultinput" placeholder="" className="form-input" />
-
-                                    <input disabled={true}value={`20/12/2024`} id="hrDefaultinput" placeholder="" className="form-input" />
-
-                                    <input disabled={true}value={`2/01/2025`} id="hrDefaultinput" placeholder="" className="form-input" />
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                    <PagosPendientesTable
-                        estadoPagoNav={estadoPagoNav}
-                        isChecked={isChecked}
-                        page={page}
-                        pageSize={pageSize}
-                        initialRecords={initialRecords}
-                        pagosPendientes={pagosPendientes}
-                        search={search}
-                        searchData={searchData}
-                        sortStatus={sortStatus}
-                        hideCols={hideCols}
-                        setIsChecked={setIsChecked}
-                        setPage={setPage}
-                        setPageSize={setPageSize}
-                        setSearch={setSearch}
-                        setSearchData={setSearchData}
-                        setSortStatus={setSortStatus}
-                        setHideCols={setHideCols}
-                        PAGE_SIZES={PAGE_SIZES}
-                    />
-
-                </div>
-
-            </div>
-
-            <div
-                style={{
-                    //padding: 10,
-                    //backgroundColor: 'yellow',
-                    width: '26%'
-                }}
-            >
-
-                <div
-                    style={{
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: window.screen.width * 0.01,
-                        paddingTop: '14vh',
-                        paddingBottom: '9vh',
-                        // backgroundColor: 'orange',
-                        //marginTop: window.screen.height * 0.15,
-                        justifyContent: 'space-evenly',
-                        alignContent: 'space-evenly'
-                    }}
-                >
-
-
-
-                    <div
-                        style={{
-                            //backgroundColor: 'cyan',
-                            flexDirection: 'column',
-                            display: 'flex',
-                            gap: window.screen.width * 0.005,
-                            //justifyContent: 'right',
-                            //alignContent: 'right'
-                            //marginTop: window.screen.height * 0.125
-                        }}
-                    >
-
-                        <p
-                            // htmlFor="hrDefaultinput"
-                            style={{
-                                fontSize: 30, // Texto más grande
-                                color: ' rgba(20, 13, 13, 1)', // Verde para representar éxito
-                                marginTop: window.screen.height * 0.005,
-                                textAlign: 'center', // Alineado al centro para mayor enfoque
-                                fontFamily: 'Maven Pro, Arial, sans-serif', // Fuente estilizada
-                                // fontWeight: 0, // Más grueso para énfasis
-                                display: 'block', // Aseguramos que ocupe toda la línea
-                                // border: '3px solidrgb(222, 230, 222)', // Borde más prominente
-                                padding: '20px 30px', // Mayor espaciado interno
-                                borderRadius: '10px', // Esquinas redondeadas
-                                // backgroundColor: '#F0FFF0', // Fondo verde claro
-                                boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.1)', // Sombra para profundidad
-                            }}
-                        >
-                            Total: $ 1357.98
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-
-                {/* <div
-                    style={{
-                        backgroundColor: 'white',
-                        //marginTop: window.screen.width * 0.0035,
-                        padding: window.screen.width * 0.008,
-                        borderRadius: 5
-                    }}
-                >
-
-                    {estadoPagoNav === true &&
-
-                        <form className="space-y-2">
-                            <div>
-                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Monto</label>
-                                <input disabled={true} value={`$500.00`} type="email" placeholder="" className="form-input" style={{ width: '45%', height: '5vh' }} />
-
-                            </div>
-                            <div>
-                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Método de Pago</label>
-                                <Select isDisabled={true} defaultValue={transacciones[0]} options={transacciones} isSearchable={false} />
-                            </div>
-                            <div>
-                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Detalle de método de pago</label>
-                                <Select isDisabled={true} defaultValue={bancos[0]} options={bancos} isSearchable={false} />
-                            </div>
-                            <div>
-                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Concepto</label>
-                                <input disabled={true} type="email" placeholder="Breve descripción" className="form-input" style={{ height: '5vh' }} />
-                            </div>
-                            <div>
-                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Referencia</label>
-                                <input disabled={true} value={`Transaccion del corte de Octubre`} type="email" placeholder="Ingresar numero de referencia" className="form-input" style={{ height: '5vh' }} />
-                            </div>
-
-                            <div>
-                                <label htmlFor="gridEmail" style={{ fontFamily: 'Maven Pro', fontWeight: 400 }}>Subir Comprobante</label>
-                                <div
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        borderRadius: '8px',
-                                        //width: window.screen.width * 0.25,
-                                        border: '1px solid #E0E6ED',
-                                        overflow: 'hidden',
-                                        backgroundColor: '#FFFFFF',
-                                    }}
-                                >
-                                    {fileName ? (
-                                        <span
-                                            style={{
-                                                flex: 1,
-                                                paddingLeft: '8px',
-                                                fontSize: '12px',
-                                                color: '#555',
-                                                height: '100%',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                            }}
-                                        >
-                                            {fileName}
-                                        </span>
-                                    ) : (
-                                        <span
-                                            style={{
-
-                                                flex: 1,
-                                                fontSize: '14px',
-                                                color: '#6B7280',
-                                                padding: 10,
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                fontFamily: 'Maven Pro'
-                                            }}
-                                        >
-                                            Adjuntar comprobante
-                                        </span>
-                                    )}
-
-                                    <label
-                                        style={{
+                                        gap: '8px'
+                                    }}>
+                                        <div style={{
                                             display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            backgroundColor: '#FFFFFF',
-                                            color: '#6B7280',
-                                            cursor: 'pointer',
-                                            //padding: '0 12px',
-                                            height: '100%',
-                                            fontFamily: 'Maven Pro'
-                                            //borderLeft: '1px solid #E0E6ED',
-                                        }}
-                                    >
-                                        <div
-                                            style={{
-                                                //backgroundColor: 'blue',
-                                                marginTop: 7,
-                                                marginRight: 7
-                                            }}
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16" fill="none">
-                                                <path d="M2 10C2 11.8856 2 12.8284 2.58579 13.4142C3.17157 14 4.11438 14 6 14H10C11.8856 14 12.8284 14 13.4142 13.4142C14 12.8284 14 11.8856 14 10" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                <path d="M7.99967 10.6667V2M7.99967 2L10.6663 4.91667M7.99967 2L5.33301 4.91667" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
+                                            justifyContent: 'space-between',
+
+                                        }}>
+                                            <span style={{
+                                                width: '71px',
+                                                height: '21px',
+                                                gap: 0,
+                                                opacity: 1,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                color: '#3C3C4399'
+                                            }}>Empresa:</span>
+                                            <span style={{
+                                                width: '90px',
+                                                height: '21px',
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'right',
+                                                color: '#0E1726'
+                                            }}>Naturísimo</span>
                                         </div>
 
-                                        <input
-                                            type="file"
-                                            accept=".xlsx,.csv"
-                                            style={{ display: 'none' }}
-                                            onChange={handleFileChange}
-                                            disabled={true}
-                                        />
-                                    </label>
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between'
+                                        }}>
+                                            <span style={{
+                                                width: 'auto',
+                                                height: '21px',
+                                                gap: 0,
+                                                opacity: 1,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                color: '#3C3C4399'
+                                            }}>Fecha de corte:</span>
+                                            <span style={{
+                                                width: '103px',
+                                                height: '21px',
+                                                gap: 0,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'right',
+                                                color: '#0E1726'
+                                            }}>12 Ene 2025</span>
+                                        </div>
+
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between'
+                                        }}>
+                                            <span style={{
+                                                width: 'auto',
+                                                height: '21px',
+                                                gap: 0,
+                                                opacity: 1,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                color: '#3C3C4399'
+                                            }}>Fecha máxima de pago:</span>
+                                            <span style={{
+                                                width: '103px',
+                                                height: '21px',
+                                                gap: 0,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'right',
+                                                color: '#0E1726'
+                                            }}>21 Ene 2025</span>
+                                        </div>
+                                    </div>
+
+                                    <div style={{
+                                        marginTop: '20px',
+                                        borderTop: '1px solid #eee',
+                                        paddingTop: '20px'
+                                    }}>
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            marginBottom: '10px'
+                                        }}>
+                                            <span style={{
+                                                width: 'auto',
+                                                height: '21px',
+                                                gap: 0,
+                                                opacity: 1,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                color: '#3C3C4399'
+                                            }}>Total de anticipos:</span>
+                                            <span style={{
+                                                width: '73px',
+                                                height: '21px',
+                                                gap: 0,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'right',
+                                                color: '#0E1726'
+                                            }}>$1157.98</span>
+                                        </div>
+
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            marginBottom: '20px'
+                                        }}>
+                                            <span style={{
+                                                width: 'auto',
+                                                height: '21px',
+                                                gap: 0,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                color: '#3C3C4399'
+                                            }}>Costo de servicio:</span>
+                                            <span style={{
+                                                width: '73px',
+                                                height: '21px',
+                                                gap: 0,
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: 'var(--Fontsizefont-size-400)',
+                                                fontWeight: 400,
+                                                lineHeight: '21.15px',
+                                                textAlign: 'right',
+                                                color: '#0E1726'
+                                            }}>$200.00</span>
+                                        </div>
+
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            borderTop: '1px solid #eee',
+                                            paddingTop: '15px',
+                                            fontWeight: 600
+                                        }}>
+                                            <span style={{
+                                                width: 'auto',
+                                                height: '24px',
+                                                gap: 0,
+                                                fontFamily: 'Inter',
+                                                fontSize: '20px',
+                                                fontWeight: 600,
+                                                lineHeight: '24.2px',
+                                                textAlign: 'left',
+                                                textUnderlinePosition: 'from-font',
+                                                textDecorationSkipInk: 'none',
+                                                color: 'var(--Labels-Secondary, #3C3C4399)'
+                                            }}>Total a transferir:</span>
+                                            <span style={{
+                                                width: '105px',
+                                                height: '28px',
+                                                fontFamily: 'var(--Fontfamilyfont-family)',
+                                                fontSize: '20px',
+                                                fontWeight: 700,
+                                                lineHeight: '28.2px',
+                                                textAlign: 'right',
+                                                color: '#0E1726'
+                                            }}>$1357.98</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div> */}
-
-{/*
-                        </form>
-                    }
+                            </div>
 
 
-
-                </div> */}
-
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        backgroundColor: 'white',
-                        marginTop: window.screen.width * 0.005,
-                        padding: window.screen.width * 0.01,
-                        borderRadius: 5,
-                        gap: 13
-                    }}
-                >
+                    </div>
 
 
-                    <button
-                        style={{
-                            padding: 10,
-                            backgroundColor: 'green',
-                            display: estadoPagoNav? 'none':'flex',
-                            flexDirection: 'row',
-                            gap: '1vw',
-                            borderRadius: 4,
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            color: 'white',
-                            fontFamily: 'Maven Pro',
-
-                        }}
-
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V4.16667C2.5 3.72464 2.67559 3.30072 2.98816 2.98816C3.30072 2.67559 3.72464 2.5 4.16667 2.5H13.3333L17.5 6.66667V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M14.1673 17.5002V10.8335H5.83398V17.5002" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5.83398 2.5V6.66667H12.5007" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Notificar Pago
-
-                    </button>
-                    {/* <PDFViewerModal pagosPendientes={pagosPendientes}/> */}
-
-                    <button
-                        style={{
-                            padding: 10,
-                            backgroundColor: '#bf5cf3',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            gap: '1vw',
-                            borderRadius: 4,
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            color: 'white',
-                            fontFamily: 'Maven Pro'
-                        }}
-                        onClick={generatePDF}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Descargar PDF
-
-                    </button>
-
-                    <button
-                        style={{
-                            padding: 10,
-                            backgroundColor: '#bf5cf3',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            gap: '1vw',
-                            borderRadius: 4,
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignContent: 'center',
-                            color: 'white',
-                            fontFamily: 'Maven Pro'
-                        }}
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M17.5 12.5V15.8333C17.5 16.2754 17.3244 16.6993 17.0118 17.0118C16.6993 17.3244 16.2754 17.5 15.8333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5.83398 8.3335L10.0007 12.5002L14.1673 8.3335" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M10 12.5V2.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Descargar XLSX
-
-                    </button>
-
-                </div>
 
 
-            </div>
+
         </div >
+        </div>
     )
 
 }

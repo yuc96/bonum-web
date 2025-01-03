@@ -1,5 +1,5 @@
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
 import IconSearch from "../../../components/Icon/IconSearch";
 import IconXCircle from "../../../components/Icon/IconXCircle";
 import Dropdown from "../../../components/Dropdown";
@@ -23,17 +23,35 @@ import IconSave from '../../../components/Icon/IconSave';
 import IconDownload from '../../../components/Icon/IconDownload';
 import IconPlus from '../../../components/Icon/IconPlus';
 import HistorialEmpleadoTable from '../components/HistorialEmpleadosTable';
+import VerCobrosModal from '../../cobros/modal/VerCobrosModal';
 
+interface Employee {
+  id: number;
+  nombre: string;
+  codigo: string;
+  monto: string;
+  plazo: string;
+  costoPorServicio: string;
+  // Añade otros campos según necesites
+}
+
+interface ModalProps {
+  openModal: boolean;
+  setOpenModal: (isOpen: boolean) => void;
+  stateModal: boolean;
+  setStateModal: (isOpen: boolean) => void;
+  employeeData: Employee;
+}
 
 const HistorialEmpleado = () => {
 
     const location = useLocation();
     const { data } = location.state || {};
-    
+
     useEffect(() => {
         console.log(location.state)
     }, []);
-    
+
 
     const PAGE_SIZES = [8, 16, 23, 32, 40];
 
@@ -52,6 +70,10 @@ const HistorialEmpleado = () => {
     const [searchData, setSearchData] = useState(false);
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'asc' });
     const [hideCols, setHideCols] = useState<any>(['age', 'dob', 'isActive']);
+    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [showVerModal, setShowVerModal] = useState(false);
+    const [stateModal, setStateModal] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
 
     useEffect(() => {
         setPage(1);
@@ -105,6 +127,12 @@ const HistorialEmpleado = () => {
         { accessor: 'dob', title: 'Birthdate' },
         { accessor: 'isActive', title: 'Active' },
     ];
+
+    const handleView = (item: any) => {
+        setSelectedEmployee(item);
+        setOpenModal(true);
+        setStateModal(true);
+    };
 
     return (
 
@@ -177,7 +205,7 @@ const HistorialEmpleado = () => {
 
                         }}
                     >
-                   
+
                             <p
                                 style={{
                                     color: '#0E1726',
@@ -191,7 +219,7 @@ const HistorialEmpleado = () => {
                             >
                                 Historial de Empleados
                             </p>
-                       
+
                     </div>
 
                     <div
@@ -215,7 +243,7 @@ const HistorialEmpleado = () => {
                                 gap: '0.3vw'
                             }}
                         >
-                          
+
                             <form
                                 className={`${searchData && '!block'} sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden`}
                                 onSubmit={() => setSearchData(false)}
@@ -287,9 +315,19 @@ const HistorialEmpleado = () => {
                     setSortStatus={setSortStatus}
                     setHideCols={setHideCols}
                     PAGE_SIZES={PAGE_SIZES}
+                    onView={handleView}
                 />
 
             </div>
+
+
+            <VerCobrosModal
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+                stateModal={stateModal}
+                setStateModal={setStateModal}
+                employeeData={selectedEmployee as Employee}
+            />
         </div>
     );
 }

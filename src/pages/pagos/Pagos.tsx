@@ -1,5 +1,5 @@
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import IconSearch from "../../components/Icon/IconSearch";
 import IconXCircle from "../../components/Icon/IconXCircle";
 import Dropdown from "../../components/Dropdown";
@@ -19,499 +19,40 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { NavLink } from 'react-router-dom';
 import TablePagosMain from './components/TablePagosMain';
 
-// const pagosData = [
-//     {
-//         idPago: "#PG100",
-//         descripcion: "Pago mes 1",
-//         fechaPago: "15-Mar-2024",
-//         tarifaCapital: 2500,
-//         metodoPago: "Transferencia",
-//         estado: true,
-//     },
-//     {
-//         idPago: "#PG200",
-//         descripcion: "Pago mes 2",
-//         fechaPago: "15-Abr-2024",
-//         tarifaCapital: 3000,
-//         metodoPago: "Transferencia",
-//         estado: true,
-//     },
-//     {
-//         idPago: "#PG300",
-//         descripcion: "Pago mes 3",
-//         fechaPago: "15-May-2024",
-//         tarifaCapital: 1500,
-//         metodoPago: "Cheque",
-//         estado: true,
-//     },
-//     {
-//         idPago: "#PG400",
-//         descripcion: "Pago mes 4",
-//         fechaPago: "15-Jun-2024",
-//         tarifaCapital: 10500,
-//         metodoPago: "Tarjeta de Crédito",
-//         estado: true,
-//     },
-//     {
-//         idPago: "#PG500",
-//         descripcion: "Pago mes 5",
-//         fechaPago: "15-Jul-2024",
-//         tarifaCapital: 8000,
-//         metodoPago: "Efectivo",
-//         estado: false,
-//     },
-// ];
-const pagosData = [
-    {
-        idAnticipo: "#PG0001",
-        nombre: "Pago mes 1",
-        identificacion: "0917319337",
-        fechaAnticipo: "15/Nov/2024",
-        anticipoActivo: 300.00,
-        cuota: "2/3",
-        saldo: 200.00,
-        valorCuota: 100.00,
-        tasaUnica: 0.00,
-        totalDebitar: 100.00,
-        acciones: "Ver",
-        estado: true
-    },
-    {
-        idAnticipo: "#PG0002",
-        nombre: "Pago Mes 2",
-        identificacion: "0924842339",
-        fechaAnticipo: "20/Nov/2024",
-        anticipoActivo: 500.00,
-        cuota: "1/5",
-        saldo: 500.00,
-        valorCuota: 100.00,
-        tasaUnica: 40.00,
-        totalDebitar: 140.00,
-        acciones: "Ver",
-        estado: false
-    },
-    // {
-    //     idAnticipo: "#PG0003",
-    //     nombre: "James Taylor",
-    //     identificacion: "0198832922",
-    //     fechaAnticipo: "27-Nov-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "2/6",
-    //     saldo: 250.00,
-    //     valorCuota: 50.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 50.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0004",
-    //     nombre: "Grace Roberts",
-    //     identificacion: "0192033910",
-    //     fechaAnticipo: "30-Nov-2024",
-    //     anticipoActivo: 200.00,
-    //     cuota: "3/3",
-    //     saldo: 66.67,
-    //     valorCuota: 66.67,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 66.67,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0005",
-    //     nombre: "Donna Rogers",
-    //     identificacion: "0123928392",
-    //     fechaAnticipo: "03-Sep-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "4/4",
-    //     saldo: 25.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0006",
-    //     nombre: "Amy Diaz",
-    //     identificacion: "0182938910",
-    //     fechaAnticipo: "14-Oct-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "1/4",
-    //     saldo: 300.00,
-    //     valorCuota: 75.00,
-    //     tasaUnica: 20.00,
-    //     totalDebitar: 95.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0007",
-    //     nombre: "Nia Hillyer",
-    //     identificacion: "0118290093",
-    //     fechaAnticipo: "20-Oct-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "3/4",
-    //     saldo: 50.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0008",
-    //     nombre: "Mary McDonald",
-    //     identificacion: "0104566578",
-    //     fechaAnticipo: "25-Nov-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "2/3",
-    //     saldo: 66.67,
-    //     valorCuota: 33.33,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 33.33,
-    //     acciones: "Ver",
-    //     estado: false
-    // },
-    // {
-    //     idAnticipo: "#PG0009",
-    //     nombre: "Santiago Efraín Vásquez Carreño",
-    //     identificacion: "0917319337",
-    //     fechaAnticipo: "15-Nov-2024",
-    //     anticipoActivo: 300.00, // Valor monetario como float
-    //     cuota: "2/3",
-    //     saldo: 200.00,
-    //     valorCuota: 100.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 100.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0010",
-    //     nombre: "Alexander Gray",
-    //     identificacion: "0924842339",
-    //     fechaAnticipo: "20-Nov-2024",
-    //     anticipoActivo: 500.00,
-    //     cuota: "1/5",
-    //     saldo: 500.00,
-    //     valorCuota: 100.00,
-    //     tasaUnica: 40.00,
-    //     totalDebitar: 140.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0011",
-    //     nombre: "James Taylor",
-    //     identificacion: "0198832922",
-    //     fechaAnticipo: "27-Nov-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "2/6",
-    //     saldo: 250.00,
-    //     valorCuota: 50.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 50.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0012",
-    //     nombre: "Grace Roberts",
-    //     identificacion: "0192033910",
-    //     fechaAnticipo: "30-Nov-2024",
-    //     anticipoActivo: 200.00,
-    //     cuota: "3/3",
-    //     saldo: 66.67,
-    //     valorCuota: 66.67,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 66.67,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0013",
-    //     nombre: "Donna Rogers",
-    //     identificacion: "0123928392",
-    //     fechaAnticipo: "03-Sep-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "4/4",
-    //     saldo: 25.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0014",
-    //     nombre: "Amy Diaz",
-    //     identificacion: "0182938910",
-    //     fechaAnticipo: "14-Oct-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "1/4",
-    //     saldo: 300.00,
-    //     valorCuota: 75.00,
-    //     tasaUnica: 20.00,
-    //     totalDebitar: 95.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0015",
-    //     nombre: "Nia Hillyer",
-    //     identificacion: "0118290093",
-    //     fechaAnticipo: "20-Oct-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "3/4",
-    //     saldo: 50.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0016",
-    //     nombre: "Mary McDonald",
-    //     identificacion: "0104566578",
-    //     fechaAnticipo: "25-Nov-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "2/3",
-    //     saldo: 66.67,
-    //     valorCuota: 33.33,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 33.33,
-    //     acciones: "Ver",
-    //     estado: false
-    // },
-    // {
-    //     idAnticipo: "#PG0017",
-    //     nombre: "Santiago Efraín Vásquez Carreño",
-    //     identificacion: "0917319337",
-    //     fechaAnticipo: "15-Nov-2024",
-    //     anticipoActivo: 300.00, // Valor monetario como float
-    //     cuota: "2/3",
-    //     saldo: 200.00,
-    //     valorCuota: 100.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 100.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0018",
-    //     nombre: "Alexander Gray",
-    //     identificacion: "0924842339",
-    //     fechaAnticipo: "20-Nov-2024",
-    //     anticipoActivo: 500.00,
-    //     cuota: "1/5",
-    //     saldo: 500.00,
-    //     valorCuota: 100.00,
-    //     tasaUnica: 40.00,
-    //     totalDebitar: 140.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0019",
-    //     nombre: "James Taylor",
-    //     identificacion: "0198832922",
-    //     fechaAnticipo: "27-Nov-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "2/6",
-    //     saldo: 250.00,
-    //     valorCuota: 50.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 50.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0020",
-    //     nombre: "Grace Roberts",
-    //     identificacion: "0192033910",
-    //     fechaAnticipo: "30-Nov-2024",
-    //     anticipoActivo: 200.00,
-    //     cuota: "3/3",
-    //     saldo: 66.67,
-    //     valorCuota: 66.67,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 66.67,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0021",
-    //     nombre: "Donna Rogers",
-    //     identificacion: "0123928392",
-    //     fechaAnticipo: "03-Sep-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "4/4",
-    //     saldo: 25.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0022",
-    //     nombre: "Amy Diaz",
-    //     identificacion: "0182938910",
-    //     fechaAnticipo: "14-Oct-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "1/4",
-    //     saldo: 300.00,
-    //     valorCuota: 75.00,
-    //     tasaUnica: 20.00,
-    //     totalDebitar: 95.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0023",
-    //     nombre: "Nia Hillyer",
-    //     identificacion: "0118290093",
-    //     fechaAnticipo: "20-Oct-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "3/4",
-    //     saldo: 50.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0024",
-    //     nombre: "Mary McDonald",
-    //     identificacion: "0104566578",
-    //     fechaAnticipo: "25-Nov-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "2/3",
-    //     saldo: 66.67,
-    //     valorCuota: 33.33,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 33.33,
-    //     acciones: "Ver",
-    //     estado: false
-    // },
-    // {
-    //     idAnticipo: "#PG0025",
-    //     nombre: "Santiago Efraín Vásquez Carreño",
-    //     identificacion: "0917319337",
-    //     fechaAnticipo: "15-Nov-2024",
-    //     anticipoActivo: 300.00, // Valor monetario como float
-    //     cuota: "2/3",
-    //     saldo: 200.00,
-    //     valorCuota: 100.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 100.00,
-    //     acciones: "Ver",
-    //     estado: true
+// Importación dinámica
+const PagosPendientes = lazy(() => import('./screens/PagosPendientes'));
 
-    // },
-    // {
-    //     idAnticipo: "#PG0026",
-    //     nombre: "Alexander Gray",
-    //     identificacion: "0924842339",
-    //     fechaAnticipo: "20-Nov-2024",
-    //     anticipoActivo: 500.00,
-    //     cuota: "1/5",
-    //     saldo: 500.00,
-    //     valorCuota: 100.00,
-    //     tasaUnica: 40.00,
-    //     totalDebitar: 140.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0027",
-    //     nombre: "James Taylor",
-    //     identificacion: "0198832922",
-    //     fechaAnticipo: "27-Nov-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "2/6",
-    //     saldo: 250.00,
-    //     valorCuota: 50.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 50.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0028",
-    //     nombre: "Grace Roberts",
-    //     identificacion: "0192033910",
-    //     fechaAnticipo: "30-Nov-2024",
-    //     anticipoActivo: 200.00,
-    //     cuota: "3/3",
-    //     saldo: 66.67,
-    //     valorCuota: 66.67,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 66.67,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0029",
-    //     nombre: "Donna Rogers",
-    //     identificacion: "0123928392",
-    //     fechaAnticipo: "03-Sep-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "4/4",
-    //     saldo: 25.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0030",
-    //     nombre: "Amy Diaz",
-    //     identificacion: "0182938910",
-    //     fechaAnticipo: "14-Oct-2024",
-    //     anticipoActivo: 300.00,
-    //     cuota: "1/4",
-    //     saldo: 300.00,
-    //     valorCuota: 75.00,
-    //     tasaUnica: 20.00,
-    //     totalDebitar: 95.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0031",
-    //     nombre: "Nia Hillyer",
-    //     identificacion: "0118290093",
-    //     fechaAnticipo: "20-Oct-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "3/4",
-    //     saldo: 50.00,
-    //     valorCuota: 25.00,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 25.00,
-    //     acciones: "Ver",
-    //     estado: true
-    // },
-    // {
-    //     idAnticipo: "#PG0032",
-    //     nombre: "Mary McDonald",
-    //     identificacion: "0104566578",
-    //     fechaAnticipo: "25-Nov-2024",
-    //     anticipoActivo: 100.00,
-    //     cuota: "2/3",
-    //     saldo: 66.67,
-    //     valorCuota: 33.33,
-    //     tasaUnica: 0.00,
-    //     totalDebitar: 33.33,
-    //     acciones: "Ver",
-    //     estado: false
-    // }
-]
+// Agregar este array con los meses del año
+const mesesOptions = [
+    { accessor: '01', title: 'Enero' },
+    { accessor: '02', title: 'Febrero' },
+    { accessor: '03', title: 'Marzo' },
+    { accessor: '04', title: 'Abril' },
+    { accessor: '05', title: 'Mayo' },
+    { accessor: '06', title: 'Junio' },
+    { accessor: '07', title: 'Julio' },
+    { accessor: '08', title: 'Agosto' },
+    { accessor: '09', title: 'Septiembre' },
+    { accessor: '10', title: 'Octubre' },
+    { accessor: '11', title: 'Noviembre' },
+    { accessor: '12', title: 'Diciembre' },
+];
+
+// Agregar la interfaz para definir la estructura de los datos
+interface PagoData {
+    idAnticipo: number;
+    nombre: string;
+    identificacion: string;
+    fechaAnticipo: string;
+    anticipoActivo: boolean;
+    cuota: number;
+    saldo: number;
+    valorCuota: number;
+    tasaUnica: number;
+}
+
+// Definir los datos iniciales (puedes reemplazar esto con datos reales de tu API)
+const pagosData: PagoData[] = [];
 
 const Pagos = () => {
 
@@ -526,6 +67,8 @@ const Pagos = () => {
     const [search, setSearch] = useState('');
     const [searchData, setSearchData] = useState(false);
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'idAnticipo', direction: 'asc' });
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('Seleccionar');
 
     const dispatch = useDispatch();
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
@@ -596,10 +139,46 @@ const Pagos = () => {
         { accessor: 'isActive', title: 'Active' },
     ];
 
+    const handleOptionSelect = (option: string) => {
+        setSelectedOption(option);
+        setIsOpen(false);
+    };
+
+    const inputStyles = {
+        width: 219,
+        height: 38,
+        color: '#888EA8',
+        fontSize: 12,
+        fontStyle: 'normal',
+        fontWeight: 400,
+        lineHeight: 'normal',
+        outline: 'none',
+        fontFamily: 'Maven Pro',
+        paddingLeft: '2rem',
+    }
+
+    const placeholderStyles = `
+        [type="text"]::placeholder {
+            font-family: var(--Fontfamilyfont-family);
+            font-size: var(--Fontsizefont-size-200);
+            font-weight: 400;
+            line-height: 16.45px;
+            text-align: left;
+            text-underline-position: from-font;
+            text-decoration-skip-ink: none;
+            color:#D1D1D6;
+        }
+    `
+    /// Estilos globales
+    const fontStyles = {
+        '--Fontfamilyfont-family': "'Maven Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+        '--Fontsizefont-size-400': '14px',
+    } as React.CSSProperties;
+
     return (
 
-        <div>
-
+        <div style={fontStyles}>
+            <style>{placeholderStyles}</style>
             <div
                 style={{
                     //backgroundColor: 'cyan',
@@ -616,17 +195,28 @@ const Pagos = () => {
                     fontStyle: 'normal',
                     fontWeight: 400,
                     fontFamily: 'Maven Pro',
-                    lineHeight: 'normal'
+                    lineHeight: 'normal',
+
                 }}
             >
 
                 <div
                     style={{
                         //background: 'blue',
-                        width: '6vw',
+                        width: 'auto',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: '10px',
+
                     }}
                 >
-                    <p> Pagos </p>
+                    <p   style={{
+
+                           color: '#AF52DE',
+
+                     }}> Pagos {'>'}</p>
+
+                    <p>  Pago #001</p>
                 </div>
 
             </div>
@@ -635,17 +225,20 @@ const Pagos = () => {
                 style={{
                     backgroundColor: 'white',
                     margin: window.screen.width * 0.01,
-                    borderRadius: 5
+                    borderRadius: 5,
+
                 }}
             >
 
 
                 <div
                     style={{
-                        //backgroundColor: 'green',
                         display: 'flex',
                         flexDirection: 'row',
-                        padding: 15
+                        padding: 15,
+                        paddingBottom: 15,
+                        paddingTop: 15,
+                        borderBottom: '1px solid #E0E0E0',
                     }}
                 >
 
@@ -655,35 +248,136 @@ const Pagos = () => {
                             display: 'flex',
                             flexDirection: 'row',
                             gap: '0.5vw',
+
                         }}
                     >
 
-                        <button
+                        <div
                             style={{
-                                width: '161px',
-                                height: window.screen.height * 0.05,
-                                backgroundColor: '#bf5cf3',
-                                borderRadius: 5,
-                                border: 'none',
-                                outline: 'none',
-                                color: 'white',
                                 display: 'flex',
                                 flexDirection: 'row',
-                                justifyContent: 'center',
-                                justifyItems: 'center',
-                                alignContent: 'center',
-                                alignItems: 'center',
-                                gap: '0.5vw',
-                                fontSize: 14,
-                                fontStyle: 'normal',
-                                fontWeight: 400,
-                                lineHeight: 'normal',
-                                fontFamily: 'Maven Pro',
-                            }}
-                        >
-                            <p> Todos los Pagos </p>
-                        </button>
 
+                            }}
+                                >
+                                    <p
+                                        style={{
+                                            color: '#0E1726',
+                                            fontSize: 13,
+                                            fontStyle: 'normal',
+                                            fontWeight: 400,
+                                            lineHeight: 'normal',
+                                            justifySelf: 'center',
+                                            alignSelf: 'center',
+                                            paddingRight: 5,
+                                            fontFamily: 'Maven Pro'
+                                        }}
+                                    >
+                                        Mes
+                                    </p>
+
+                            </div>
+
+                        <Dropdown
+                            placement="bottom-start"
+                            btnClassName="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
+                            button={
+                                <div
+                                    onClick={() => {
+                                        setIsOpen(true)
+                                    }}
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        cursor: 'pointer',
+                                        width: '180px',
+                                        height: '42px',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between'
+                                    }}
+                                >
+                                    <p
+                                        style={{
+                                            color: '#0E1726',
+                                            fontSize: 13,
+                                            fontStyle: 'normal',
+                                            fontWeight: 400,
+                                            lineHeight: 'normal',
+                                            justifySelf: 'center',
+                                            alignSelf: 'center',
+                                            fontFamily: 'Maven Pro'
+                                        }}
+                                    >
+                                        {selectedOption}
+                                    </p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                        <path d="M13 5.5L8 10.5L3 5.5" stroke="#0E1726" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                            }
+                        >
+                            {isOpen && (
+                                <ul className="!min-w-[42px] bg-white max-h-[200px] overflow-y-auto scrollbar-hide"
+                                    style={{
+                                        paddingTop: '20px',
+                                        width: '210px',
+                                        scrollbarWidth: 'none',
+                                        msOverflowStyle: 'none',
+
+                                    }}
+                                >
+                                    {mesesOptions.map((mes, i) => (
+                                        <li
+                                            key={i}
+                                            className="flex flex-col hover:bg-gray-100"
+                                            onClick={(e) => {
+                                                handleOptionSelect(mes.title);
+                                            }}
+                                            style={{
+                                                height: '24px',
+                                                minHeight: '24px'
+                                            }}
+                                        >
+                                            <div
+                                                className="flex items-center px-4"
+                                                style={{
+                                                    color: '#0E1726',
+                                                    fontSize: 13,
+                                                    fontStyle: 'normal',
+                                                    fontWeight: 400,
+                                                    lineHeight: '24px',
+                                                    fontFamily: 'Maven Pro',
+                                                    height: '100%'
+                                                }}
+                                            >
+                                                <label className="cursor-pointer mb-0 h-full flex items-center">
+                                                    <span className="ltr:ml-2 rtl:mr-2">{mes.title}</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </Dropdown>
+                        <div
+                                className="relative flex items-center"
+                                style={{
+                                    width: 219,
+                                    height: '42px',
+                                }}
+                            >
+                                <div
+                                    className="absolute left-2 flex items-center justify-center cursor-pointer"
+                                    onClick={() => { }}
+                                >
+                                    <IconSearch className="w-5 h-5 text-gray-500" />
+                                </div>
+                                <input
+                                    type="text"
+                                    className="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
+                                    placeholder="Escribe para buscar un registro"
+                                    style={inputStyles}
+                                />
+                            </div>
                     </div>
 
                     <div
@@ -703,121 +397,71 @@ const Pagos = () => {
                         <div
                             className="dropdown"
                             style={{
-                                //backgroundColor: 'pink',
-                                //paddingBottom: 1
+                                display: 'flex',
+                                gap: '8px'
                             }}
                         >
-
-                            <LocalizationProvider
-                                dateAdapter={AdapterDayjs}
+                            <button
+                                style={{
+                                    width: '243px',
+                                    height: '47px',
+                                    padding: '14px 20px',
+                                    gap: '4px',
+                                    marginRight: '7px',
+                                    borderRadius: '12px',
+                                    backgroundColor: '#BF5AF2',
+                                    color: '#FFFFFF',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontFamily: 'var(--Fontfamilyfont-family)',
+                                    fontSize: 'var(--Fontsizefont-size-300)',
+                                    fontWeight: 700,
+                                    lineHeight: '18.8px',
+                                    textAlign: 'left',
+                                    cursor: 'pointer',
+                                    border: 'none'
+                                }}
+                                onClick={() => {/* Función para descargar PDF */}}
                             >
-                                <DatePicker
-                                    slotProps={{
-                                        textField: {
-                                            placeholder: 'Fecha',
-                                            fullWidth: true,
-                                            InputLabelProps: {
-                                                shrink: true,
-                                            },
-                                            inputProps: {
-                                                readOnly: true,
-                                            },
-                                            sx: {
-                                                width: window.screen.width * 0.1,
-                                                '& .MuiInputBase-root': {
-                                                    height: window.screen.height * 0.05,
-                                                    marginTop: window.screen.height * 0.0005,
-                                                    fontSize: 14,
-                                                    fontStyle: 'normal',
-                                                    fontWeight: 300,
-                                                    lineHeight: 'normal',
-                                                    backgroundColor: 'white',
-                                                    border: '1px solid #E0E6ED',
-                                                    borderRadius: '4px',
-                                                    boxShadow: 'none',
-                                                    transition: 'none',
-                                                    fontFamily: 'Maven Pro',
-                                                    '&:hover': {
-                                                        backgroundColor: 'white',
-                                                        borderColor: '#E0E6ED',
-                                                    },
-                                                    '&.Mui-focused': {
-                                                        backgroundColor: 'white',
-                                                        borderColor: '#E0E6ED',
-                                                    },
-                                                },
-                                                '& .MuiOutlinedInput-notchedOutline': {
-                                                    border: 'none',
-                                                },
-                                                '& .MuiInputBase-input': {
-                                                    '::placeholder': {
-                                                        //color: '#888EA8',
-                                                        fontSize: 14,
-                                                        fontStyle: 'normal',
-                                                        fontFamily: 'Maven Pro',
-                                                        fontWeight: 400,
-                                                        lineHeight: 'normal',
-                                                        // fontSize: 13,
-                                                        // fontFamily: 'serif',
-                                                        // fontWeight: 400,
-                                                        color: '#0E1726',
-                                                        opacity: 1
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    }}
-                                />
-
-                            </LocalizationProvider>
-
+                                Descargar como excel
+                            </button>
+                            <button
+                                style={{
+                                    width: '243px',
+                                    height: '47px',
+                                    padding: '14px 20px',
+                                    gap: '4px',
+                                    borderRadius: '12px',
+                                    backgroundColor:'#F6E7FD',
+                                    color: '#AF52DE',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontFamily: 'var(--Fontfamilyfont-family)',
+                                    fontSize: 'var(--Fontsizefont-size-300)',
+                                    fontWeight: 700,
+                                    lineHeight: '18.8px',
+                                    textAlign: 'left',
+                                    cursor: 'pointer',
+                                    border: 'none'
+                                }}
+                                onClick={() => {/* Función para descargar Excel */}}
+                            >
+                                Descargar como PDF
+                            </button>
                         </div>
 
                         <form
                             className={`${searchData && '!block'} sm:relative absolute inset-x-0 sm:top-0 top-1/2 sm:translate-y-0 -translate-y-1/2 sm:mx-0 mx-4 z-10 sm:block hidden`}
                             onSubmit={() => setSearchData(false)}
                         >
-                            <div
-                                className="relative flex items-center"
-                                style={{
-                                    width: 219,
-                                    height: 38,
-                                }}
-                            >
 
-                                <input
-                                    type="text"
-                                    className="!flex items-center border font-semibold border-white-light dark:border-[#253b5c] rounded-md px-4 py-1.5 text-sm dark:bg-[#1b2e4b] dark:text-white-dark"
-                                    placeholder="Buscar..."
-                                    style={{
-                                        //backgroundColor: 'red',
-                                        //marginTop: window.screen.height * 0.007,
-                                        width: 219,
-                                        height: 38,
-                                        color: '#888EA8',
-                                        //fontFamily: Nunito;
-                                        fontSize: 14,
-                                        fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        lineHeight: 'normal',
-                                        outline: 'none',
-                                        fontFamily: 'Maven Pro',
-                                    }}
-                                />
-
-                                <div
-                                    className="absolute right-2 flex items-center justify-center cursor-pointer"
-                                    onClick={() => { }}
-                                >
-                                    <IconSearch className="w-5 h-5 text-gray-500" />
-                                </div>
-
-                            </div>
                         </form>
 
                     </div>
                 </div>
-
+             {/*    {
                 <TablePagosMain
                     isChecked={isChecked}
                     openModal={openModal}
@@ -840,8 +484,10 @@ const Pagos = () => {
                     setHideCols={setHideCols}
                     PAGE_SIZES={PAGE_SIZES}
                     setStateModal={setStateModal}
-                />
-
+                />} */}
+                <Suspense fallback={<div>Cargando...</div>}>
+                    <PagosPendientes />
+                </Suspense>
             </div>
 
         </div>

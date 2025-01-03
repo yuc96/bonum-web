@@ -5,6 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import IconEye from '../../../components/Icon/IconEye';
+import dayjs from 'dayjs';
 
 const documentos = [
     { id: 1, title: "Convenio Aprobado | dd-mm-yyyy/hh:mm", description: "" },
@@ -19,21 +20,46 @@ const cuotas = [
     { id: 5, description: "Tercera Cuota ", valor: 100.00 },
 ];
 
-const VerCobrosModal = (
-    {
-        openModal,
-        setOpenModal,
-        stateModal,
-        setStateModal
-    }
-        :
-        {
-            openModal: boolean;
-            setOpenModal: (isOpen: boolean) => void;
-            stateModal: boolean;
-            setStateModal: (isOpen: boolean) => void;
-        }
-) => {
+const datosEjemplo = {
+  idSolicitud: "SOL-2024-001",
+  nombre: "Juan Pérez González",
+  email: "juan.perez@ejemplo.com",
+  cargo: "Gerente de Ventas",
+  ingresos: "$5,000.00",
+  metodoPago: "Transferencia Bancaria",
+  banco: "Banco Internacional",
+  referencia: "REF-2024-123456",
+  comprobante: "COMP-2024-789",
+  item: "Préstamo Personal",
+  cuotas: "12",
+  monto: "$1,200.00",
+  costoServicio: "$50.00",
+  fecha: dayjs("2024-03-20")
+};
+
+interface Employee {
+  id?: number;
+  nombre?: string;
+  email?: string;
+  cargo?: string;
+  ingresos?: string;
+}
+
+interface VerCobrosModalProps {
+    openModal: boolean;
+    setOpenModal: (isOpen: boolean) => void;
+    stateModal: boolean;
+    setStateModal: (isOpen: boolean) => void;
+    employeeData: Employee;
+}
+
+const VerCobrosModal: React.FC<VerCobrosModalProps> = ({
+    openModal,
+    setOpenModal,
+    stateModal,
+    setStateModal,
+    employeeData
+}) => {
 
     useEffect(() => {
         console.log(stateModal);
@@ -138,7 +164,8 @@ const VerCobrosModal = (
                                         <form>
                                             <input
                                                 id="hrDefaultinput"
-                                                placeholder=""
+                                                value={datosEjemplo.idSolicitud}
+                                                readOnly
                                                 className="form-input"
                                                 style={{
                                                     width: '250px',
@@ -146,7 +173,8 @@ const VerCobrosModal = (
                                                     flexShrink: 0,
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFFF',
+                                                    background: '#F8F8F8', // Fondo más oscuro para inputs deshabilitados
+                                                    cursor: 'default'
                                                 }}
                                             />
                                         </form>
@@ -256,6 +284,9 @@ const VerCobrosModal = (
                                                 dateAdapter={AdapterDayjs}
                                             >
                                                 <DatePicker
+                                                    value={datosEjemplo.fecha}
+                                                    readOnly
+                                                    disabled
                                                     slotProps={{
                                                         textField: {
                                                             placeholder: 'Fecha',
@@ -331,9 +362,7 @@ const VerCobrosModal = (
                                         style={{
                                             paddingLeft: 10,
                                             paddingRight: 10,
-                                            border: '1px solid #E5E5E5',
-                                            borderRadius: '8px',
-                                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+
                                             height: window.screen.height * 0.1,
                                             justifyContent: 'center',
                                             justifySelf: 'center',
@@ -515,7 +544,8 @@ const VerCobrosModal = (
                                             >
                                                 <input
                                                     id="hrDefaultinput"
-                                                    placeholder=""
+                                                    value={datosEjemplo.nombre}
+                                                    readOnly
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -523,13 +553,15 @@ const VerCobrosModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
                                                     }}
                                                 />
 
                                                 <input
                                                     id="hrDefaultinput"
-                                                    placeholder=""
+                                                    value={datosEjemplo.email}
+                                                    readOnly
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -537,29 +569,16 @@ const VerCobrosModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
-                                                    }}
-
-                                                />
-
-                                                <input
-                                                    id="hrDefaultinput"
-                                                    placeholder=""
-                                                    className="form-input"
-                                                    style={{
-                                                        width: '250px',
-                                                        height: '35px',
-                                                        flexShrink: 0,
-                                                        borderRadius: '6px',
-                                                        border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
                                                     }}
 
                                                 />
 
                                                 <input
                                                     id="hrDefaultinput"
-                                                    placeholder=""
+                                                    value={datosEjemplo.cargo}
+                                                    readOnly
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -567,7 +586,25 @@ const VerCobrosModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
+                                                    }}
+
+                                                />
+
+                                                <input
+                                                    id="hrDefaultinput"
+                                                    value={datosEjemplo.ingresos}
+                                                    readOnly
+                                                    className="form-input"
+                                                    style={{
+                                                        width: '250px',
+                                                        height: '35px',
+                                                        flexShrink: 0,
+                                                        borderRadius: '6px',
+                                                        border: '1px solid #E0E6ED',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
                                                     }}
 
                                                 />
@@ -714,7 +751,8 @@ const VerCobrosModal = (
 
                                                 <input
                                                     id="hrDefaultinput"
-                                                    placeholder=""
+                                                    value={datosEjemplo.metodoPago}
+                                                    readOnly
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -722,13 +760,15 @@ const VerCobrosModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
                                                     }}
                                                 />
 
                                                 <input
                                                     id="hrDefaultinput"
-                                                    placeholder=""
+                                                    value={datosEjemplo.banco}
+                                                    readOnly
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -736,14 +776,16 @@ const VerCobrosModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
                                                     }}
 
                                                 />
 
                                                 <input
                                                     id="hrDefaultinput"
-                                                    placeholder=""
+                                                    value={datosEjemplo.referencia}
+                                                    readOnly
                                                     className="form-input"
                                                     style={{
                                                         width: '250px',
@@ -751,14 +793,16 @@ const VerCobrosModal = (
                                                         flexShrink: 0,
                                                         borderRadius: '6px',
                                                         border: '1px solid #E0E6ED',
-                                                        background: '#FFFFFF',
+                                                        background: '#F8F8F8',
+                                                        cursor: 'default'
                                                     }}
                                                 />
 
                                                 <div style={{ position: 'relative', width: '100%' }}>
                                                     <input
                                                         id="hrDefaultinput"
-                                                        placeholder=""
+                                                        value={datosEjemplo.comprobante}
+                                                        readOnly
                                                         className="form-input"
                                                         style={{
                                                             width: '250px',
@@ -766,7 +810,8 @@ const VerCobrosModal = (
                                                             flexShrink: 0,
                                                             borderRadius: '6px',
                                                             border: '1px solid #E0E6ED',
-                                                            background: '#FFFFFF',
+                                                            background: '#F8F8F8',
+                                                            cursor: 'default'
                                                         }}
                                                     />
                                                     <span
@@ -925,7 +970,8 @@ const VerCobrosModal = (
                                         >
                                             <input
                                                 id="hrDefaultinput"
-                                                placeholder=""
+                                                value={datosEjemplo.item}
+                                                readOnly
                                                 className="form-input"
                                                 style={{
                                                     width: '100%',
@@ -933,7 +979,8 @@ const VerCobrosModal = (
                                                     flexShrink: 0,
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFFF'
+                                                    background: '#F8F8F8',
+                                                    cursor: 'default'
                                                 }}
                                             />
                                         </div>
@@ -943,7 +990,8 @@ const VerCobrosModal = (
                                         >
                                             <input
                                                 id="hrDefaultinput"
-                                                placeholder=""
+                                                value={datosEjemplo.cuotas}
+                                                readOnly
                                                 className="form-input"
                                                 style={{
                                                     width: '100%',
@@ -951,7 +999,8 @@ const VerCobrosModal = (
                                                     flexShrink: 0,
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFFF'
+                                                    background: '#F8F8F8',
+                                                    cursor: 'default'
                                                 }}
                                             />
                                         </div>
@@ -961,7 +1010,8 @@ const VerCobrosModal = (
                                         >
                                             <input
                                                 id="hrDefaultinput"
-                                                placeholder=""
+                                                value={datosEjemplo.monto}
+                                                readOnly
                                                 className="form-input"
                                                 style={{
                                                     width: '100%',
@@ -969,7 +1019,8 @@ const VerCobrosModal = (
                                                     flexShrink: 0,
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFFF'
+                                                    background: '#F8F8F8',
+                                                    cursor: 'default'
                                                 }}
                                             />
                                         </div>
@@ -979,7 +1030,8 @@ const VerCobrosModal = (
                                         >
                                             <input
                                                 id="hrDefaultinput"
-                                                placeholder=""
+                                                value={datosEjemplo.costoServicio}
+                                                readOnly
                                                 className="form-input"
                                                 style={{
                                                     width: '100%',
@@ -987,7 +1039,8 @@ const VerCobrosModal = (
                                                     flexShrink: 0,
                                                     borderRadius: '6px',
                                                     border: '1px solid #E0E6ED',
-                                                    background: '#FFFFFF'
+                                                    background: '#F8F8F8',
+                                                    cursor: 'default'
                                                 }}
                                             />
                                         </div>

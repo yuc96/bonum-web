@@ -140,16 +140,10 @@ const EmpleadosTable = ({
     const [openModalDelete, setOpenModalDelete] = useState(false); // Controla el modal
 
     const handleDelete = (id: any) => {
-        // delete_empleados(id)
-        //     .then((res) => {
-        //         accionDatos();
-        //         console.log("Borrado?: ", res);
-        //     })
-        //     .catch((err) => {
-        //         console.log("Error en la API: ", err);
-        //     })
+
         setIdEmpleado(id);
         setOpenModalDelete(true);
+
 
     }
 
